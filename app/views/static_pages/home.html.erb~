@@ -1,0 +1,36 @@
+		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+			  <!-- Indicators -->
+			  <ol class="carousel-indicators">
+			    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+			    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+			    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+			  </ol>
+
+			  <!-- Wrapper for slides -->
+			  <div class="carousel-inner">
+			    <div class="item active">
+			    	<div class="inner-item">
+			      		<img src="http://cdni.condenast.co.uk/1080x720/a_c/Changi-Terminal-1-Singapore-cnt-8oct13-pr_1080x720.jpg" alt="Image not found">
+			      	</div>
+			    </div>
+			    <div class="item">
+			    	<div class="inner-item">
+			      		<img src="http://cdni.condenast.co.uk/1080x720/s_v/Sydney_CNT_5sep12_rex_b_1080x720.jpg" alt="Image not found">
+			      	</div>
+			    </div>
+			    <div class="item">
+			    	<div class="inner-item">
+			      		<img src="http://www.exoticvoyages.com/sites/default/files/Rowing-boat-in-Inle-Lake.jpg">
+			      	</div>
+			    </div>
+			  </div>
+
+			  <!-- Controls -->
+			  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+			    <span class="glyphicon glyphicon-chevron-left"></span>
+			  </a>
+			  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+			    <span class="glyphicon glyphicon-chevron-right"></span>
+			  </a>
+		</div>
+		<hr>

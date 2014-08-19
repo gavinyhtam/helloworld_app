@@ -1,0 +1,4 @@
+class Todo < ActiveRecord::Base
+	#Todo.create(todo_item: "Pay your bills")
+	#Todo.create(todo_item: "Eat food")
+end

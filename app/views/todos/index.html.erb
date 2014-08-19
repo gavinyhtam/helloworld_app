@@ -1,0 +1,59 @@
+<div class="jumbotron">
+		  <h1>Hello, world!</h1>
+		  <p>Review your experiences!</p>
+		  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  How to
+</button></p>
+		</div>
+			
+		<div class="modal fade" id="myModal">
+		  <div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title">
+		        	View your experiences
+		        	<span class="glyphicon glyphicon-camera"></span>
+		        </h4>
+		      </div>
+		      <div class="modal-body">
+		      	<p> Click on any picture to view</p>
+		      	<!--Source from http://timeline.knightlab.com/-->
+		        <iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjRGop7a-JOJdGUxRHlmd0JuTU9za09Bblc2UVpLUVE&font=Bevan-PotanoSans&maptype=toner&lang=en&height=650' width='100%' height='650' frameborder='0'></iframe>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>
+		    </div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<div class="progress">
+		  <div class="progress-bar" style="width: 35%">
+		    35%
+		  </div>
+		  <div class="progress-bar progress-bar-warning" style="width: 65%">
+		    65%
+		  </div>
+		</div>
+		<!--Display AmMaps javascript-->
+		<div id="mapdiv"></div>
+		<!--Source from http://www.kirupa.com/forum/showthread.php?303693-Import-Flickr-Photos-to-Website-->
+		<script type="text/javascript">
+			/*function jsonFlickrFeed(o)
+			{
+			    var div = document.getElementById('photoBucket');
+			    var i = 0;
+			    while(o.items[i])
+			    {
+			        div.innerHTML += '<img src="' + o.items[i].media.m + '" alt="' + o.items[i].title +'">';
+			        i++;
+			    }
+			}
+			$(document).ready(function(){   
+			      $('#photoBucket').cycle()
+			});*/
+		</script>
+		<div id="photoBucket"><!-- Photos will be written here --></div>
+		<!-- Keep this at the bottom -->
+		<script src="http://api.flickr.com/services/feeds/photos_public.gne?id=28203925@N08&lang=en-us&format=json" type="text/javascript"></script>

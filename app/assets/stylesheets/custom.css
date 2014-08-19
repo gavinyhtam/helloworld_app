@@ -1,0 +1,68 @@
+#mapdiv {
+	width: 100%;
+	min-height: 720px;
+}
+
+.inner-item {
+    text-align: center;
+}
+
+.carousel {
+	overflow:hidden;
+}
+
+.inner-item > img {
+	width: 100%;
+	#margin-top: -15%;
+	#margin-bottom: -15%;
+	opacity: 0.6
+}
+
+.jumbotron {
+	text-align: center;
+}
+
+span.glyphicon-briefcase {
+	font-size: 15vw;
+}
+
+span.glyphicon-pencil {
+	font-size: 15vw;
+}
+
+span.glyphicon-user {
+	padding-right: 5px;
+}
+
+#startPic {
+	width: 10%;
+	display:block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#start-image {
+	//position:relative;
+	//background-image: url("http://www.kelioniumarsrutai.com/wp-content/uploads/2013/06/travel-route.jpg");
+	width: 100%;
+}
+
+h3 {
+	padding-bottom: 50px;
+	text-align: center;
+	color: #AAAAAA;
+}
+
+h1 {
+	padding-top: 50px;
+}
+
+hr {
+	//padding-top: 100px;
+	padding-bottom: 20px;
+}
+
+.home-icon {
+	padding-left: 50px;
+	padding-right: 50px;
+}
