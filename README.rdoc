@@ -1,6 +1,6 @@
 == HELLO WORLD!
 
-This is a web application developed for viewing travel experiences
+This is a web application developed for viewing travel experiences, and sharing them with your circle of friends.
 
 Features:
 
