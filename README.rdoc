@@ -1,28 +1,13 @@
-== README
+== HELLO WORLD!
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a web application developed for viewing travel experiences
 
-Things you may want to cover:
+Features:
 
-* Ruby version
+* TravelDex
 
-* System dependencies
+* Friends
 
-* Configuration
+* Travel Blog
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+...and more to come.
