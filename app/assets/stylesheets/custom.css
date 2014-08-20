@@ -62,7 +62,28 @@ hr {
 	padding-bottom: 20px;
 }
 
+.slogan {
+	color: blue;
+}
+
 .home-icon {
 	padding-left: 50px;
 	padding-right: 50px;
+}
+
+.fb-login-button {
+	display: block
+	margin: 0 auto;
+	padding-bottom: 20px;
+}
+
+#login-form {
+	height: 720px;
+	padding-top: 100px;
+	background: url("http://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg") no-repeat center center fixed;
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	text-align: center;
 }
