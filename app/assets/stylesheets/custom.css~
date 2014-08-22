@@ -63,7 +63,7 @@ hr {
 }
 
 .slogan {
-	color: #AAAAAA;
+	color: blue;
 }
 
 .home-icon {
@@ -85,5 +85,9 @@ hr {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+	text-align: center;
+}
+
+#slideshow {
 	text-align: center;
 }

@@ -18,9 +18,7 @@
 		      </div>
 		      <div class="modal-body">
 		      	<p> Click on any picture to view</p>
-		      	<!--Source from http://timeline.knightlab.com/-->
-		        <!--iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjRGop7a-JOJdGUxRHlmd0JuTU9za09Bblc2UVpLUVE&font=Bevan-PotanoSans&maptype=toner&lang=en&height=650' width='100%' height='650' frameborder='0'></iframe-->  	
-					<div id="myFBImage"></div>
+					<!--div id="myFBImage"></div-->
 					<div id="my-timeline"></div>
 		      </div>
 		      <div class="modal-footer">
@@ -40,19 +38,6 @@
 		</div>
 		<!--Display AmMaps javascript-->
 		<div id="mapdiv"></div>
-		<script>
-		/*jQuery(function($) {
-    var fqlUserId = '321662419491'; // the user id
-    var fqlAlbumId = '305695';  // the album id
-    var fqlQuery = "SELECT src_big, caption, src_small, src FROM photo WHERE owner = " + fqlUserId + " AND aid = '" + fqlUserId + '_' + fqlAlbumId + "'";
- 
-    $.getJSON("https://api.facebook.com/method/fql.query?format=json&callback=?&query=" + escape(fqlQuery), function(data) {
-        for (var i = 0; i < data.length; i++) {
-            jQuery('<img src="' + data[i].src_small + '" alt="' + data[i].caption + '" />').appendTo('body');
-        }
-    });
-	});*/
-	</script>
 	
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
@@ -77,14 +62,14 @@
 								timeline: {
 									headline: "Singapore trip",
 									type: "default",
-									text: "<p>album</p>",
+									text: "<p>Album</p>",
 									asset: {
 										media: response.data[0].source
 									},
 									date: [
 										{
-											startDate: "2011,12,10",
-											endDate: "2011,12,11",
+											startDate: parseDate(response.data[0].created_time),
+											endDate: parseDate(response.data[0].created_time),
 											headline: response.data[0].name,
 											text: "<p>Singapore photo</p>",
 											asset: {
@@ -94,8 +79,8 @@
 									],
 									era: [
 										{
-											startDate: "2011,12,10",
-											endDate: "2011,12,11",
+											startDate: parseDate(response.data[0].created_time),
+											endDate: parseDate(response.data[0].created_time),
 											headline: response.data[0].name,
 											text: "<p>Singapore photo</p>",
 											asset: {
@@ -113,10 +98,20 @@
 								  embed_id:   'my-timeline'
 							 });
 							 //Will add loop to go to length and place new photo
-							 console.log(photos["timeline"]["date"].length);
+							 console.log(photos["timeline"]["date"][0]["startDate"]);
+							 //var date = response.data[0].created_time.replace(/-/g, ",").substring(0,10);
+							 //console.log(date);		 
 						});
 				  //<!-- END TimelineJS -->
 					//document.getElementById("myFBImage").innerHTML = "<img src=" + response.data[0].source + ">";
 			});
+		}
+		
+		//parses JSON (ISO8601) to TimelineJS Date format
+		function parseDate(string) {
+			//return string.replace(/-/g, ",").substring(0,10);
+			var date = new Date(string);
+			//date.getMonth() returns 0-11, instead of 1-12
+			return date.getFullYear() + "," + (date.getMonth()+1) + "," + date.getUTCDate();
 		}
 	</script>
