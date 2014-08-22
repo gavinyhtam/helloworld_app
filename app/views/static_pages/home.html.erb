@@ -1,4 +1,4 @@
-		<script>
+	<script>
 		  // This is called with the results from from FB.getLoginStatus().
 		  function statusChangeCallback(response) {
 			 console.log('statusChangeCallback');
@@ -30,41 +30,14 @@
 				statusChangeCallback(response);
 			 });
 		  }
-		
-		  window.fbAsyncInit = function() {
-			  FB.init({
-				 appId      : '1554632284756058',
-				 cookie     : true,  // enable cookies to allow the server to access 
-											// the session
-				 xfbml      : true,  // parse social plugins on this page
-				 version    : 'v2.1' // use version 2.1
-			  });
-			
-			  // Now that we've initialized the JavaScript SDK, we call 
-			  // FB.getLoginStatus().  This function gets the state of the
-			  // person visiting this page and can return one of three states to
-			  // the callback you provide.  They can be:
-			  //
-			  // 1. Logged into your app ('connected')
-			  // 2. Logged into Facebook, but not your app ('not_authorized')
-			  // 3. Not logged into Facebook and can't tell if they are logged into
-			  //    your app or not.
-			  //
-			  // These three cases are handled in the callback function.
-			
-			  FB.getLoginStatus(function(response) {
-				 statusChangeCallback(response);
-			  });
-		  };
-		
-		  // Load the SDK asynchronously
-		  (function(d, s, id) {
-			 var js, fjs = d.getElementsByTagName(s)[0];
-			 if (d.getElementById(id)) return;
-			 js = d.createElement(s); js.id = id;
-			 js.src = "//connect.facebook.net/en_US/sdk.js";
-			 fjs.parentNode.insertBefore(js, fjs);
-		  }(document, 'script', 'facebook-jssdk'));
+
+		(function($) {
+			$(document).bind("FBSDKLoaded", function() {
+				FB.getLoginStatus(function(response) {
+					statusChangeCallback(response);
+				});
+			});
+		})(jQuery);
 		
 		  // Here we run a very simple test of the Graph API after login is
 		  // successful.  See statusChangeCallback() for when this call is made.
@@ -72,8 +45,7 @@
 			 console.log('Welcome!  Fetching your information.... ');
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
-				document.getElementById('status').innerHTML =
-				  'Thanks for logging in, ' + response.name + '!';
+				//top.location.href = "http://localhost:3000/todos/index";
 			 });
 		  }
 		</script>
@@ -84,28 +56,18 @@
 		  the FB.login() function when clicked.
 		-->
 		
-		<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+		<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
 		</fb:login-button>
 		
 		<div id="status">
 		</div>
-		
-		<div id="fb-root"></div>
-		<script>(function(d, s, id) {
-  		var js, fjs = d.getElementsByTagName(s)[0];
-  		if (d.getElementById(id)) return;
-  		js = d.createElement(s); js.id = id;
-  		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
-  		fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));</script>
-		
-	<!--Sourced from https://gist.github.com/bMinaise/7329874-->
-	<div id="login-form">
-		<span class="glyphicon glyphicon-briefcase"></span>
-		<h1>HelloWorld!</h1>
-		<h2 class="slogan"> Travel. Share. Discover. </h2>
-		<br>
-      <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false"></div>
-      <br>
-      <a href=#>Need help?</a>
-	</div>
+
+		<div id="login-form">
+			<span class="glyphicon glyphicon-briefcase"></span>
+			<h1>HelloWorld!</h1>
+			<h2 class="slogan"> Travel. Share. Discover. </h2>
+			<br>
+		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false">Sign in with Facebook</div>
+		   <br>
+		   <a href=#>Need help?</a>
+		</div>

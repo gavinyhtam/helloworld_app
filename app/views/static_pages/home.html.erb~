@@ -1,36 +1,65 @@
-		<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-			  <!-- Indicators -->
-			  <ol class="carousel-indicators">
-			    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-			    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-			  </ol>
-
-			  <!-- Wrapper for slides -->
-			  <div class="carousel-inner">
-			    <div class="item active">
-			    	<div class="inner-item">
-			      		<img src="http://cdni.condenast.co.uk/1080x720/a_c/Changi-Terminal-1-Singapore-cnt-8oct13-pr_1080x720.jpg" alt="Image not found">
-			      	</div>
-			    </div>
-			    <div class="item">
-			    	<div class="inner-item">
-			      		<img src="http://cdni.condenast.co.uk/1080x720/s_v/Sydney_CNT_5sep12_rex_b_1080x720.jpg" alt="Image not found">
-			      	</div>
-			    </div>
-			    <div class="item">
-			    	<div class="inner-item">
-			      		<img src="http://www.exoticvoyages.com/sites/default/files/Rowing-boat-in-Inle-Lake.jpg">
-			      	</div>
-			    </div>
-			  </div>
-
-			  <!-- Controls -->
-			  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-			    <span class="glyphicon glyphicon-chevron-left"></span>
-			  </a>
-			  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-			    <span class="glyphicon glyphicon-chevron-right"></span>
-			  </a>
+	<script>
+		  // This is called with the results from from FB.getLoginStatus().
+		  function statusChangeCallback(response) {
+			 console.log('statusChangeCallback');
+			 console.log(response);
+			 // The response object is returned with a status field that lets the
+			 // app know the current login status of the person.
+			 // Full docs on the response object can be found in the documentation
+			 // for FB.getLoginStatus().
+			 if (response.status === 'connected') {
+				// Logged into your app and Facebook.
+				testAPI();
+			 } else if (response.status === 'not_authorized') {
+				// The person is logged into Facebook, but not your app.
+				document.getElementById('status').innerHTML = 'Please log ' +
+				  'into this app.';
+			 } else {
+				// The person is not logged into Facebook, so we're not sure if
+				// they are logged into this app or not.
+				document.getElementById('status').innerHTML = 'Please log ' +
+				  'into Facebook.';
+			 }
+		  }
+		
+		  // This function is called when someone finishes with the Login
+		  // Button.  See the onlogin handler attached to it in the sample
+		  // code below.
+		  function checkLoginState() {
+			 FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			 });
+			window.location.replace("http://localhost:3000/todos/index");
+		  }
+		
+		  // Here we run a very simple test of the Graph API after login is
+		  // successful.  See statusChangeCallback() for when this call is made.
+		  function testAPI() {
+			 console.log('Welcome!  Fetching your information.... ');
+			 FB.api('/me', function(response) {
+				console.log('Successful login for: ' + response.name);
+			 });
+		  }
+		</script>
+		
+		<!--
+		  Below we include the Login Button social plugin. This button uses
+		  the JavaScript SDK to present a graphical Login button that triggers
+		  the FB.login() function when clicked.
+		-->
+		
+		<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
+		</fb:login-button>
+		
+		<div id="status">
 		</div>
-		<hr>
+
+		<div id="login-form">
+			<span class="glyphicon glyphicon-briefcase"></span>
+			<h1>HelloWorld!</h1>
+			<h2 class="slogan"> Travel. Share. Discover. </h2>
+			<br>
+		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false">Sign in with Facebook</div>
+		   <br>
+		   <a href=#>Need help?</a>
+		</div>

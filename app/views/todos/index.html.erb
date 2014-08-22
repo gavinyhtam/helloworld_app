@@ -1,4 +1,4 @@
-<div class="jumbotron">
+	<div class="jumbotron">
 		  <h1>Hello, world!</h1>
 		  <p>Review your experiences!</p>
 		  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
@@ -19,7 +19,9 @@
 		      <div class="modal-body">
 		      	<p> Click on any picture to view</p>
 		      	<!--Source from http://timeline.knightlab.com/-->
-		        <iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjRGop7a-JOJdGUxRHlmd0JuTU9za09Bblc2UVpLUVE&font=Bevan-PotanoSans&maptype=toner&lang=en&height=650' width='100%' height='650' frameborder='0'></iframe>
+		        <!--iframe src='http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=0AjRGop7a-JOJdGUxRHlmd0JuTU9za09Bblc2UVpLUVE&font=Bevan-PotanoSans&maptype=toner&lang=en&height=650' width='100%' height='650' frameborder='0'></iframe-->  	
+					<div id="myFBImage"></div>
+					<div id="my-timeline"></div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -38,22 +40,83 @@
 		</div>
 		<!--Display AmMaps javascript-->
 		<div id="mapdiv"></div>
-		<!--Source from http://www.kirupa.com/forum/showthread.php?303693-Import-Flickr-Photos-to-Website-->
-		<script type="text/javascript">
-			/*function jsonFlickrFeed(o)
-			{
-			    var div = document.getElementById('photoBucket');
-			    var i = 0;
-			    while(o.items[i])
-			    {
-			        div.innerHTML += '<img src="' + o.items[i].media.m + '" alt="' + o.items[i].title +'">';
-			        i++;
-			    }
-			}
-			$(document).ready(function(){   
-			      $('#photoBucket').cycle()
-			});*/
-		</script>
-		<div id="photoBucket"><!-- Photos will be written here --></div>
-		<!-- Keep this at the bottom -->
-		<script src="http://api.flickr.com/services/feeds/photos_public.gne?id=28203925@N08&lang=en-us&format=json" type="text/javascript"></script>
+		<script>
+		/*jQuery(function($) {
+    var fqlUserId = '321662419491'; // the user id
+    var fqlAlbumId = '305695';  // the album id
+    var fqlQuery = "SELECT src_big, caption, src_small, src FROM photo WHERE owner = " + fqlUserId + " AND aid = '" + fqlUserId + '_' + fqlAlbumId + "'";
+ 
+    $.getJSON("https://api.facebook.com/method/fql.query?format=json&callback=?&query=" + escape(fqlQuery), function(data) {
+        for (var i = 0; i < data.length; i++) {
+            jQuery('<img src="' + data[i].src_small + '" alt="' + data[i].caption + '" />').appendTo('body');
+        }
+    });
+	});*/
+	</script>
+	
+	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
+	<script>
+	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
+		(function($) {
+			$(document).bind("FBSDKLoaded", function() {
+				FB.getLoginStatus(function(response) {
+					if (response.status === "connected") {
+						getPhotos();
+					}
+				});
+			});
+		})(jQuery);
+		
+		function getPhotos() {
+			FB.api("/me/photos/uploaded",
+				function(response) {
+					console.log(response.data[0]);
+					//<!-- BEGIN TimelineJS -->
+						$(document).ready(function() {
+							var photos = { 
+								timeline: {
+									headline: "Singapore trip",
+									type: "default",
+									text: "<p>album</p>",
+									asset: {
+										media: response.data[0].source
+									},
+									date: [
+										{
+											startDate: "2011,12,10",
+											endDate: "2011,12,11",
+											headline: response.data[0].name,
+											text: "<p>Singapore photo</p>",
+											asset: {
+												media: response.data[0].source
+											}
+										}
+									],
+									era: [
+										{
+											startDate: "2011,12,10",
+											endDate: "2011,12,11",
+											headline: response.data[0].name,
+											text: "<p>Singapore photo</p>",
+											asset: {
+												media: response.data[0].source
+											}
+										}
+									],
+								}
+							};
+							 createStoryJS({
+								  type:       'timeline',
+								  width:      '800',
+								  height:     '600',
+								  source:     photos,
+								  embed_id:   'my-timeline'
+							 });
+							 //Will add loop to go to length and place new photo
+							 console.log(photos["timeline"]["date"].length);
+						});
+				  //<!-- END TimelineJS -->
+					//document.getElementById("myFBImage").innerHTML = "<img src=" + response.data[0].source + ">";
+			});
+		}
+	</script>
