@@ -57,54 +57,51 @@
 				function(response) {
 					console.log(response.data[0]);
 					//<!-- BEGIN TimelineJS -->
-						$(document).ready(function() {
-							var photos = { 
-								timeline: {
-									headline: "Singapore trip",
-									type: "default",
-									text: "<p>Album</p>",
-									asset: {
-										media: response.data[0].source
-									},
-									date: [
-										{
-											startDate: parseDate(response.data[0].created_time),
-											endDate: parseDate(response.data[0].created_time),
-											headline: response.data[0].name,
-											text: "<p>Singapore photo</p>",
-											asset: {
-												media: response.data[0].source
-											}
-										}
-									],
-									era: [
-										{
-											startDate: parseDate(response.data[0].created_time),
-											endDate: parseDate(response.data[0].created_time),
-											headline: response.data[0].name,
-											text: "<p>Singapore photo</p>",
-											asset: {
-												media: response.data[0].source
-											}
-										}
-									],
-								}
-							};
-							 createStoryJS({
-								  type:       'timeline',
-								  width:      '800',
-								  height:     '600',
-								  source:     photos,
-								  embed_id:   'my-timeline'
-							 });
-							 //Will add loop to go to length and place new photo
-							 console.log(photos["timeline"]["date"][0]["startDate"]);
-							 //var date = response.data[0].created_time.replace(/-/g, ",").substring(0,10);
-							 //console.log(date);		 
-						});
-				  //<!-- END TimelineJS -->
-					//document.getElementById("myFBImage").innerHTML = "<img src=" + response.data[0].source + ">";
+					$(document).ready(function() {
+						//initialise album
+						var photos = { 
+							timeline: {
+								headline: "Singapore trip",
+								type: "default",
+								text: "<p>Album</p>",
+								asset: {
+									media: response.data[0].source
+								},
+								date: [],
+								era: [],
+							}
+						};
+						 //Loop through all photos and add to JSON
+						 //WARNING: Fix loading problem as images load slower than Javascript
+						 //so timeline may not show until refresh
+						 for (var i = 0; i < response.data.length; i++) {
+							photos["timeline"]["date"][i] = initPhoto(response.data[i]);
+							photos["timeline"]["era"][i] = initPhoto(response.data[i]);
+						 }
+						 //create the TimelineJS
+						 createStoryJS({
+							  type:       'timeline',
+							  width:      '800',
+							  height:     '600',
+							  source:     photos,
+							  embed_id:   'my-timeline'
+						 });	 
+					});
 			});
+		}
+		
+		//Returns JSON version of the photo date extracted from FB API
+		function initPhoto(photoData) {
+			var jsonPhotoData = {
+				startDate: parseDate(photoData.created_time),
+				endDate: parseDate(photoData.created_time),
+				headline: photoData.name,
+				text: "<p>Singapore photo</p>",
+				asset: {
+					media: photoData.source
+				} 
+			};
+			return jsonPhotoData;
 		}
 		
 		//parses JSON (ISO8601) to TimelineJS Date format
