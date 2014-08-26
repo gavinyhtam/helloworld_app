@@ -29,18 +29,9 @@ AmCharts.ready(function() {
     
     //when country is selected
     map.addListener("clickMapObject", function (event) {
-        if (event.mapObject.id == "FR") {
+    	//if country is in the 'been to' colour
+        if (event.mapObject.color == "#4444ff") {
             jQuery("#myModal").modal({  //show the modal dialog box with the pictures
-                show: true
-            });
-        }
-        else if (event.mapObject.id == "RU") {
-            jQuery("#myModal").modal({
-                show: true
-            });
-        }
-        else if (event.mapObject.id == "US") {
-            jQuery("#myModal").modal({
                 show: true
             });
         }

@@ -29,8 +29,15 @@
 			 FB.getLoginStatus(function(response) {
 				statusChangeCallback(response);
 			 });
-			window.location.replace("http://localhost:3000/todos/index");
 		  }
+
+		(function($) {
+			$(document).bind("FBSDKLoaded", function() {
+				FB.getLoginStatus(function(response) {
+					statusChangeCallback(response);
+				});
+			});
+		})(jQuery);
 		
 		  // Here we run a very simple test of the Graph API after login is
 		  // successful.  See statusChangeCallback() for when this call is made.
@@ -38,6 +45,7 @@
 			 console.log('Welcome!  Fetching your information.... ');
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
+				window.location = "http://localhost:3000/todos/index";//------REDIRECT IS BUGGY
 			 });
 		  }
 		</script>
