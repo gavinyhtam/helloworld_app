@@ -14,12 +14,12 @@
 				// The person is logged into Facebook, but not your app.
 				document.getElementById('status').innerHTML = 'Please log ' +
 				  'into this app.';
-			 } else {
+			 } /*else {
 				// The person is not logged into Facebook, so we're not sure if
 				// they are logged into this app or not.
 				document.getElementById('status').innerHTML = 'Please log ' +
 				  'into Facebook.';
-			 }
+			 }*/
 		  }
 		
 		  // This function is called when someone finishes with the Login
@@ -49,25 +49,17 @@
 			 });
 		  }
 		</script>
-		
-		<!--
-		  Below we include the Login Button social plugin. This button uses
-		  the JavaScript SDK to present a graphical Login button that triggers
-		  the FB.login() function when clicked.
-		-->
-		
-		<fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
-		</fb:login-button>
-		
-		<div id="status">
-		</div>
 
 		<div id="login-form">
 			<span class="glyphicon glyphicon-briefcase"></span>
 			<h1>HelloWorld!</h1>
 			<h2 class="slogan"> Travel. Share. Discover. </h2>
 			<br>
-		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false">Sign in with Facebook</div>
+		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos" onlogin="checkLoginState()">Sign in with Facebook</div>
 		   <br>
+		
+			<div id="status">
+			</div>
+			<br>
 		   <a href=#>Need help?</a>
 		</div>

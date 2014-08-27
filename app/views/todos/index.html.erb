@@ -43,12 +43,16 @@
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
+	var entered = false;
 		(function($) {
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
 					if (response.status === "connected") {
 						$('#myModal').on('shown.bs.modal', function () {
-  							getPhotos();		//get photos once modal is on
+							if (entered === false) {
+  								getPhotos();		//get photos once modal is on
+							}
+							entered = true;
 						});
 					}
 				});
