@@ -1,6 +1,6 @@
 	<%= render("layouts/todos") %>	
 	<div class="jumbotron">
-		  <h1>Hello, world!</h1>
+		  <h1>Hello, <%= @user.username %>!</h1>
 		  <p>Review your experiences!</p>
 		  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
   How to
@@ -83,7 +83,7 @@
 		function getPhotos() {
 			FB.api("/me/photos/uploaded",
 				function(response) {
-					console.log(response.data[0]);
+					console.log(response.data[6]);
 					//<!-- BEGIN TimelineJS -->
 					$(document).ready(function() {
 						//initialise album
@@ -120,9 +120,13 @@
 		
 		//Returns JSON version of the photo date extracted from FB API
 		function initPhoto(photoData) {
+			var date = photoData.created_time; //default date is created time unless user has date attached
+			if (photoData.backdated_time !== undefined) {
+				date = photoData.backdated_time;	//update date to user described date
+			}
 			var jsonPhotoData = {
-				startDate: parseDate(photoData.created_time),
-				endDate: parseDate(photoData.created_time),
+				startDate: parseDate(date),
+				endDate: parseDate(date),
 				headline: photoData.name,
 				text: "<p>Singapore photo</p>",
 				asset: {
@@ -139,4 +143,46 @@
 			//date.getMonth() returns 0-11, instead of 1-12
 			return date.getFullYear() + "," + (date.getMonth()+1) + "," + date.getUTCDate();
 		}
+	</script>
+
+	<script type="text/javascript">
+		var map;
+
+		//when AmMap to ready to load
+		AmCharts.ready(function() {
+			 map = new AmCharts.AmMap(); //make new Map
+			 map.pathToImages = "http://www.ammap.com/lib/images/";
+			 //map.panEventsEnabled = true; // this line enables pinch-zooming and dragging on touch devices
+			 map.balloon.color = "#000000";
+			 
+			 var worldDataProvider = {
+				  mapVar: AmCharts.maps.worldLow,
+				  getAreasFromMap: true,
+				  areas: []
+			 };
+
+			<% @locations.each do |location| %>
+				worldDataProvider.areas.push({ id: "<%= location %>", color: "#4444ff" });
+			<% end %>
+
+			 map.dataProvider = worldDataProvider;
+
+			 map.areasSettings = {
+				  autoZoom: true,
+				  selectedColor: "#CC0000" //colour when country is selected
+			 };
+
+			 map.smallMap = new AmCharts.SmallMap();
+			 
+			 //when country is selected
+			 map.addListener("clickMapObject", function (event) {
+			 	//if country is in the 'been to' colour
+				  if (event.mapObject.color == "#4444ff") {
+				      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
+				          show: true
+				      });
+				  }
+			 });
+			 map.write("mapdiv");
+		});
 	</script>

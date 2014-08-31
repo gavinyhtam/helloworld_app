@@ -1,6 +1,5 @@
 //Sourced from http://jsfiddle.net/amcharts/V7Xq8/
-/*Commented out temporarily so that can test JS getting Rails variables
-var map;
+/*var map;
 
 //when AmMap to ready to load
 AmCharts.ready(function() {

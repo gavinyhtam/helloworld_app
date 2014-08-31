@@ -46,18 +46,10 @@
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
 				window.location = "http://localhost:3000/todos/index";//------REDIRECT IS BUGGY
+				//try + "?username=" + response.name to make username accessible to Rails
 			 });
 		  }
 		</script>
-		
-		<!--
-		  Below we include the Login Button social plugin. This button uses
-		  the JavaScript SDK to present a graphical Login button that triggers
-		  the FB.login() function when clicked.
-		-->
-		
-		<!--fb:login-button scope="public_profile,email,user_photos" onlogin="checkLoginState();">
-		</fb:login-button-->
 
 		<div id="login-form">
 			<span class="glyphicon glyphicon-briefcase"></span>
