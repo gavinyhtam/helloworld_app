@@ -161,8 +161,8 @@
 				  areas: []
 			 };
 
-			<% @locations.each do |location| %>
-				worldDataProvider.areas.push({ id: "<%= location %>", color: "#4444ff" });
+			<% @user.photos.each do |photo| %>
+				worldDataProvider.areas.push({ id: "<%= photo.location_code %>", color: "#4444ff" });
 			<% end %>
 
 			 map.dataProvider = worldDataProvider;
