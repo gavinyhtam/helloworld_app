@@ -47,7 +47,6 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Save changes</button>
 		      </div>
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
@@ -91,26 +90,23 @@
 								headline: currLocation + " trip",
 								type: "default",
 								text: "<p>Album</p>",
-								asset: {
-									media: response.data[0].source
-								},
 								date: [],
 								era: [],
 							}
 						};
 						 //Loop through all photos and add to JSON
-						 //WARNING: Fix loading problem as images load slower than Javascript
-						 //so timeline may not show until refresh
-						var j = 0;
+						var latestPhoto = 0;
 						 for (var i = 0; i < response.data.length; i++) {
 							//console.log("Photo: " + response.data[i].place.name);
 							//console.log("currLocation is " + currLocation);
 							if (response.data[i].place.name === currLocation) {
-								photos["timeline"]["date"][j] = initPhoto(response.data[i]);
-								photos["timeline"]["era"][j] = initPhoto(response.data[i]);
-								j++;
+								photos["timeline"]["date"].push(initPhoto(response.data[i]));
+								photos["timeline"]["era"].push(initPhoto(response.data[i]));
+								latestPhoto = i;
 							}
 						 }
+						//show most recent photo first as the album cover
+						photos["timeline"]["asset"] = { media: response.data[latestPhoto].source };
 						//remake destroyed div to place timeline in
 						$("#timeline-anchor").append("<div id=my-timeline></div>");
 						 //create the TimelineJS
