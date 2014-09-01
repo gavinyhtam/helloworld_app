@@ -12,7 +12,7 @@
 //
 //= require ammap
 //= require ammap_amcharts_extension
-//= require ../../../vendor/assets/ammap/maps/js/worldLow.js
+//= require ../../../vendor/assets/ammap/maps/js/worldHigh.js
 //= require jquery
 //= require jquery_ujs
 //= require jquery.turbolinks

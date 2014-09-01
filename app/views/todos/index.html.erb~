@@ -41,7 +41,9 @@
 		      <div class="modal-body">
 		      	<p> Click on any picture to view</p>
 					<!--div id="myFBImage"></div-->
+					<div id="timeline-anchor">
 					<div id="my-timeline"></div>
+					</div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -64,16 +66,13 @@
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
-	var entered = false;
 		(function($) {
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
 					if (response.status === "connected") {
 						$('#myModal').on('shown.bs.modal', function () {
-							if (entered === false) {
-  								getPhotos();		//get photos once modal is on
-							}
-							entered = true;
+							$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
+  							getPhotos();		//get photos once modal is on
 						});
 					}
 				});
@@ -89,7 +88,7 @@
 						//initialise album
 						var photos = { 
 							timeline: {
-								headline: "Singapore trip",
+								headline: currLocation + " trip",
 								type: "default",
 								text: "<p>Album</p>",
 								asset: {
@@ -102,10 +101,18 @@
 						 //Loop through all photos and add to JSON
 						 //WARNING: Fix loading problem as images load slower than Javascript
 						 //so timeline may not show until refresh
+						var j = 0;
 						 for (var i = 0; i < response.data.length; i++) {
-							photos["timeline"]["date"][i] = initPhoto(response.data[i]);
-							photos["timeline"]["era"][i] = initPhoto(response.data[i]);
+							//console.log("Photo: " + response.data[i].place.name);
+							//console.log("currLocation is " + currLocation);
+							if (response.data[i].place.name === currLocation) {
+								photos["timeline"]["date"][j] = initPhoto(response.data[i]);
+								photos["timeline"]["era"][j] = initPhoto(response.data[i]);
+								j++;
+							}
 						 }
+						//remake destroyed div to place timeline in
+						$("#timeline-anchor").append("<div id=my-timeline></div>");
 						 //create the TimelineJS
 						//width is inherited from parent div to ensure responsiveness
 						 createStoryJS({
@@ -128,7 +135,7 @@
 				startDate: parseDate(date),
 				endDate: parseDate(date),
 				headline: photoData.name,
-				text: "<p>Singapore photo</p>",
+				text: photoData.place.name,
 				asset: {
 					media: photoData.source
 				} 
@@ -147,7 +154,7 @@
 
 	<script type="text/javascript">
 		var map;
-
+		var currLocation;
 		//when AmMap to ready to load
 		AmCharts.ready(function() {
 			 map = new AmCharts.AmMap(); //make new Map
@@ -156,7 +163,7 @@
 			 map.balloon.color = "#000000";
 			 
 			 var worldDataProvider = {
-				  mapVar: AmCharts.maps.worldLow,
+				  mapVar: AmCharts.maps.worldHigh,
 				  getAreasFromMap: true,
 				  areas: []
 			 };
@@ -178,6 +185,19 @@
 			 map.addListener("clickMapObject", function (event) {
 			 	//if country is in the 'been to' colour
 				  if (event.mapObject.color == "#4444ff") {
+						currLocation = event.mapObject.id;
+						//console.log(currLocation);
+						$.ajax({
+							type: "POST",
+							dataType: "json",
+							contentType: "application/json",
+							url: "create",
+							data: JSON.stringify({ countryname: currLocation }),
+							success: function(response) {
+								currLocation = response.msg;
+							}
+						});
+						console.log(currLocation);
 				      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
 				          show: true
 				      });
