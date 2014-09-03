@@ -46,7 +46,6 @@
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
 				window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
-				//REMINDER: try + "?username=" + response.name to make username accessible to Rails
 				console.log(response);
 				$.ajax({
 					type: "POST",

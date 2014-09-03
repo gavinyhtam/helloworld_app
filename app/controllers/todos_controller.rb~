@@ -10,6 +10,10 @@ class TodosController < ApplicationController
 		end
 		#@locations.push("KR","SG")	#hardcode countries to colour on the map first
   end
+
+	def friends
+		@user = User.find_or_create_by(username: session[:username])	#find or create the logged in user
+	end
 	
 	def create
 		respond_to do |format|

@@ -7,9 +7,12 @@ Rails.application.routes.draw do
   get 'static_pages/help'
 
   get 'todos/index'
+  get 'todos/friends'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 	post 'todos/create' => 'todos#create'
+	post 'todos/createPhoto' => 'todos#createPhoto'
+    post 'login' => 'static_pages#login'
 
   # You can have the root of your site routed with "root"
   root 'static_pages#home'
