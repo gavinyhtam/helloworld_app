@@ -2,11 +2,11 @@ class Photo < ActiveRecord::Base
 	include LocationCode
 	belongs_to :user
 
-	before_save { link.downcase! }
-
-	VALID_LINK_REGEX = /\Ahttp:\/\/www.[a-z.]+[a-z]+\z/i
-	validates :link, presence: true, format: { with: VALID_LINK_REGEX }
+	#VALID_LINK_REGEX = /\Ahttp:\/\/www.[a-z.]+[a-z]+\z/i
+	validates :link, presence: true, uniqueness: { case_sensitive: false } #, format: { with: VALID_LINK_REGEX }
 	validates :location_name, presence: true
+	validates :date, presence: true
+	validates :photo_name, presence: true
 
 	#converts name of country into location code readable by AmMaps
 	def location_code

@@ -45,8 +45,19 @@
 			 console.log('Welcome!  Fetching your information.... ');
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
-				window.location = "http://localhost:3000/todos/index";//------REDIRECT IS BUGGY
-				//try + "?username=" + response.name to make username accessible to Rails
+				window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
+				//REMINDER: try + "?username=" + response.name to make username accessible to Rails
+				console.log(response);
+				$.ajax({
+					type: "POST",
+					url: "login",
+					dataType: "json",
+					contentType: "application/json",
+					data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name }),
+					success: function(r) {
+						console.log(r.msg);
+					}
+				});
 			 });
 		  }
 		</script>

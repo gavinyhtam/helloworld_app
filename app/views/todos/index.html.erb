@@ -1,6 +1,6 @@
 	<%= render("layouts/todos") %>	
 	<div class="jumbotron">
-		  <h1>Hello, <%= @user.username %>!</h1>
+		  <h1>Hello, <%= @user.first_name %>!</h1>
 		  <p>Review your experiences!</p>
 		  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
   How to
@@ -65,59 +65,90 @@
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
+		var refreshed = true;
 		(function($) {
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
 					if (response.status === "connected") {
-						$('#myModal').on('shown.bs.modal', function () {
-							$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
-  							getPhotos();		//get photos once modal is on
-						});
+						if (refreshed) {
+							getFBPhotos();
+							$('#myModal').on('shown.bs.modal', function () {
+								if (!refreshed) {
+									$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
+		  							getPhotos();		//get photos once modal is on
+								}
+							});
+							refreshed = false;
+						}
 					}
 				});
 			});
 		})(jQuery);
-		
-		function getPhotos() {
+
+		//ask FB to get photos from user's account
+		function getFBPhotos() {
 			FB.api("/me/photos/uploaded",
 				function(response) {
 					console.log(response.data[6]);
-					//<!-- BEGIN TimelineJS -->
 					$(document).ready(function() {
-						//initialise album
-						var photos = { 
-							timeline: {
-								headline: currLocation + " trip",
-								type: "default",
-								text: "<p>Album</p>",
-								date: [],
-								era: [],
+						for (var i = 0; i < response.data.length; i++) {
+							var date = response.data[i].created_time; //default date is created time unless user has date attached
+							if (response.data[i].backdated_time !== undefined) {
+								date = response.data[i].backdated_time;	//update date to user described date
+							}
+							var dbPhotoJson = {
+								link: response.data[i].source,
+								date: date,
+								location_name: response.data[i].place.name,
+								photo_name: response.data[i].name
+							}
+							addPhoto(dbPhotoJson);
+						}
+					});
+			});
+		}
+		
+		//get photos from DB
+		function getPhotos() {
+			$(document).ready(function() {
+				var photos = { 
+					timeline: {
+						headline: currLocation + " trip",
+						type: "default",
+						text: "<p>Album</p>",
+						date: [],
+						era: [],
+					}
+				};
+
+				<% @user.photos.each do |photo| %>
+					if ("<%= photo.location_name %>" === currLocation) {
+						var data = {
+							startDate: parseDate("<%= photo.date %>"),
+							endDate: parseDate("<%= photo.date %>"),
+							headline: "<%= photo.photo_name %>",
+							text: "<%= photo.location_name %>",
+							asset: {
+								media: "<%= photo.link %>"
 							}
 						};
-						 //Loop through all photos and add to JSON
-						var latestPhoto = 0;
-						 for (var i = 0; i < response.data.length; i++) {
-							//console.log("Photo: " + response.data[i].place.name);
-							//console.log("currLocation is " + currLocation);
-							if (response.data[i].place.name === currLocation) {
-								photos["timeline"]["date"].push(initPhoto(response.data[i]));
-								photos["timeline"]["era"].push(initPhoto(response.data[i]));
-								latestPhoto = i;
-							}
-						 }
-						//show most recent photo first as the album cover
-						photos["timeline"]["asset"] = { media: response.data[latestPhoto].source };
-						//remake destroyed div to place timeline in
-						$("#timeline-anchor").append("<div id=my-timeline></div>");
-						 //create the TimelineJS
-						//width is inherited from parent div to ensure responsiveness
-						 createStoryJS({
-							  type:       'timeline',
-							  height:     '600',
-							  source:     photos,
-							  embed_id:   'my-timeline'
-						 });
-					});
+						photos["timeline"]["date"].push(data);
+						photos["timeline"]["era"].push(data);
+						photos["timeline"]["asset"] = { media: "<%= photo.link %>" }
+					} 
+				<% end %>
+				console.log(photos);
+
+				//remake destroyed div to place timeline in
+				$("#timeline-anchor").append("<div id=my-timeline></div>");
+				 //create the TimelineJS
+				//width is inherited from parent div to ensure responsiveness
+				 createStoryJS({
+					  type:       'timeline',
+					  height:     '600',
+					  source:     photos,
+					  embed_id:   'my-timeline'
+				 });
 			});
 		}
 		
@@ -127,6 +158,7 @@
 			if (photoData.backdated_time !== undefined) {
 				date = photoData.backdated_time;	//update date to user described date
 			}
+			//JSON data for the timeline
 			var jsonPhotoData = {
 				startDate: parseDate(date),
 				endDate: parseDate(date),
@@ -136,14 +168,38 @@
 					media: photoData.source
 				} 
 			};
+			//create JSON for DB
+			//give date as ISO8601 format instead
+			var dbPhotoJson = {
+				link: photoData.source,
+				date: date,
+				location_name: photoData.place.name,
+				photo_name: photoData.name
+			}
+			addPhoto(dbPhotoJson);
 			return jsonPhotoData;
+		}
+
+		//adds a photo to the database
+		//right now, it lets the validation of the Photo record reject duplicate records
+		//we may want to check for ourselves first?
+		function addPhoto(dbPhotoJson) {
+			//post JSON to DB to store
+			$.ajax({
+				type: "POST",
+				url: "createPhoto",
+				dataType: "json",
+				contentType: "application/json",
+				data: JSON.stringify(dbPhotoJson),
+				success: function(response) {
+					console.log(response.msg);
+				}
+			});
 		}
 		
 		//parses JSON (ISO8601) to TimelineJS Date format
 		function parseDate(string) {
-			//return string.replace(/-/g, ",").substring(0,10);
 			var date = new Date(string);
-			//date.getMonth() returns 0-11, instead of 1-12
 			return date.getFullYear() + "," + (date.getMonth()+1) + "," + date.getUTCDate();
 		}
 	</script>
@@ -164,8 +220,8 @@
 				  areas: []
 			 };
 
-			<% @user.photos.each do |photo| %>
-				worldDataProvider.areas.push({ id: "<%= photo.location_code %>", color: "#4444ff" });
+			<% @locations.each do |location| %>
+				worldDataProvider.areas.push({ id: "<%= location %>", color: "#4444ff" });
 			<% end %>
 
 			 map.dataProvider = worldDataProvider;

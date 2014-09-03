@@ -8,4 +8,8 @@ class User < ActiveRecord::Base
 		presence: true, 
 		uniqueness: {case_sensitive: false},
 		format: {with: VALID_USERNAME_REGEX}
+	validates	 :first_name,
+		presence: true
+	validates :last_name,
+		presence: true
 end

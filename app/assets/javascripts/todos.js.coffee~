@@ -1,0 +1,160 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+
+#Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
+#destroy old timeline and prepare to get new photos
+#get photos once modal is on
+getPhotos = ->
+  FB.api "/me/photos/uploaded", (response) ->
+    
+    #console.log(response.data[6]);
+    #<!-- BEGIN TimelineJS -->
+    $(document).ready ->
+      
+      #initialise album
+      photos = timeline:
+        headline: currLocation + " trip"
+        type: "default"
+        text: "<p>Album</p>"
+        date: []
+        era: []
+
+      
+      #Loop through all photos and add to JSON
+      latestPhoto = 0
+      i = 0
+
+      while i < response.data.length
+        
+        #console.log("Photo: " + response.data[i].place.name);
+        #console.log("currLocation is " + currLocation);
+        if response.data[i].place.name is currLocation
+          data = initPhoto(response.data[i])
+          photos["timeline"]["date"].push data
+          photos["timeline"]["era"].push data
+          latestPhoto = i
+        i++
+      
+      #show most recent photo first as the album cover
+      photos["timeline"]["asset"] = media: response.data[latestPhoto].source
+      
+      #remake destroyed div to place timeline in
+      $("#timeline-anchor").append "<div id=my-timeline></div>"
+      
+      #create the TimelineJS
+      #width is inherited from parent div to ensure responsiveness
+      createStoryJS
+        type: "timeline"
+        height: "600"
+        source: photos
+        embed_id: "my-timeline"
+
+
+
+
+#Returns JSON version of the photo date extracted from FB API
+initPhoto = (photoData) ->
+  date = photoData.created_time #default date is created time unless user has date attached
+  date = photoData.backdated_time  if photoData.backdated_time isnt `undefined` #update date to user described date
+  
+  #JSON data for the timeline
+  jsonPhotoData =
+    startDate: parseDate(date)
+    endDate: parseDate(date)
+    headline: photoData.name
+    text: photoData.place.name
+    asset:
+      media: photoData.source
+
+  
+  #create JSON for DB
+  #give date as ISO8601 format instead
+  dbPhotoJson =
+    link: photoData.source
+    date: date
+    location_name: photoData.place.name
+
+  
+  #post JSON to DB to store
+  $.ajax
+    type: "POST"
+    url: "createPhoto"
+    dataType: "json"
+    contentType: "application/json"
+    data: JSON.stringify(dbPhotoJson)
+    success: (response) ->
+      console.log response.msg
+
+  jsonPhotoData
+
+#parses JSON (ISO8601) to TimelineJS Date format
+parseDate = (string) ->
+  date = new Date(string)
+  date.getFullYear() + "," + (date.getMonth() + 1) + "," + date.getUTCDate()
+(($) ->
+  $(document).bind "FBSDKLoaded", ->
+    FB.getLoginStatus (response) ->
+      if response.status is "connected"
+        $("#myModal").on "shown.bs.modal", ->
+          $("#my-timeline").remove()
+          getPhotos()
+
+
+
+) jQuery
+map = undefined
+currLocation = undefined
+
+#when AmMap to ready to load
+AmCharts.ready ->
+  map = new AmCharts.AmMap() #make new Map
+  map.pathToImages = "http://www.ammap.com/lib/images/"
+  
+  #map.panEventsEnabled = true; // this line enables pinch-zooming and dragging on touch devices
+  map.balloon.color = "#000000"
+  worldDataProvider =
+    mapVar: AmCharts.maps.worldHigh
+    getAreasFromMap: true
+    areas: []
+
+<% @locations.each do |location| %>
+  worldDataProvider.areas.push
+    id: "<%= location %>"
+    color: "#4444ff"
+<% end %>
+
+  map.dataProvider = worldDataProvider
+  map.areasSettings =
+    autoZoom: true
+    selectedColor: "#CC0000" #colour when country is selected
+
+  map.smallMap = new AmCharts.SmallMap()
+  
+  #when country is selected
+  map.addListener "clickMapObject", (event) ->
+    
+    #if country is in the 'been to' colour
+    if event.mapObject.color is "#4444ff"
+      currLocation = event.mapObject.id
+      
+      #console.log(currLocation);
+      $.ajax
+        type: "POST"
+        dataType: "json"
+        contentType: "application/json"
+        url: "create"
+        data: JSON.stringify(countryname: currLocation)
+        success: (response) ->
+          currLocation = response.msg
+
+      console.log currLocation
+      #show the modal dialog box with the pictures
+      jQuery("#myModal").modal show: true
+
+  map.write "mapdiv"
+
