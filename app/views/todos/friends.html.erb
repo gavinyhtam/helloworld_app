@@ -1,0 +1,22 @@
+<%= render("layouts/todos") %>	
+	<div class="jumbotron">
+		  <h1>Share your photos.</h1>
+		  <p>Invite your friends from Facebook!</p>
+	</div>
+
+	<script>
+
+	(function($) {
+		$(document).bind("FBSDKLoaded", function() {
+			FB.getLoginStatus(function(response) {
+				if (response.status === "connected") {
+					FB.api("/me/friends", function (response) {
+						if (response && !response.error) {
+							console.log(response);
+						}
+					});
+				}
+			});
+		});
+	})(jQuery);
+	</script>
