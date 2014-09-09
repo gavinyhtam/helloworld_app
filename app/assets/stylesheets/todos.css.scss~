@@ -5,3 +5,7 @@
 .header {
 	text-align: center
 }
+
+.label {
+	padding-right: 10px;
+}
