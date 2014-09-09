@@ -190,6 +190,10 @@
 				url: "createPhoto",
 				dataType: "json",
 				contentType: "application/json",
+				headers: {
+				  'X-Transaction': 'POST Example',
+				  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+				},
 				data: JSON.stringify(dbPhotoJson),
 				success: function(response) {
 					console.log(response.msg);
@@ -244,6 +248,10 @@
 							dataType: "json",
 							contentType: "application/json",
 							url: "create",
+							headers: {
+							  'X-Transaction': 'POST Example',
+							  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+							},
 							data: JSON.stringify({ countryname: currLocation }),
 							success: function(response) {
 								currLocation = response.msg;

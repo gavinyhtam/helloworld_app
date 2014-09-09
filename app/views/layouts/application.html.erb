@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<!--IMPORTANT: ensures custom CSS files have priority-->
 		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<%= csrf_meta_tag %>
 	</head>
 	<body>
 		<div id="fb-root"></div>
@@ -16,6 +17,7 @@
 			function logout() {
 				FB.logout(function() {
 					//document.location.reload();
+					<% session.clear %>
 					window.location = "http://localhost:3000";//----------LOGOUT IS BUGGY
 				});
 			}
@@ -42,6 +44,11 @@
 			 fjs.parentNode.insertBefore(js, fjs);
 		  }(document, 'script', 'facebook-jssdk'));
 
+			$.ajaxSetup({
+			  beforeSend: function(xhr) {
+				 xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			}); 
 		</script>
 		<!--show specific content of the page-->
 		<%= yield %>

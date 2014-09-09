@@ -45,18 +45,22 @@
 			 console.log('Welcome!  Fetching your information.... ');
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
-				window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
 				console.log(response);
 				$.ajax({
 					type: "POST",
 					url: "login",
 					dataType: "json",
 					contentType: "application/json",
+					headers: {
+					  'X-Transaction': 'POST Example',
+					  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+					},
 					data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name }),
 					success: function(r) {
 						console.log(r.msg);
 					}
 				});
+				window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
 			 });
 		  }
 		</script>
@@ -66,7 +70,7 @@
 			<h1>HelloWorld!</h1>
 			<h2 class="slogan"> Travel. Share. Discover. </h2>
 			<br>
-		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos" onlogin="checkLoginState()">Sign in with Facebook</div>
+		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos,user_friends" onlogin="checkLoginState()">Sign in with Facebook</div>
 		   <br>
 		
 			<div id="status">
