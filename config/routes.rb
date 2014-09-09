@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'profiles/index'
+
   get 'static_pages/home'
 
   get 'static_pages/about'

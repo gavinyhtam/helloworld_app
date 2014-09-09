@@ -8,7 +8,8 @@
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<!--IMPORTANT: ensures custom CSS files have priority-->
-		<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+		<!--ensures controller specific pages have different stylesheets-->
+		<%= stylesheet_link_tag   "application", params[:controller], media: "all", "data-turbolinks-track" => true %>
 		<%= csrf_meta_tag %>
 	</head>
 	<body>
