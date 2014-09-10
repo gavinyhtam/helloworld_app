@@ -8,12 +8,11 @@ class TodosController < ApplicationController
 			#add unique locations to the @locations (inefficient but will change to use a set instead)
 			@locations.push(code(photo.location_name)) unless @locations.include? code(photo.location_name)
 		end
-		@locations.push("KR","SG")	#hardcode countries to colour on the map first
+		#@locations.push("KR","SG")	#hardcode countries to colour on the map first
   end
 
 	def friends
 		@user = User.find_or_create_by(username: cookies[:username])	#find or create the logged in user
-		stylesheets << '3-col-portfolio'
 	end
 	
 	def create

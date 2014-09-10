@@ -1,6 +1,4 @@
 <%= render("layouts/todos") %>	
-<h1>Profiles#index</h1>
-<p>Find me in app/views/profiles/index.html.erb</p>
 
 <script type="text/javascript">
 	(function($) {
@@ -16,7 +14,7 @@
 						if (picResponse && !picResponse.error) {
 							var picElement = document.getElementById("profile-pic");
 							//create div for portfolio column
-							var HTML =  '<img class=img-responsive src='+
+							var HTML =  '<img src='+
 							picResponse.data.url+'>';
 							picElement.innerHTML += HTML;
 							console.log(picElement.innerHTML);
@@ -28,4 +26,63 @@
 	})(jQuery);
 </script>
 
-<div id="profile-pic"></div>
+<!--div id="profile-pic"><h3><%= @user.first_name + " " + @user.last_name %></h3></div-->
+<div id="wrapper">
+	  <!-- Sidebar -->
+	  <div id="sidebar-wrapper">
+		   <ul class="sidebar-nav">
+		       <li class="sidebar-brand">
+		           <a href="#">
+		               <div id="profile-pic"><h3><%= @user.first_name + " " + @user.last_name %></h3></div>
+		           </a>
+		       </li>
+		       <li>
+		           <a href="#">Recent Activity</a>
+		       </li>
+		       <li>
+		           <a href="#">Locations</a>
+		       </li>
+		       <li>
+		           <a href="#">Achievements</a>
+		       </li>
+		   </ul>
+	  </div>
+	  <!-- /#sidebar-wrapper -->
+
+	  <!-- Page Content -->
+	  <div id="page-content-wrapper">
+		   <div class="container-fluid">
+		       <div class="row">
+		           <div class="col-lg-12">
+		               <h1>Simple Sidebar</h1>
+		               <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
+		               <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
+		               <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+		           </div>
+		       </div>
+		   </div>
+	  </div>
+	<!-- /#page-content-wrapper -->
+</div>
+<!-- /#wrapper -->
+
+	<!-- Menu Toggle Script -->
+	<script>
+	$("#menu-toggle").click(function(e) {
+	  e.preventDefault();
+	  $("#wrapper").toggleClass("toggled");
+	});
+	</script>
+
+
+<div id="profile-info">
+<h1>Recent activity</h1>
+	<p id="last-location">
+	You last went to
+	<% if @last_location %>
+		<%= @last_location.location_name %>
+	<% end %>
+	!
+	</p>
+	<img src="<%=@last_location.link%>">
+</div>
