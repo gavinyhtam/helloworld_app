@@ -19,6 +19,14 @@
 							picElement.innerHTML += HTML;
 						}
 					});
+					FB.api("/me/friends", function (response) {
+						if (response && !response.error) {
+							//console.log(response);
+							document.getElementById("friends-number").innerHTML += 
+							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends and <strong>" +
+							response.data.length + "</strong> Hello World friends";
+						}
+					});
 				}
 			});
 		});
@@ -42,7 +50,7 @@
 		           <a href="#locations">Locations</a>
 		       </li>
 		       <li>
-		           <a href="#achievements">Achievements</a>
+		           <a href="#friends">Friends</a>
 		       </li>
 		   </ul>
 	  </div>
@@ -52,28 +60,26 @@
 	  <div id="page-content-wrapper">
 		   <div class="container-fluid">
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-		       <div class="row">
-		           <div class="col-lg-12">
-		               <h1>Simple Sidebar</h1>
-		               <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-		               <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-		           </div>
-		       </div>
 				<div class="row">
-	           <div class="col-lg-12" id="profile-info">
+	           <div class="col-lg-12 page-section" id="profile-info">
+					<span class="glyphicon glyphicon-content glyphicon-time"></span>
 					<h1>Recent activity</h1>
 						<p id="last-location">
 						You last went to
+						<strong>
 						<% if @last_location %>
 							<%= @last_location.location_name %>
 						<% end %>
+						</strong>
 						!
 						</p>
 						<img src="<%=@last_location.link%>">
 	           </div>
 		       </div>
+				<hr>
 				<div class="row">
-		         <div class="col-lg-12" id="locations">
+		         <div class="col-lg-12 page-section" id="locations">
+					<span class="glyphicon glyphicon-content glyphicon-globe"></span>
 						<h1>Locations</h1>
 						<p>You have been to
 							<% @locations.each do |location| %>
@@ -83,12 +89,14 @@
 							<% end %>
 							and are yet to visit <%= 256 - @locations.size %> other places!
 						</p>
+					</div>
 				</div>
+				<hr>
 				<div class="row">
-		         <div class="col-lg-12" id="achievements">
-						<h1>Achievements</h1>
-						<p>You have logged in for 15 days.
-						</p>
+		         <div class="col-lg-12 page-section" id="friends">
+						<span class="glyphicon glyphicon-content glyphicon-user"></span>
+						<h1>Friends</h1>
+						<div id="friends-number"</div>
 					</div>
 				</div>
 		   </div>
@@ -97,10 +105,10 @@
 </div>
 <!-- /#wrapper -->
 
-	<!-- Menu Toggle Script -->
-	<script>
+<!-- Menu Toggle Script -->
+<script>
 	$("#menu-toggle").click(function(e) {
 	  e.preventDefault();
 	  $("#wrapper").toggleClass("toggled");
 	});
-	</script>
+</script>

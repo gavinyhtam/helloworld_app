@@ -124,13 +124,20 @@
 	z-index: 1000;	//make toggle button always appear in front of page content
 }
 
-#profile-info {
+/* Page content */
+
+.glyphicon-content {
+	padding-top: 20px;
+	font-size: 10vh;
+	color: #999999;
+}
+
+.page-section {
 	text-align: center;
 }
 
 h1 {
 	text-align: center;
-	padding-top: 100px;
 	padding-bottom: 30px;
 }
 

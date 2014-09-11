@@ -9,7 +9,7 @@
 	<div class="modal fade" id="introModal">
 		    <div class="jumbotron">
 				  <h1>Hello, <%= @user.first_name %>!</h1>
-				  <p>Review your experiences!</p>
+				  <p>Review your experiences on the TravelDex!</p>
 				  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
 					  How to
 					</button></p>
@@ -43,7 +43,7 @@
 
 <!-- ************** Country Selector Demo. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
 	<section class="demo">
-		<div class="header h1">
+		<div class="header h1" id="navigate-country">
 			<span class="glyphicon glyphicon-search"></span> Navigate to a country:
 		</div>
 		<div class="sandbox">
@@ -507,7 +507,7 @@
 		var currLocation;
 		//when AmMap to ready to load
 		AmCharts.ready(function() {
-			 map = new AmCharts.AmMap(); //make new Map
+			 map = new AmCharts.AmMap(AmCharts.themes.light); //make new Map
 			 map.pathToImages = "http://www.ammap.com/lib/images/";
 			 //map.panEventsEnabled = true; // this line enables pinch-zooming and dragging on touch devices
 			 map.balloon.color = "#000000";

@@ -13,6 +13,7 @@
 //= require ammap
 //= require ammap_amcharts_extension
 //= require maps/js/worldHigh.js
+//= require_directory ../../../vendor/assets/ammap/themes
 //= require jquery
 //= require jquery_ujs
 //= require jquery.turbolinks
