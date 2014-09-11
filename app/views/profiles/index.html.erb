@@ -44,7 +44,7 @@
 		           </a>
 		       </li>
 		       <li>
-		           <a href="#profile-info">Recent Activity</a>
+		           <a href="#recent-activity">Recent Activity</a>
 		       </li>
 		       <li>
 		           <a href="#locations">Locations</a>
@@ -61,7 +61,7 @@
 		   <div class="container-fluid">
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
 				<div class="row">
-	           <div class="col-lg-12 page-section" id="profile-info">
+	           <div class="col-lg-12 page-section" id="recent-activity">
 					<span class="glyphicon glyphicon-content glyphicon-time"></span>
 					<h1>Recent activity</h1>
 						<p id="last-location">
@@ -73,7 +73,9 @@
 						</strong>
 						!
 						</p>
-						<img src="<%=@last_location.link%>">
+					<div class="container" id="gallery">
+						<!--Content for image gallery-->
+					</div>
 	           </div>
 		       </div>
 				<hr>
@@ -82,10 +84,14 @@
 					<span class="glyphicon glyphicon-content glyphicon-globe"></span>
 						<h1>Locations</h1>
 						<p>You have been to
-							<% @locations.each do |location| %>
-								<h5 class="country-name">
-								<%= location %>,
-								</h5>
+							<% if @locations.length == 0 %>
+								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
+							<% else %>
+								<% @locations.each do |location| %>
+									<h5 class="country-name">
+									<%= location %>,
+									</h5>
+								<% end %>
 							<% end %>
 							and are yet to visit <%= 256 - @locations.size %> other places!
 						</p>
@@ -111,4 +117,14 @@
 	  e.preventDefault();
 	  $("#wrapper").toggleClass("toggled");
 	});
+</script>
+
+<script>
+	var gallery = document.getElementById("gallery");
+	var numPhotos = 0;
+	<% @last_location_photos.each do |photo| %>
+		gallery.innerHTML += '<div class="col-md-4"><div class="well">' +
+			'<img class="thumbnail img-responsive" src=<%=photo.link%>>' + '</div></div>';
+		numPhotos++;
+	<% end %>
 </script>

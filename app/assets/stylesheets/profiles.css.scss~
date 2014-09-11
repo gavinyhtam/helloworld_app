@@ -136,6 +136,20 @@
 	text-align: center;
 }
 
+#gallery {
+	padding-top: 20px;
+}
+
+.well {
+	width: 350px;
+	height: 238px;
+	overflow: hidden;	//portrait images will be cut to fit div
+}
+
+.well img {
+	max-width: 100%;
+}
+
 h1 {
 	text-align: center;
 	padding-bottom: 30px;
@@ -146,9 +160,6 @@ h3 {
 	text-indent: 0px; //negate text indent for other sidebar labels
 }
 
-hr {
-	padding-bottom: 20px;
-}
 #last-location {
 	text-align: center;
 	font-size: medium;
