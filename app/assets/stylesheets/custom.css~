@@ -9,5 +9,9 @@
 
 
 .jumbotron > h1 {
-	padding-top: 10px;
+	padding-top: 50px;
+}
+
+body {
+	padding-top: 50px;
 }

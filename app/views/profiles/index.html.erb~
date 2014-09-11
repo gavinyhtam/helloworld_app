@@ -17,7 +17,6 @@
 							var HTML =  '<img src='+
 							picResponse.data.url+'>';
 							picElement.innerHTML += HTML;
-							console.log(picElement.innerHTML);
 						}
 					});
 				}
@@ -40,10 +39,10 @@
 		           <a href="#profile-info">Recent Activity</a>
 		       </li>
 		       <li>
-		           <a href="#">Locations</a>
+		           <a href="#locations">Locations</a>
 		       </li>
 		       <li>
-		           <a href="#">Achievements</a>
+		           <a href="#achievements">Achievements</a>
 		       </li>
 		   </ul>
 	  </div>
@@ -52,6 +51,7 @@
 	  <!-- Page Content -->
 	  <div id="page-content-wrapper">
 		   <div class="container-fluid">
+				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
 		       <div class="row">
 		           <div class="col-lg-12">
 		               <h1>Simple Sidebar</h1>
@@ -59,16 +59,37 @@
 		               <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
 		           </div>
 		       </div>
-				<div id="profile-info">
-				<h1>Recent activity</h1>
-					<p id="last-location">
-					You last went to
-					<% if @last_location %>
-						<%= @last_location.location_name %>
-					<% end %>
-					!
-					</p>
-					<img src="<%=@last_location.link%>">
+				<div class="row">
+	           <div class="col-lg-12" id="profile-info">
+					<h1>Recent activity</h1>
+						<p id="last-location">
+						You last went to
+						<% if @last_location %>
+							<%= @last_location.location_name %>
+						<% end %>
+						!
+						</p>
+						<img src="<%=@last_location.link%>">
+	           </div>
+		       </div>
+				<div class="row">
+		         <div class="col-lg-12" id="locations">
+						<h1>Locations</h1>
+						<p>You have been to
+							<% @locations.each do |location| %>
+								<h5 class="country-name">
+								<%= location %>,
+								</h5>
+							<% end %>
+							and are yet to visit <%= 256 - @locations.size %> other places!
+						</p>
+				</div>
+				<div class="row">
+		         <div class="col-lg-12" id="achievements">
+						<h1>Achievements</h1>
+						<p>You have logged in for 15 days.
+						</p>
+					</div>
 				</div>
 		   </div>
 	  </div>

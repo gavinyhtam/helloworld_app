@@ -13,7 +13,6 @@ class TodosController < ApplicationController
 
 	def friends
 		@user = User.find_or_create_by(username: cookies[:username])	#find or create the logged in user
-		stylesheets << '3-col-portfolio'
 	end
 	
 	def create

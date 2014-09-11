@@ -4,7 +4,6 @@
 
 #wrapper {
     padding-left: 0;
-	 padding-top: 50px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -120,6 +119,11 @@
     }
 }
 
+#menu-toggle {
+	position: fixed;
+	z-index: 1000;	//make toggle button always appear in front of page content
+}
+
 #profile-info {
 	text-align: center;
 }
@@ -138,4 +142,8 @@ h3 {
 #last-location {
 	text-align: center;
 	font-size: medium;
+}
+
+.country-name {
+	color: #004466;
 }

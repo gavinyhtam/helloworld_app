@@ -1,11 +1,24 @@
-	<%= render("layouts/todos") %>	
-	<div class="jumbotron">
-		  <h1>Hello, <%= @user.first_name %>!</h1>
-		  <p>Review your experiences!</p>
-		  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
-  How to
-</button></p>
-		</div>
+	<%= render("layouts/todos") %>
+
+	<script type="text/javascript">
+		 $(window).load(function(){
+		     $('#introModal').modal('show');
+		 });
+	</script>
+
+	<div class="modal fade" id="introModal">
+		    <div class="jumbotron">
+				  <h1>Hello, <%= @user.first_name %>!</h1>
+				  <p>Review your experiences!</p>
+				  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
+					  How to
+					</button></p>
+
+					<div id="got-it">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Got it!</button>
+					</div>
+				</div>
+	</div><!-- /.modal -->
 
 		<!--Modal for How to Button-->
 		<div class="modal fade" id="howTo">
@@ -30,7 +43,7 @@
 
 <!-- ************** Country Selector Demo. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
 	<section class="demo">
-		<div class="header h1">
+		<div class="header h1" id="navigate-country">
 			<span class="glyphicon glyphicon-search"></span> Navigate to a country:
 		</div>
 		<div class="sandbox">

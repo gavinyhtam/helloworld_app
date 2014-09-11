@@ -120,6 +120,11 @@
     }
 }
 
+#menu-toggle {
+	position: fixed;
+	z-index: 1000;	//make toggle button always appear in front of page content
+}
+
 #profile-info {
 	text-align: center;
 }
@@ -131,11 +136,15 @@ h1 {
 }
 
 h3 {
-	padding-top: 50px
+	padding-top: 50px;
 	text-indent: 0px; //negate text indent for other sidebar labels
 }
 
 #last-location {
 	text-align: center;
 	font-size: medium;
+}
+
+.country-name {
+	color: #004466;
 }
