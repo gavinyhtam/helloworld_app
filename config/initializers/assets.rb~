@@ -11,5 +11,3 @@ Rails.application.config.assets.version = '1.0'
 %w( todos static_pages profiles ).each do |controller|
   Rails.application.config.assets.precompile += ["#{controller}.css"]
 end
-
-config.assets.precompile += %w (
