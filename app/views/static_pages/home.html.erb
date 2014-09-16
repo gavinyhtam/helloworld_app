@@ -46,6 +46,7 @@
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
 				console.log(response);
+				var profile_pic, num_friends;
 				$.ajax({
 					type: "POST",
 					url: "login",
@@ -55,7 +56,7 @@
 					  'X-Transaction': 'POST Example',
 					  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
 					},
-					data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name }),
+					data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name, fb_id: response.id}),
 					success: function(r) {
 						console.log(r.msg);
 					}
@@ -65,16 +66,171 @@
 		  }
 		</script>
 
-		<div id="login-form">
-			<span class="glyphicon glyphicon-briefcase"></span>
-			<h1>HelloWorld!</h1>
-			<h2 class="slogan"> Travel. Share. Discover. </h2>
-			<br>
-		   <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos,user_friends" onlogin="checkLoginState()">Sign in with Facebook</div>
-		   <br>
-		
-			<div id="status">
-			</div>
-			<br>
-		   <a href=#>Need help?</a>
-		</div>
+ <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">HelloWorld.</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Header -->
+    <div class="intro-header">
+        <div class ="overlay"></div>
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <h1>Travel. Share. Discover.</h1>
+                        <h3>Join us now and discover!</h3>
+                        <!-- <hr class="intro-divider"> -->
+                        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos" onlogin="checkLoginState()">Sign in with Facebook</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.intro-header -->
+
+    <!-- Page Content -->
+
+    <div class="content-section-a">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Travel.</h2>
+                    <p class="lead">Reach out to the boundaries of the world.</p>
+                </div>
+                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                    <img class="img-responsive" src="https://cdn4.iconfinder.com/data/icons/insurance/60/insurance-14-512.png" alt="" style="width:250px;height:250px">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-a -->
+
+    <div class="content-section-b">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Share.</h2>
+                    <p class="lead">Experience. Share yours. Relive theirs'.</p>
+                </div> 
+                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                    <img class="img-responsive" src="http://www.tramondos.com/images/share.png" alt="" style="width:250px;height:250px">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-b -->
+
+    <div class="content-section-a">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-sm-6">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">Discover.</h2>
+                    <p class="lead">Explore and you will discover things you have never experienced before.</p>
+                </div>
+                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+                    <img class="img-responsive" src="https://cdn0.iconfinder.com/data/icons/vacation-and-travel/80/Vacation_travel-_1-512.png" alt="" style="width:250px;height:250px">
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.content-section-a -->
+
+    <div class="banner">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2>Join us through Facebook!</h2>
+                </div>
+                <div class="col-lg-6">
+                    <a href="https://www.facebook.com"><img src="http://www.watejawangu.com/icons/facebooksignup.png" /></a>
+                </div>
+            </div>
+
+        </div>  
+        <!-- /.container -->
+
+    </div>
+    <!-- /.banner -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#home">Home</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#about">About</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#services">Services</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted small">Copyright &copy; Group 1 2014. All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+	</footer>

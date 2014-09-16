@@ -30,7 +30,7 @@
 											var picElement = document.getElementById("row1");
 											//create div for portfolio column
 											var HTML =  '<div class="col-md-4 portfolio-item"><img class=img-responsive src='+
-											picResponse.data.url+'>'+'<h3><a href="#">' + response.data[j].name + '</a></h3></div>'
+											picResponse.data.url+'>'+'<h3><a href="http://localhost:3000/profiles/friend' + "?id=" + response.data[j].id + '">' + response.data[j].name + '</a></h3></div>'
 											//console.log("inside" + j);
 											//place friend name and end the div
 											picElement.innerHTML += HTML;

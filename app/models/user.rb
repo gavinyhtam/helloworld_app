@@ -12,4 +12,6 @@ class User < ActiveRecord::Base
 		presence: true
 	validates :last_name,
 		presence: true
+	validates :fb_id,
+		presence: true
 end

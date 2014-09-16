@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 20140911113524) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "fb_id"
+    t.string   "profile_pic"
+    t.integer  "num_friends"
   end
 
 end

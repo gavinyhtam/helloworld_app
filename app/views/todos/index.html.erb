@@ -7,17 +7,17 @@
 	</script>
 
 	<div class="modal fade" id="introModal">
-		    <div class="jumbotron">
-				  <h1>Hello, <%= @user.first_name %>!</h1>
-				  <p>Review your experiences on the TravelDex!</p>
-				  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
-					  How to
-					</button></p>
+		 <div class="jumbotron">
+			  <h1>Hello, <%= @user.first_name %>!</h1>
+			  <p>Review your experiences on the TravelDex!</p>
+			  <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#howTo">
+				  How to
+				</button></p>
 
-					<div id="got-it">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Got it!</button>
-					</div>
+				<div id="got-it">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Got it!</button>
 				</div>
+		</div>
 	</div><!-- /.modal -->
 
 		<!--Modal for How to Button-->
@@ -47,6 +47,7 @@
 			<span class="glyphicon glyphicon-search"></span> Navigate to a country:
 		</div>
 		<div class="sandbox">
+			<div id="selector">
 			<label for="select-country">Country:</label>
 			<select id="select-country" class="demo-default" placeholder="Select a country...">
 			    <option value="">Select a country...</option>
@@ -307,6 +308,10 @@
 				<option value="ZM">Zambia</option>
 				<option value="ZW">Zimbabwe</option>
 			</select>
+			</div>
+			<div id="upload-button">
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload">Upload photos</button>
+			</div>
 		</div>
 		<script>
 		$("#select-country").selectize();
@@ -345,17 +350,18 @@
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-		<div class="progress">
-		  <div class="progress-bar" style="width: 35%">
-		    35%
+		<!--div class="progress">
+		  <div class="progress-bar" style="width: 3%">
+		    3%
 		  </div>
-		  <div class="progress-bar progress-bar-warning" style="width: 65%">
-		    65%
+		  <div class="progress-bar progress-bar-warning" style="width: 97%">
+		    97%
 		  </div>
-		</div>
+		</div-->
 		<!--Display AmMaps javascript-->
 		<div id="mapdiv"></div>
 	
+<!--**********************************TIMELINE*****************************-->
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
@@ -502,6 +508,7 @@
 		}
 	</script>
 
+<!--******************************TRAVELDEX MAP*******************************-->
 	<script type="text/javascript">
 		var map;
 		var currLocation;
@@ -511,7 +518,7 @@
 			 map.pathToImages = "http://www.ammap.com/lib/images/";
 			 //map.panEventsEnabled = true; // this line enables pinch-zooming and dragging on touch devices
 			 map.balloon.color = "#000000";
-			 
+
 			 var worldDataProvider = {
 				  mapVar: AmCharts.maps.worldHigh,
 				  getAreasFromMap: true,
@@ -560,3 +567,131 @@
 			 map.write("mapdiv");
 		});
 	</script>
+
+<!--*************************UPLOAD PHOTOS*******************************-->
+<!--Modal for Upload button-->
+<div class="modal fade" id="upload">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">
+        	Upload Photos
+        </h4>
+      </div>
+      <div class="modal-body">
+			<div class="container col-md-12 row-md-12" id="preview-gallery">
+				<!--Content for image upload preview gallery-->
+				<div id="placeholder"><h3 class="placeholder-text">No image selected.</h3></div>
+        </div>
+		</div>
+		<hr>
+			<div>
+			  <form id="upload-photo-form" target="upload_iframe" method="post" enctype="multipart/form-data">
+				 <input id="upload-photo-form-file" name="file[]" size="27" type="file" onchange="javascript:previewImages()" multiple/>
+				 Title: <input id="upload-message" type="text" name="message">
+			  </form>
+			  <iframe id="upload_iframe" name="upload_iframe" width="0px" height="0px" border="0" style="width:0; height:0; border:none;"></iframe>
+			</div>
+		<div class="modal-footer">
+		  <button type="button" id="upload-trigger" class="btn btn-success" onClick="javascript:fileUpload();">Upload</button>
+		  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+	function previewImages() {
+		var gallery = document.getElementById("preview-gallery");
+		while (gallery.firstChild) gallery.removeChild(gallery.firstChild);
+		var imageFiles = document.getElementById("upload-photo-form-file");
+		if (imageFiles.files.length === 0) {
+			gallery.innerHTML += '<div id="placeholder"><h3 class="placeholder-text">No image selected.</h3></div>';
+		} else {
+			for (var i = 0; i < imageFiles.files.length; i++) {
+				(function(i) {
+					var fileReader = new FileReader();
+					fileReader.readAsDataURL(imageFiles.files[i]);
+					fileReader.onload = function (e) {
+						var newDiv = document.createElement('div');
+						newDiv.className = 'col-md-4 row-md-4';
+						newDiv.innerHTML += '<div class="well" id=img-'+ i + '>' +
+						'<img class="thumbnail img-responsive" src=' + e.target.result + '>'
+						+ '<div class="btn-group"><button type="button" id="description-' + i + '" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-calendar"></span></button><button type="button" class="btn btn-default"><span class="glyphicon glyphicon-map-marker"></span></button></div>'
+						+'<form id="info-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
+							'Title: <input id="upload-message-img' + i + '" type="text" name="message"></form></div></div>';
+
+						gallery.appendChild(newDiv);	//register child div in the DOM
+						//document.getElementById('img-'+i).onmouseover = function () { showForm(i); };
+						//document.getElementById('img-'+i).onmouseout = function () { hideForm(i); };
+						document.getElementById('description-'+i).onclick = function() { showForm(i); };
+					};
+				})(i);
+			}
+		}
+	}
+
+	function showForm(i) {
+		document.getElementById("info-" + i).style.display = "block";
+	}
+
+	function hideForm(i) {
+		document.getElementById("info-" + i).style.display = "none";
+	}
+	
+</script>
+
+<!--Sourced from https://gist.github.com/nseo/2910244-->
+<script type="application/javascript">
+	var accessToken;
+	(function($) {
+		$(document).bind("FBSDKLoaded", function() {
+			FB.getLoginStatus(function(response){
+			if (response.status == 'connected') {
+			  accessToken = response.authResponse.accessToken;
+			}
+		  });
+		});
+	})(jQuery);
+	  
+	//Upload a local file image
+	function fileUpload() {
+	  //ask for upload photo permissions
+	  FB.login(function(r) {}, {scope: 'publish_actions' });
+		var imageFiles = document.getElementById("upload-photo-form-file");
+		var description = document.getElementById("upload-message");
+		for (var i = 0; i < imageFiles.files.length; i++) {
+			if (document.getElementById("upload-message-img" + i)) {
+				description = document.getElementById("upload-message-img" + i);
+			}
+			console.log(description.value);
+			var f = new FormData();
+			f.append("source", imageFiles.files[i]);
+			f.append("message", description.value);
+			(function() {
+            var fCopy = f;
+				FB.api('/me/albums', function(response) {
+					var album = response.data[0]; // Now, upload the image to first found album for easiness.
+		          $.ajax({
+		              url: 'https://graph.facebook.com/' + album.id + '/photos?access_token=' +  accessToken,
+		              type: "POST",
+		              data: fCopy,
+		              processData: false,
+		              contentType: false,
+		              cache: false,
+		              success: function (data) {
+		                  console.log("success " + data);
+		              },
+		              error: function (shr, status, data) {
+		                  console.log("error " + data + " Status " + shr.status);
+		              },
+		              complete: function () {
+		                  console.log("Posted to facebook");
+		              }
+		          });
+				});
+			})();
+		}
+	}
+</script>
