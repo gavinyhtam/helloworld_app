@@ -99,6 +99,20 @@
 	text-align: center;
 }
 
+//#enlargedImageBody img {
+	//width: 80%;
+//}
+
+
 .datepicker {
 	z-index: 1051 !important;	//place in front of modal
+}
+
+#enlargedImage {
+	background: rgba(0,0,0,0.8);
+}
+
+#commentsDiv {
+	background: #FFFFFF;
+	min-height: 100px;
 }

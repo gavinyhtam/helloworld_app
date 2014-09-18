@@ -5,7 +5,6 @@
 		     $('#introModal').modal('show');
 		 });
 	</script>
-
 	<div class="modal fade" id="introModal">
 		 <div class="jumbotron">
 			  <h1>Hello, <%= @user.first_name %>!</h1>
@@ -116,14 +115,12 @@
 							getFBPhotos();
 							getPhotos();
 							$('#myModal').on('shown.bs.modal', function () {
-								if (currLocation !== prevLocation) {
-									$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
-		  							getPhotos();		//get photos once modal is on
-									//setTimeout(function() {addImageView();},3000); //HACK FOR NOW--Lazy loading causing image divs to not be created yet so wait 3 seconds
-									$(".media-shadow").waitUntilExists(function() {
-										addImageView();
-									});
-								}
+								$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
+	  							getPhotos();		//get photos once modal is on
+								//setTimeout(function() {addImageView();},3000); //HACK FOR NOW--Lazy loading causing image divs to not be created yet so wait 3 seconds
+								$(".media-shadow").waitUntilExists(function() {
+									addImageView();
+								});
 							});
 							refreshed = false;
 						}
@@ -210,9 +207,7 @@
 				console.log(photos);
 
 				//remake destroyed div to place timeline in
-				if (currLocation !== prevLocation) {
-					$("#timeline-anchor").append("<div id=my-timeline></div>");
-				}
+				$("#timeline-anchor").append("<div id=my-timeline></div>");
 				 //create the TimelineJS
 				//width is inherited from parent div to ensure responsiveness
 				createStoryJS({
@@ -243,11 +238,27 @@
 			$(modal).html(image);
 			console.log(modal);
 			$("#enlargedImage").modal('show');
-			$("#myModal").modal('hide');
+			//modal.innerHTML += "<img src=http://www.ens.ro/wp-content/uploads/2012/03/fb_like_comment_box.png>";
+			//modal.innerHTML += '<div class="fb-comments" data-href="http://localhost:3000/todos/index" data-numposts="5" data-colorscheme="light"></div>'
+			/*var photoID = getPhotoID(src);
+			FB.api('/'+photoID+'/comments', function(response) {
+				if (response && !response.error) {
+					var comments = response.data;
+					var commentsDiv = document.createElement("div");
+					commentsDiv.setAttribute("id","commentsDiv");
+					for (var i = 0; i < comments.length; i++) {
+						commentsDiv.innerHTML += "<strong>" + comments[i]["from"]["name"] + "</strong>" + comments[i]["message"] + "<hr>";
+					}
+					modal.appendChild(commentsDiv);
+				}
+			});*/
 			$("#enlargedImage").on('click',function() {
 				$("#enlargedImage").modal('hide');
-				$("#myModal").modal('show');
 			});
+		}
+
+		function getPhotoID(src) {
+			return src.match(/[0-9]+_([0-9]+)/)[1];
 		}
 		
 		//Returns JSON version of the photo date extracted from FB API
@@ -309,7 +320,7 @@
 <!--******************************TRAVELDEX MAP*******************************-->
 	<script type="text/javascript">
 		var map;
-		var currLocation, prevLocation;
+		var currLocation;
 		//when AmMap to ready to load
 		AmCharts.ready(function() {
 			 map = new AmCharts.AmMap(); //make new Map
@@ -340,7 +351,6 @@
 			 map.addListener("clickMapObject", function (event) {
 			 	//if country is in the 'been to' colour
 				  if (event.mapObject.color == "#4444ff") {
-						prevLocation = currLocation;
 						currLocation = event.mapObject.id;
 						//console.log(currLocation);
 						$.ajax({
@@ -357,7 +367,6 @@
 								currLocation = response.msg;
 							}
 						});
-						console.log(prevLocation);
 						console.log(currLocation);
 				      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
 				          show: true
@@ -443,8 +452,8 @@
 						var rowDiv = document.getElementById('row' + Math.floor(i/3));	//get row number of the image
 						var newDiv = document.createElement('div');
 						newDiv.className = 'col-md-4 row-md-4';
-						newDiv.innerHTML += '<div class="img-div" id=img-'+ i + '>'
-						+ '<img class="thumbnail img-responsive" src=' + e.target.result + '>'
+						newDiv.innerHTML += '<div class="img-div">'
+						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '>'
 						+ '<div class="btn-group">'
 						+ '<button type="button" id="description-' + i + '" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>'
 						+ '<button type="button" id="date-' + i + '" class="btn btn-default"><span class="glyphicon glyphicon-calendar"></span></button>'
@@ -478,7 +487,7 @@
 	function showEnlargedImage(imgID) {
 		var modal = document.getElementById("enlargedImageBody");
 		while (modal.firstChild) modal.removeChild(modal.firstChild);
-		var src = $("#" + imgID).children().first().clone();
+		var src = $("#" + imgID).clone();
 		console.log(src);
 		console.log(modal);
 		$(modal).html(src);
