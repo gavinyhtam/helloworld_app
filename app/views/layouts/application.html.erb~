@@ -1,8 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="http://malsup.github.io/jquery.cycle.lite.js"></script>
+		<!--script type="text/javascript" src="http://malsup.github.io/jquery.cycle.lite.js"></script-->
 		<%= javascript_include_tag	"application", media: "all", "data-turbolinks-track" => true %>
 		<!--IMPORTANT: include Bootstrap files after jQuery files due to some file conflicts-->
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -10,6 +9,7 @@
 		<!--IMPORTANT: ensures custom CSS files have priority-->
 		<!--ensures controller specific pages have different stylesheets-->
 		<%= stylesheet_link_tag   "application", params[:controller], media: "all", "data-turbolinks-track" => true %>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 		<%= csrf_meta_tag %>
 	</head>
 	<body>
@@ -31,7 +31,7 @@
 				 cookie     : true,  // enable cookies to allow the server to access 
 											// the session
 				 xfbml      : true,  // parse social plugins on this page
-				 version    : 'v2.0' // use version 2.1
+				 version    : 'v2.1' // use version 2.1
 			  });
 				jQuery(document).trigger('FBSDKLoaded');
 		  };

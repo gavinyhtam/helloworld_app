@@ -59,12 +59,21 @@
 	color: #999999;
 }
 
+#upload-location {
+	width: 100%;
+}
+
+#upload-photo-form-file {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 .modal-body {
 	overflow: auto;
 }
 
 .well {
-	width: 100%;
+	height: 100%;
 	overflow: hidden;	//portrait images will be cut to fit div
 }
 
@@ -72,3 +81,24 @@
 	width: 100%;
 }
 
+.img-div {
+	padding-bottom: 10px;
+}
+
+.btn-group {
+	padding-bottom: 10px;
+}
+
+.select-countries {
+	padding-left: 5px;
+	padding-right: 5px;
+	width: 100%;
+}
+
+#enlargedImageBody {
+	text-align: center;
+}
+
+.datepicker {
+	z-index: 1051 !important;	//place in front of modal
+}

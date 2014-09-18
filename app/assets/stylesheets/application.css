@@ -13,5 +13,6 @@
  *= require selectize
  *= require selectize.default
  *= require_self
+ *= require jquery-ui
  *= require custom
  */
