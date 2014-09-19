@@ -40,8 +40,8 @@
 		</div><!-- /.modal -->
 			
 
-<!-- ************** Country Selector Demo. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
-	<section class="demo">
+<!-- ************** Country Selector. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
+	<section class="search-box">
 		<div class="header h1" id="navigate-country">
 			<span class="glyphicon glyphicon-search"></span> Navigate to a country:
 		</div>
@@ -52,7 +52,7 @@
 			</select>
 		</div>
 			<div id="upload-button">
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload">Upload photos</button>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"> + Upload photos</button>
 			</div>
 		<script>
 		$("#select-country").selectize();
@@ -65,7 +65,6 @@
 		});
 		</script>
 	</section>
-	<hr>
 
 		<!--Modal for photo browser-->
 		<div class="modal fade" id="myModal">
@@ -339,12 +338,17 @@
 			<% end %>
 
 			 map.dataProvider = worldDataProvider;
-
 			 map.areasSettings = {
 				  autoZoom: true,
-				  selectedColor: "#CC0000" //colour when country is selected
+				  selectedColor: "#5E88D2", //colour when country is selected
+					color: "#BFFC65",
+					rollOverOutlineThickness: 0.3,
+					rollOverOutlineColor: "#B9EE8B",
+					rollOverColor: "#618E1C"
 			 };
 
+			// map.backgroundColor = "#ABD8F6";
+			//map.backgroundAlpha = 0.1;
 			 map.smallMap = new AmCharts.SmallMap();
 			 
 			 //when country is selected
@@ -649,6 +653,7 @@
 	});
 })(jQuery);
 
+//hide popovers when user clicks
 $(document).on('click', function(e) {
 	$(".popover").hide();
 });

@@ -34,6 +34,11 @@
 #upload-button {
 	text-align: center;
 	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+body {
+	background: rgba(171,216,246,0.1);
 }
 
 #introModal {
@@ -137,7 +142,6 @@
 .img-horizontal {
 	float:left;
 }
-
 
 .datepicker {
 	z-index: 1051 !important;	//place in front of modal
