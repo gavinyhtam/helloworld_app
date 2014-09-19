@@ -1,6 +1,7 @@
 <%= render("layouts/todos") %>	
 
 <script type="text/javascript">
+	var name, numFriends;
 	(function($) {
 		$(document).bind("FBSDKLoaded", function() {
 			FB.getLoginStatus(function(response) {
@@ -19,11 +20,17 @@
 							picElement.innerHTML += HTML;
 						}
 					});
-					FB.api("/me/friends", function (response) {
+					FB.api("/" + "<%= @user_id %>", function (response) {
 						if (response && !response.error) {
-							//console.log(response);
+							name = response.first_name + " " + response.last_name;
+							document.getElementById("profile-name").innerHTML += name;
+						}
+					});
+					FB.api("/" + "<%= @user_id %>" + "/friends", function (response) {
+						if (response && !response.error) {
+							numFriends = response.summary.total_count;
 							document.getElementById("friends-number").innerHTML += 
-							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends and <strong>" +
+							name + " currently have <strong>" + numFriends + "</strong> Facebook friends and <strong>" +
 							response.data.length + "</strong> Hello World friends";
 						}
 					});
@@ -39,7 +46,7 @@
 		   <ul class="sidebar-nav">
 		       <li class="sidebar-brand">
 		           <a href="#">
-		               <div id="profile-pic"><h3><%= @user_id %></h3></div>
+		               <div id="profile-pic"><h3 id="profile-name"></h3></div>
 		           </a>
 		       </li>
 		       <li>
@@ -55,11 +62,38 @@
 	  </div>
 	  <!-- /#sidebar-wrapper -->
 
-	  <!-- Page Content -->
+<!-- Page Content -->
 	  <div id="page-content-wrapper">
 		   <div class="container-fluid">
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-
+				<div class="row">
+	           <div class="col-lg-12 page-section" id="recent-activity">
+					<span class="glyphicon glyphicon-content glyphicon-time"></span>
+					<h1>Recent activity</h1>
+						<p id="last-location">
+						You last went to
+						!
+						</p>
+					<div class="container" id="gallery">
+						<!--Content for image gallery-->
+					</div>
+	           </div>
+		       </div>
+				<hr>
+				<div class="row">
+		         <div class="col-lg-12 page-section" id="locations">
+					<span class="glyphicon glyphicon-content glyphicon-globe"></span>
+						<h1>Locations</h1>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+		         <div class="col-lg-12 page-section" id="friends">
+						<span class="glyphicon glyphicon-content glyphicon-user"></span>
+						<h1>Friends</h1>
+						<div id="friends-number"</div>
+					</div>
+				</div>
 		   </div>
 	  </div>
 	<!-- /#page-content-wrapper -->

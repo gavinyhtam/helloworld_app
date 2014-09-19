@@ -46,22 +46,25 @@
 			 FB.api('/me', function(response) {
 				console.log('Successful login for: ' + response.name);
 				console.log(response);
-				var profile_pic, num_friends;
-				$.ajax({
-					type: "POST",
-					url: "login",
-					dataType: "json",
-					contentType: "application/json",
-					headers: {
-					  'X-Transaction': 'POST Example',
-					  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-					},
-					data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name, fb_id: response.id}),
-					success: function(r) {
-						console.log(r.msg);
-					}
+				var profile_pic;
+				FB.api('/me/picture', function(picResponse) {
+					profile_pic = picResponse.data.url;
+					$.ajax({
+						type: "POST",
+						url: "login",
+						dataType: "json",
+						contentType: "application/json",
+						headers: {
+						  'X-Transaction': 'POST Example',
+						  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+						},
+						data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name, fb_id: response.id, profile_pic_link: profile_pic}),
+						success: function(r) {
+							console.log(r.msg);
+							window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
+						}
+					});
 				});
-				window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
 			 });
 		  }
 		</script>

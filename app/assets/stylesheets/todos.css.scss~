@@ -37,10 +37,6 @@
 	padding-bottom: 20px;
 }
 
-body {
-	background: rgba(171,216,246,0.1);
-}
-
 #introModal {
 	padding-top: 15%;
 }

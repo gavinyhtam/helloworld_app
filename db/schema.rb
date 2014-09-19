@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140911113524) do
+ActiveRecord::Schema.define(version: 20140919100218) do
 
   create_table "photos", force: true do |t|
     t.string   "link"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20140911113524) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "fb_id"
+    t.string   "profile_pic_link"
   end
 
 end

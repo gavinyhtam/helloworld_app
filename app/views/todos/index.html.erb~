@@ -2,7 +2,9 @@
 
 	<script type="text/javascript">
 		 $(window).load(function(){
+			<% if @new_user %>
 		     $('#introModal').modal('show');
+			<% end %>
 		 });
 	</script>
 	<div class="modal fade" id="introModal">
@@ -155,9 +157,13 @@
 		function getFBPhotos() {
 			FB.api("/me/photos/uploaded",
 				function(response) {
-					console.log(response.data[6]);
+					console.log(response.data);
 					$(document).ready(function() {
 						for (var i = 0; i < response.data.length; i++) {
+							console.log(response.data[i]);
+							if (response.data[i].place === undefined || response.data[i].name === undefined) {
+									continue;	//if no location or photo name specified
+							}
 							var date = response.data[i].created_time; //default date is created time unless user has date attached
 							if (response.data[i].backdated_time !== undefined) {
 								date = response.data[i].backdated_time;	//update date to user described date
@@ -193,7 +199,9 @@
 							startDate: parseDate("<%= photo.date %>"),
 							endDate: parseDate("<%= photo.date %>"),
 							headline: "<%= photo.photo_name %>",
-							text: "<%= photo.location_name %>",
+							text: "<%= photo.location_name %><p>Taken by <%= User.find_by(id: photo.user_id).first_name %> " + 
+									"<%= User.find_by(id: photo.user_id).last_name %></p>" +
+									'<img src="<%= @user.profile_pic_link %>">',
 							asset: {
 								media: "<%= photo.link %>"
 							}
@@ -201,7 +209,7 @@
 						photos["timeline"]["date"].push(data);
 						photos["timeline"]["era"].push(data);
 						photos["timeline"]["asset"] = { media: "<%= photo.link %>" }
-					} 
+				}
 				<% end %>
 				console.log(photos);
 
@@ -347,7 +355,7 @@
 					rollOverColor: "#618E1C"
 			 };
 
-			// map.backgroundColor = "#ABD8F6";
+			//map.backgroundColor = "#ABD8F6";
 			//map.backgroundAlpha = 0.1;
 			 map.smallMap = new AmCharts.SmallMap();
 			 
@@ -440,6 +448,26 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--Modal for Processing upload-->
+<div class="modal fade" id="process-upload">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">
+        	Uploading to Facebook!
+        </h4>
+      </div>
+      <div class="modal-body">
+      	<p> Please wait while we process your photo uploads.</p>
+		<img src="http://www.gifgifgifgifgif.com/img/2.gif">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!--Modal for Enlarged Image-->
 	<div class="modal fade" id="enlargedImage">
@@ -479,9 +507,9 @@
 						newDiv.innerHTML += '<div class="img-div">'
 						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '>'
 						+ '<div class="btn-group">'
-						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
-						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'
-						+ '<button type="button" id="location-' + i + '" class="btn btn-default" data-toggle="tooltip" title="Select location"><span class="glyphicon glyphicon-map-marker"></span></button></div>'
+						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
+						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'
+						+ '<button type="button" id="location-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select location"><span class="glyphicon glyphicon-map-marker"></span></button></div>'
 						+'<form id="descriptionForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
 							'Title: <input id="upload-message-img' + i + '" type="text"></form>'
 						+'<form id="dateForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
@@ -565,11 +593,12 @@
 			}
 			//console.log(location.options[location.selectedIndex].value);
 			//console.log(description.value);
+			$("#process-upload").modal("show");
 			var f = new FormData();
 			f.append("source", imageFiles.files[i]);
 			f.append("message", description.value);
 			f.append("backdated_time", date.value);
-			f.append("place", 110884905606108);		//add Sydney as location for now ************************************
+			f.append("place", 108191385876482);		//add Australia as location for now ************************************
 			//f.append("location", location.options[location.selectedIndex].value);
 			console.log(location.selectedIndexvalue);
 			(function() {
@@ -591,6 +620,7 @@
 		              },
 		              complete: function () {
 		                  console.log("Posted to facebook");
+								$("#process-upload").hide();
 		              }
 		          });
 				});

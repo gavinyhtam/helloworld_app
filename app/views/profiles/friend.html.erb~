@@ -1,6 +1,7 @@
 <%= render("layouts/todos") %>	
 
 <script type="text/javascript">
+	var name, numFriends;
 	(function($) {
 		$(document).bind("FBSDKLoaded", function() {
 			FB.getLoginStatus(function(response) {
@@ -19,11 +20,16 @@
 							picElement.innerHTML += HTML;
 						}
 					});
-					FB.api("/me/friends", function (response) {
+					FB.api("/" + "<%= @user_id %>", function (response) {
 						if (response && !response.error) {
-							//console.log(response);
+							name = response.first_name + " " + response.last_name;
+						}
+					});
+					FB.api("/" + "<%= @user_id %>" + "/friends", function (response) {
+						if (response && !response.error) {
+							numFriends = response.summary.total_count;
 							document.getElementById("friends-number").innerHTML += 
-							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends and <strong>" +
+							name + " currently have <strong>" + numFriends + "</strong> Facebook friends and <strong>" +
 							response.data.length + "</strong> Hello World friends";
 						}
 					});
@@ -39,7 +45,7 @@
 		   <ul class="sidebar-nav">
 		       <li class="sidebar-brand">
 		           <a href="#">
-		               <div id="profile-pic"><h3><%= @user_id %></h3></div>
+		               <div id="profile-pic"><h3 id="profile-name"></h3></div>
 		           </a>
 		       </li>
 		       <li>
@@ -55,7 +61,7 @@
 	  </div>
 	  <!-- /#sidebar-wrapper -->
 
-	  <!-- Page Content -->
+<!-- Page Content -->
 	  <div id="page-content-wrapper">
 		   <div class="container-fluid">
 				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
@@ -65,11 +71,6 @@
 					<h1>Recent activity</h1>
 						<p id="last-location">
 						You last went to
-						<strong>
-						<% if @last_location %>
-							<%= @last_location.location_name %>
-						<% end %>
-						</strong>
 						!
 						</p>
 					<div class="container" id="gallery">
@@ -82,18 +83,6 @@
 		         <div class="col-lg-12 page-section" id="locations">
 					<span class="glyphicon glyphicon-content glyphicon-globe"></span>
 						<h1>Locations</h1>
-						<p>You have been to
-							<% if @locations.length == 0 %>
-								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
-							<% else %>
-								<% @locations.each do |location| %>
-									<h5 class="country-name">
-									<%= location %>,
-									</h5>
-								<% end %>
-							<% end %>
-							and are yet to visit <%= 256 - @locations.size %> other places!
-						</p>
 					</div>
 				</div>
 				<hr>
@@ -116,14 +105,4 @@
 	  e.preventDefault();
 	  $("#wrapper").toggleClass("toggled");
 	});
-</script>
-
-<script>
-	var gallery = document.getElementById("gallery");
-	var numPhotos = 0;
-	<% @last_location_photos.each do |photo| %>
-		gallery.innerHTML += '<div class="col-md-4"><div class="well">' +
-			'<img class="thumbnail img-responsive" src=<%=photo.link%>>' + '</div></div>';
-		numPhotos++;
-	<% end %>
 </script>
