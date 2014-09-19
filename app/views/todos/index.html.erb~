@@ -373,6 +373,26 @@
 				      });
 				  }
 			 });
+
+			map.addListener("rollOverMapObject", function(e) {
+				if (e.mapObject.color == "#4444ff") {
+					var mousePos = { x: -1, y: -1};
+					mousePos.x = e.event.pageX;
+		    		mousePos.y = e.event.pageY;
+					 var theHeight = $('.popover').height();
+					 $('.popover').show();
+					 $('.popover').css('left', (mousePos.x+10) + 'px');
+					 $('.popover').css('top', (mousePos.y-(theHeight/2)-10) + 'px');
+				}
+			});
+
+			map.addListener("rollOutMapObject", function(event) {
+				console.log("inside");
+				 $('.popover').hide();
+			});
+			map.addListener("positionChanged", function(event) {
+				 $('.popover').hide();
+			});
 			 map.write("mapdiv");
 		});
 	</script>
@@ -455,9 +475,9 @@
 						newDiv.innerHTML += '<div class="img-div">'
 						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '>'
 						+ '<div class="btn-group">'
-						+ '<button type="button" id="description-' + i + '" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></button>'
-						+ '<button type="button" id="date-' + i + '" class="btn btn-default"><span class="glyphicon glyphicon-calendar"></span></button>'
-						+ '<button type="button" id="location-' + i + '" class="btn btn-default"><span class="glyphicon glyphicon-map-marker"></span></button></div>'
+						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
+						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'
+						+ '<button type="button" id="location-' + i + '" class="btn btn-default" data-toggle="tooltip" title="Select location"><span class="glyphicon glyphicon-map-marker"></span></button></div>'
 						+'<form id="descriptionForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
 							'Title: <input id="upload-message-img' + i + '" type="text"></form>'
 						+'<form id="dateForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
@@ -573,4 +593,68 @@
 			})();
 		}
 	}
+</script>
+
+<div class="popover" id="popover">
+	<div id="visited"></div>
+	<div id="popover-text"></div>
+</div>
+
+<script>
+(function($) {
+	$(document).bind("FBSDKLoaded", function() {
+	FB.getLoginStatus(function(response) {
+		if (response.status === "connected") {
+			FB.api("/me/friends", function (response) {
+				if (response && !response.error) {
+					for (var i = 0; i < response.data.length; i++) {
+						(function() {	//closure to ensure asynchronous calls to FB APIs is correct
+							var j = i;
+							FB.api("/" + response.data[j].id + "/picture", {
+								"redirect": false,
+								"height": "50",
+								"type": "normal",
+								"width": "50"
+							},
+							function (picResponse) {
+								if (picResponse && !picResponse.error) {
+									var picElement = document.getElementById("visited");
+									//create div for portfolio column
+									picElement.innerHTML +=  '<img class=img-horizontal src='+
+									picResponse.data.url+'>';
+								}
+							});
+						})();
+					}
+				}
+			});
+		 	FB.api("/me/picture", {
+				"redirect": false,
+				"height": "50",
+				"type": "normal",
+				"width": "50"
+			}, function(picResponse) {
+				if (picResponse && !picResponse.error) {
+					var picElement = document.getElementById("visited");
+					//create div for portfolio column
+					var HTML =  '<img src='+
+					picResponse.data.url+'>';
+					picElement.innerHTML += HTML;
+				}
+			});
+			var text = document.getElementById("popover-text");
+			text.innerHTML = "<hr><p>You and <strong>2</strong> friends have visited this place.</p>";
+		}
+	});
+	});
+})(jQuery);
+
+$(document).on('click', function(e) {
+	$(".popover").hide();
+});
+</script>
+
+<!--Tooltip-->
+<script type="text/javascript">
+$("body").tooltip({ selector: '[data-toggle="tooltip"]' });
 </script>
