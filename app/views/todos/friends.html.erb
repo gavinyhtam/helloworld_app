@@ -1,9 +1,4 @@
 <%= render("layouts/todos") %>	
-	<div class="jumbotron">
-		  <h1>Share your photos.</h1>
-		  <p>Invite your friends from Facebook!</p>
-	</div>
-
 	<script>
 	(function($) {
 		$(document).bind("FBSDKLoaded", function() {
@@ -13,24 +8,24 @@
 						if (response && !response.error) {
 							//console.log(response);
 							document.getElementById("friends-list").innerHTML += 
-							"You currently have " + response.summary.total_count + " friends on Hello World.";
+							"<br>"+"You currently have " + response.summary.total_count + " friends on Hello World.";
 							for (var i = 0; i < response.data.length; i++) {
-								document.getElementById("friends").innerHTML += response.data[i].name;
+								
 								//console.log("top" + i);
 								(function() {	//closure to ensure asynchronous calls to FB APIs is correct
 									var j = i;
 									FB.api("/" + response.data[j].id + "/picture", {
 										"redirect": false,
-										"height": "200",
+										"height": "50",
 										"type": "normal",
-										"width": "200"
+										"width": "50"
 									},
 									function (picResponse) {
 										if (picResponse && !picResponse.error) {
 											var picElement = document.getElementById("row1");
 											//create div for portfolio column
-											var HTML =  '<div class="col-md-4 portfolio-item"><img class=img-responsive src='+
-											picResponse.data.url+'>'+'<h3><a href="http://localhost:3000/profiles/friend' + "?id=" + response.data[j].id + '">' + response.data[j].name + '</a></h3></div>'
+											var HTML =  '<div class="row friend"><img class="friend-image img-responsive" src="'+
+											picResponse.data.url+'">'+'<a class="friend-text" href="http://localhost:3000/profiles/friend' + "?id=" + response.data[j].id + '">' + response.data[j].name + '</a></div>'
 											//console.log("inside" + j);
 											//place friend name and end the div
 											picElement.innerHTML += HTML;
@@ -48,152 +43,189 @@
 	})(jQuery);
 	</script>
 
-	<div id="friends-list">
-	<h1> Your friends are: </h1>
-		<div id="friends"></div>
-	</div>
+<div id="wrapper">
 
-<!-- Page Content -->
-    <div class="container">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+		  <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Friends</a>
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#"> Friends </a>
+            </li>
+            <div id="friends-list">
+                <div id="row1"></div>
+            </div>
+        </ul>
+		<div id="invite-friends-button">
+			<script>
+			function FacebookInviteFriends() {
+				FB.ui({
+					method: 'apprequests',
+					message: 'Join Hello World now!'
+				});
+			}
+			</script>
 
-        <!-- Page Header -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">Recent friend activity
-                    <small>Click to preview</small>
-                </h1>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <!-- Projects Row -->
-        <div class="row" id="row1">
-            <!--div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div-->
-        </div>
-        <!-- /.row -->
-
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-        </div>
-
-        <!-- Projects Row -->
-        <div class="row">
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-            <div class="col-md-4 portfolio-item">
-                <a href="#">
-                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-                </a>
-                <h3>
-                    <a href="#">Project Name</a>
-                </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
-
-        <!-- Pagination -->
-        <div class="row text-center">
-            <div class="col-lg-12">
-                <ul class="pagination">
-                    <li>
-                        <a href="#">&laquo;</a>
-                    </li>
-                    <li class="active">
-                        <a href="#">1</a>
-                    </li>
-                    <li>
-                        <a href="#">2</a>
-                    </li>
-                    <li>
-                        <a href="#">3</a>
-                    </li>
-                    <li>
-                        <a href="#">4</a>
-                    </li>
-                    <li>
-                        <a href="#">5</a>
-                    </li>
-                    <li>
-                        <a href="#">&raquo;</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!-- /.row -->
-
-        <hr>
+			<button class="btn btn-primary" onclick="FacebookInviteFriends();"> 
+				<img id="facebook-icon" src="http://www.ceres.org/images/facebook-icon">Invite Friends
+			</button>
+		</div>
     </div>
-    <!-- /.container -->
+    <!-- /#sidebar-wrapper -->
 
+    <div id="friends-title" class="jumbotron">
+	   <h1>Share your photos.</h1>
+	   <p>Invite your friends from Facebook!</p>
+    </div>
+
+	<!-- Page Content -->
+	<div id="page-content-wrapper" id="friends-main">
+		<!--#################################  Timeline  #######################################-->
+		<!-- Credits to http://codepen.io/munkhbayar/pen/Boqzc-->
+		<div id="timeline-container" class="container">
+			 <div class="page-header">
+				  <h1 id="timeline">Timeline</h1>
+			 </div>
+			 <ul class="timeline">
+				<li class="timeline-inverted">
+					 <div class="timeline-badge warning">19/9</div>
+					 <div class="timeline-panel">
+					   <div class="timeline-heading">
+					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> updated new photos for Singapore</h4>
+					   </div>
+					   <div class="timeline-body" id="timeline-body1">
+							<span class="glyphicon glyphicon-chevron-right"><a href="http://localhost:3000/todos/index" class="text-icon">more</a></span>
+					   </div>
+					 </div>
+				  </li>
+				  <li class="timeline-inverted">
+					 <div class="timeline-badge warning">16/9</div>
+					 <div class="timeline-panel">
+					   <div class="timeline-heading">
+					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> commented on Edwin Li's photo: <em>Australia trip</em></h4>
+					   </div>
+					   <div class="timeline-body" id="timeline-body2">
+					   </div>
+					 </div>
+				  </li>
+					<li class="timeline-inverted">
+					 <div class="timeline-badge warning">15/9</div>
+					 <div class="timeline-panel">
+					   <div class="timeline-heading">
+					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> added Edwin Li as a friend</h4>
+					   </div>
+					   <div class="timeline-body">
+					   </div>
+					 </div>
+				  </li>
+			 </ul>
+			<span class="glyphicon glyphicon-chevron-down"></span><h4 class="text-icon">Show older activities</h4>
+		</div>
+
+<script>
+	var body1 = document.getElementById("timeline-body1");
+	<% @recent_photos.each do |photo| %>
+		var img = document.createElement("img");
+		img.setAttribute("src","<%= photo.link %>");
+		img.setAttribute("class", "thumbnail");
+		body1.appendChild(img);
+	<% end %>
+
+	//var body2 = document.getElementById("timeline-body2");
+	
+</script>
+
+<!---########################### Recent albums ########################-->
+	<div id="recent-albums" class="container">
+	     <!-- Page Header -->
+	     <div class="row">
+	         <div class="col-lg-12">
+	             <h1 class="page-header">Recent albums
+	                 <!-- <small>Click to preview</small> -->
+	             </h1>
+	         </div>
+	     </div>
+	     <!-- /.row -->
+
+	     <!-- Projects Row -->
+	     <div class="row" id="row1">
+	     </div>
+	     <!-- /.row -->
+
+	     <!-- Projects Row -->
+	     <div class="row">
+	         <div class="col-md-4 portfolio-item">
+	             <a href="#">
+	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+	             </a>
+	             <h3>
+	                 <a href="#">Project Name</a>
+	             </h3>
+	             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+	         </div>
+	         <div class="col-md-4 portfolio-item">
+	             <a href="#">
+	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+	             </a>
+	             <h3>
+	                 <a href="#">Project Name</a>
+	             </h3>
+	             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+	         </div>
+	         <div class="col-md-4 portfolio-item">
+	             <a href="#">
+	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+	             </a>
+	             <h3>
+	                 <a href="#">Project Name</a>
+	             </h3>
+	             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
+	         </div>
+	     </div><!-- /.row -->
+
+	     <hr>
+
+	     <!-- Pagination -->
+	     <div class="row text-center">
+	         <div class="col-lg-12">
+	             <ul class="pagination">
+	                 <li>
+	                     <a href="#">&laquo;</a>
+	                 </li>
+	                 <li class="active">
+	                     <a href="#">1</a>
+	                 </li>
+	                 <li>
+	                     <a href="#">2</a>
+	                 </li>
+	                 <li>
+	                     <a href="#">3</a>
+	                 </li>
+	                 <li>
+	                     <a href="#">4</a>
+	                 </li>
+	                 <li>
+	                     <a href="#">5</a>
+	                 </li>
+	                 <li>
+	                     <a href="#">&raquo;</a>
+	                 </li>
+	             </ul>
+	         </div>
+	     </div>
+	     <!-- /.row -->
+		  <hr>
+    </div>
+    <!-- /.recent-albums -->
+	</div>
+	<!-- /.page-content-wrapper -->
+</div>
+<!-- ./wrapper -->
+
+ <!-- Menu Toggle Script -->
+ <script>
+ $("#menu-toggle").click(function(e) {
+     e.preventDefault();
+     $("#wrapper").toggleClass("toggled");
+ });
+ </script>

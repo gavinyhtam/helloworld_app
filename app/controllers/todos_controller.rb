@@ -15,6 +15,10 @@ class TodosController < ApplicationController
 
 	def friends
 		@user = User.find_or_create_by(username: cookies[:username])	#find or create the logged in user
+		sorted_photos = @user.photos.sort_by &:updated_at
+		@recent_location = sorted_photos[0].location_name
+		@recent_photos = @user.photos.limit(3).where(location_name: @recent_location)
+		puts @recent_photos
 	end
 	
 	def create

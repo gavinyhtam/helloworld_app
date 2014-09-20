@@ -54,7 +54,7 @@
 			</select>
 		</div>
 			<div id="upload-button">
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"> + Upload photos</button>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"><span class="glyphicon glyphicon-upload"></span> Upload photos</button>
 			</div>
 		<script>
 		$("#select-country").selectize();
@@ -162,7 +162,7 @@
 						for (var i = 0; i < response.data.length; i++) {
 							console.log(response.data[i]);
 							if (response.data[i].place === undefined || response.data[i].name === undefined) {
-									continue;	//if no location or photo name specified
+								continue;	//if no location or photo name specified
 							}
 							var date = response.data[i].created_time; //default date is created time unless user has date attached
 							if (response.data[i].backdated_time !== undefined) {
@@ -505,7 +505,7 @@
 						var newDiv = document.createElement('div');
 						newDiv.className = 'col-md-4 row-md-4';
 						newDiv.innerHTML += '<div class="img-div">'
-						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '>'
+						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '><span class="remove glyphicon glyphicon-remove-circle"></span>'
 						+ '<div class="btn-group">'
 						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
 						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'
@@ -525,6 +525,9 @@
 							dateFormat: 'dd-mm-yy'
 						});
 						$("#select-country"+i).selectize();
+						$(".remove").on('click',function() {
+							$(this)
+						});
 
 						document.getElementById('description-'+i).onclick = function() { showForm("descriptionForm",i); hideForm("dateForm",i); hideForm("locationForm", i); };
 						document.getElementById('date-'+i).onclick = function() { showForm("dateForm",i); hideForm("descriptionForm",i); hideForm("locationForm", i); };
