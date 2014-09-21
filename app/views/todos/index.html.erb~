@@ -472,8 +472,11 @@
 <!--Modal for Enlarged Image-->
 	<div class="modal fade" id="enlargedImage">
 	  <div class="modal-dialog modal-lg">
-	      <div class="modal-body" id="enlargedImageBody">
+	      <div class="modal-body">
+			<div id="enlargedImageBody"></div>
+			<div class="fb-comments" data-href="http://localhost:3000/todos/index" data-numposts="5" data-colorscheme="light"></div>
 	      </div>
+			</div>
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 
@@ -505,7 +508,7 @@
 						var newDiv = document.createElement('div');
 						newDiv.className = 'col-md-4 row-md-4';
 						newDiv.innerHTML += '<div class="img-div">'
-						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '><span class="remove glyphicon glyphicon-remove-circle"></span>'
+						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '><span class="remove glyphicon glyphicon-remove"></span>'
 						+ '<div class="btn-group">'
 						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
 						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'

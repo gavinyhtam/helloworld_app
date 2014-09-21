@@ -22,7 +22,7 @@
 									},
 									function (picResponse) {
 										if (picResponse && !picResponse.error) {
-											var picElement = document.getElementById("row1");
+											var picElement = document.getElementById("friends");
 											//create div for portfolio column
 											var HTML =  '<div class="row friend"><img class="friend-image img-responsive" src="'+
 											picResponse.data.url+'">'+'<a class="friend-text" href="http://localhost:3000/profiles/friend' + "?id=" + response.data[j].id + '">' + response.data[j].name + '</a></div>'
@@ -53,7 +53,7 @@
                 <a href="#"> Friends </a>
             </li>
             <div id="friends-list">
-                <div id="row1"></div>
+                <div id="friends"></div>
             </div>
         </ul>
 		<div id="invite-friends-button">
@@ -67,7 +67,7 @@
 			</script>
 
 			<button class="btn btn-primary" onclick="FacebookInviteFriends();"> 
-				<img id="facebook-icon" src="http://www.ceres.org/images/facebook-icon">Invite Friends
+				<img id="facebook-icon" src="http://www.giant-bicycles.com/images/interface/facebook_icon_30x30.gif">Invite Friends
 			</button>
 		</div>
     </div>
@@ -80,12 +80,13 @@
 
 	<!-- Page Content -->
 	<div id="page-content-wrapper" id="friends-main">
+		<div class="section-icon">
+		<span class="glyphicon glyphicon-comment"></span>
+		</div>
+		<h1 class="section-title"> News Feed </h1>
 		<!--#################################  Timeline  #######################################-->
 		<!-- Credits to http://codepen.io/munkhbayar/pen/Boqzc-->
 		<div id="timeline-container" class="container">
-			 <div class="page-header">
-				  <h1 id="timeline">Timeline</h1>
-			 </div>
 			 <ul class="timeline">
 				<li class="timeline-inverted">
 					 <div class="timeline-badge primary">19/9</div>
@@ -135,18 +136,19 @@
 	
 </script>
 
+<hr>
 <!---########################### Recent albums ########################-->
 	<div id="recent-albums" class="container">
-	     <!-- Page Header -->
-	     <div class="row">
-	         <div class="col-lg-12">
-	             <h1 class="page-header">Recent albums
-	                 <!-- <small>Click to preview</small> -->
-	             </h1>
-	         </div>
-	     </div>
-	     <!-- /.row -->
-
+	   <div class="section-icon">
+		<span class="glyphicon glyphicon-picture"></span>
+		</div>
+		<h1 class="section-title"> Recent albums </h1>
+			<select id="search-friends" class="demo-default search-friends" placeholder="Search for a friend...">
+				<%= render :partial => "layouts/selectizefriends" %>
+			</select>
+			<script>
+				$("#search-friends").selectize();
+			</script>
 	     <!-- Projects Row -->
 	     <div class="row" id="row1">
 	     </div>

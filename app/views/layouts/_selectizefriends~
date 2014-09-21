@@ -1,0 +1,7 @@
+	<!--Contains friends for the Selectize selector-->
+   <option value="">Select a country...</option>
+	<option value="1">Andorra</option>
+	<option value="2">United Arab Emirates</option>
+
+
+
