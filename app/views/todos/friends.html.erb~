@@ -88,7 +88,7 @@
 			 </div>
 			 <ul class="timeline">
 				<li class="timeline-inverted">
-					 <div class="timeline-badge warning">19/9</div>
+					 <div class="timeline-badge primary">19/9</div>
 					 <div class="timeline-panel">
 					   <div class="timeline-heading">
 					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> updated new photos for Singapore</h4>
@@ -131,7 +131,7 @@
 		body1.appendChild(img);
 	<% end %>
 
-	var body2 = document.getElementById("timeline-body2");
+	//var body2 = document.getElementById("timeline-body2");
 	
 </script>
 
