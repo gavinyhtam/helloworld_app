@@ -157,6 +157,7 @@
 		function getFBPhotos() {
 			FB.api("/me/photos/uploaded",
 				function(response) {
+					console.log(response);
 					console.log(response.data);
 					$(document).ready(function() {
 						for (var i = 0; i < response.data.length; i++) {
@@ -172,7 +173,8 @@
 								link: response.data[i].source,
 								date: date,
 								location_name: response.data[i].place.name,
-								photo_name: response.data[i].name
+								photo_name: response.data[i].name,
+								photo_id: response.data[i].id
 							}
 							addPhoto(dbPhotoJson);
 						}
@@ -471,13 +473,12 @@
 
 <!--Modal for Enlarged Image-->
 	<div class="modal fade" id="enlargedImage">
-	  <div class="modal-dialog modal-lg">
-	      <div class="modal-body enlargedImageModal">
+      <div class="enlargedImageModal">
 			<div id="enlargedImageBody"></div>
-			<div class="fb-comments" data-href="http://localhost:3000/todos/index" data-numposts="5" data-colorscheme="light"></div>
-	      </div>
+			<div id="fb-comment-box">
+			<div class="fb-comments" data-href="https://www.facebook.com/photo.php?fbid=1458709894389852&set=a.1457888027805372.1073741827.100007525659896&type=3&theater" data-numposts="5" data-colorscheme="light"></div>
 			</div>
-	  </div><!-- /.modal-dialog -->
+      </div>
 	</div><!-- /.modal -->
 
 <script>
@@ -508,7 +509,7 @@
 						var newDiv = document.createElement('div');
 						newDiv.className = 'col-md-4 row-md-4';
 						newDiv.innerHTML += '<div class="img-div">'
-						+ '<img class="thumbnail img-responsive" src=' + e.target.result + ' id=img-'+ i + '><span class="remove glyphicon glyphicon-remove"></span>'
+						+ '<img class="thumbnail-upload img-responsive" src=' + e.target.result + ' id=img-'+ i + '><span class="remove glyphicon glyphicon-remove"></span>'
 						+ '<div class="btn-group">'
 						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
 						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'

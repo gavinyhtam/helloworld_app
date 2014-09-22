@@ -186,7 +186,7 @@ h6 {
 .banner {
     padding: 100px 0;
     color: #f8f8f8;
-    background: url(../img/banner-bg.jpg) no-repeat center center;
+    background: url("http://www.belionline.com.my/UserFiles/image/signup_banner.jpg") no-repeat center center;
     background-size: cover;
 }
 
@@ -237,4 +237,8 @@ footer {
 
 p.copyright {
     margin: 15px 0 0;
+}
+
+#signup {
+	height: 50px;
 }

@@ -1,7 +1,6 @@
 	<script>
 		  // This is called with the results from from FB.getLoginStatus().
 		  function statusChangeCallback(response) {
-			 console.log('statusChangeCallback');
 			 console.log(response);
 			 // The response object is returned with a status field that lets the
 			 // app know the current login status of the person.
@@ -14,21 +13,21 @@
 				// The person is logged into Facebook, but not your app.
 				document.getElementById('status').innerHTML = 'Please log ' +
 				  'into this app.';
-			 } /*else {
+			 } else {
 				// The person is not logged into Facebook, so we're not sure if
 				// they are logged into this app or not.
-				document.getElementById('status').innerHTML = 'Please log ' +
-				  'into Facebook.';
-			 }*/
+				//document.getElementById('status').innerHTML = 'Please log ' +
+				//  'into Facebook.';
+			 }
 		  }
 		
 		  // This function is called when someone finishes with the Login
 		  // Button.  See the onlogin handler attached to it in the sample
 		  // code below.
 		  function checkLoginState() {
-			 FB.getLoginStatus(function(response) {
-				statusChangeCallback(response);
-			 });
+				FB.getLoginStatus(function(response) {
+					statusChangeCallback(response);
+				});
 		  }
 
 		(function($) {
@@ -105,30 +104,24 @@
     <div class="intro-header">
         <div class ="overlay"></div>
         <div class="container">
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="intro-message">
                         <h1>Travel. Share. Discover.</h1>
                         <h3>Join us now and discover!</h3>
-                        <!-- <hr class="intro-divider"> -->
-                        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos" onlogin="checkLoginState()">Sign in with Facebook</div>
+                        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos" onlogin="checkLoginState();">Sign in with Facebook</div>
                     </div>
                 </div>
             </div>
-
         </div>
         <!-- /.container -->
-
     </div>
     <!-- /.intro-header -->
 
     <!-- Page Content -->
 
     <div class="content-section-a">
-
         <div class="container">
-
             <div class="row">
                 <div class="col-lg-5 col-sm-6">
                     <hr class="section-heading-spacer">
@@ -140,17 +133,13 @@
                     <img class="img-responsive" src="https://cdn4.iconfinder.com/data/icons/insurance/60/insurance-14-512.png" alt="" style="width:250px;height:250px">
                 </div>
             </div>
-
         </div>
         <!-- /.container -->
-
     </div>
     <!-- /.content-section-a -->
 
     <div class="content-section-b">
-
         <div class="container">
-
             <div class="row">
                 <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
                     <hr class="section-heading-spacer">
@@ -158,15 +147,14 @@
                     <h2 class="section-heading">Share.</h2>
                     <p class="lead">Experience. Share yours. Relive theirs'.</p>
                 </div> 
-                <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+                <div class="col-lg-5 col-sm-pull-6 col-sm-6">
                     <img class="img-responsive" src="http://www.tramondos.com/images/share.png" alt="" style="width:250px;height:250px">
                 </div>
             </div>
-
         </div>
         <!-- /.container -->
 
-    </div>
+    </iv>
     <!-- /.content-section-b -->
 
     <div class="content-section-a">
@@ -200,7 +188,7 @@
                     <h2>Join us through Facebook!</h2>
                 </div>
                 <div class="col-lg-6">
-                    <a href="https://www.facebook.com"><img src="http://www.watejawangu.com/icons/facebooksignup.png" /></a>
+                    <a href="https://www.facebook.com"><img id="signup" src="http://mobilemafia.net/images/fb-connect.png"></a>
                 </div>
             </div>
 

@@ -148,11 +148,22 @@
 			</select>
 			<script>
 				$("#search-friends").selectize();
+				/*
+				//when user selects a friend
+				$("#search-friends").change(function() {
+					var f = document.getElementById("search-friends");
+					var friend = { id: f.options[f.selectedIndex].value; };
+					$.ajax({
+						type: 'POST',
+						url: 'friend-photos',
+						dataType: 'application/json',
+						contentType: 'json',
+						success: function(response) {
+							
+						}
+					});
+				});*/
 			</script>
-	     <!-- Projects Row -->
-	     <div class="row" id="row1">
-	     </div>
-	     <!-- /.row -->
 
 	     <!-- Projects Row -->
 	     <div class="row">

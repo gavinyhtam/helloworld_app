@@ -143,16 +143,27 @@
 		<span class="glyphicon glyphicon-picture"></span>
 		</div>
 		<h1 class="section-title"> Recent albums </h1>
-			<select id="search-friends" class="demo-default" placeholder="Search for a friend...">
+			<select id="search-friends" class="demo-default search-friends" placeholder="Search for a friend...">
 				<%= render :partial => "layouts/selectizefriends" %>
 			</select>
 			<script>
 				$("#search-friends").selectize();
+				//when user selects a friend
+				$("#search-friends").change(function() {
+					var f = document.getElementById("search-friends");
+					var friend = { id: f.options[f.selectedIndex].value; };
+					/*
+					$.ajax({
+						type: 'POST',
+						url: 'friend-photos',
+						dataType: 'application/json',
+						contentType: 'json',
+						success: function(response) {
+							
+						}
+					});*/
+				});
 			</script>
-	     <!-- Projects Row -->
-	     <div class="row" id="row1">
-	     </div>
-	     <!-- /.row -->
 
 	     <!-- Projects Row -->
 	     <div class="row">

@@ -7,6 +7,7 @@ class Photo < ActiveRecord::Base
 	validates :location_name, presence: true
 	validates :date, presence: true
 	validates :photo_name, presence: true
+	validates :photo_id, presence: true, uniqueness: true
 
 	#converts name of country into location code readable by AmMaps
 	def location_code

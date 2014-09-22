@@ -30,9 +30,9 @@ class TodosController < ApplicationController
 	def createPhoto
 		@user = User.find_by(username: cookies[:username])
 		#if photo already exists, update attributes
-		photo = @user.photos.find_by(link: params[:link])
+		photo = @user.photos.find_by(photo_id: params[:photo_id])
 		if (photo)
-			photo.update_attributes(location_name: params[:location_name], date: params[:date], photo_name: params[:photo_name])
+			photo.update_attributes(location_name: params[:location_name], date: params[:date], photo_name: params[:photo_name], )
 			respond_to do |format|
 				format.json { render :json => { msg: "Updated photo information!" } }
 			end

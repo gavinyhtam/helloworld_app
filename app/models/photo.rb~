@@ -3,7 +3,7 @@ class Photo < ActiveRecord::Base
 	belongs_to :user
 
 	#VALID_LINK_REGEX = /\Ahttp:\/\/www.[a-z.]+[a-z]+\z/i
-	validates :link, presence: true, uniqueness: { case_sensitive: false } #, format: { with: VALID_LINK_REGEX }
+	validates :link, presence: true, uniqueness: { case_sensitive: true } #, format: { with: VALID_LINK_REGEX }
 	validates :location_name, presence: true
 	validates :date, presence: true
 	validates :photo_name, presence: true
