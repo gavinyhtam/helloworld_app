@@ -50,4 +50,15 @@ class TodosController < ApplicationController
 			end
 		end
 	end
+
+	def friendPhotos
+		id = params[:id]
+		@user = User.find_by(fb_id: id)
+		sorted_photos = @user.photos.sort_by &:updated_at
+		@recent_location = sorted_photos[0].location_name
+		@recent_photos = @user.photos.limit(3).where(location_name: @recent_location)
+		respond_to do |format|
+			format.json { render :json => { msg: @recent_photos }}
+		end
+	end
 end

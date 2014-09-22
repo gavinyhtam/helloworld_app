@@ -92,7 +92,7 @@
 					 <div class="timeline-badge primary">19/9</div>
 					 <div class="timeline-panel">
 					   <div class="timeline-heading">
-					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> updated new photos for Singapore</h4>
+					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name"><%= @user.first_name + " " + @user.last_name %></h4><h4 class="timeline-title"> updated new photos for <%= @recent_location %></h4>
 					   </div>
 					   <div class="timeline-body" id="timeline-body1">
 							<span class="glyphicon glyphicon-chevron-right"><a href="http://localhost:3000/todos/index" class="text-icon">more</a></span>
@@ -103,7 +103,7 @@
 					 <div class="timeline-badge primary">16/9</div>
 					 <div class="timeline-panel">
 					   <div class="timeline-heading">
-					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> commented on Edwin Li's photo: <em>Australia trip</em></h4>
+					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name"><%= @user.first_name + " " + @user.last_name %></h4><h4 class="timeline-title"> commented on Edwin Li's photo: <em>Australia trip</em></h4>
 					   </div>
 					   <div class="timeline-body" id="timeline-body2">
 					   </div>
@@ -113,7 +113,7 @@
 					 <div class="timeline-badge primary">15/9</div>
 					 <div class="timeline-panel">
 					   <div class="timeline-heading">
-					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name">Gavin Tam</h4><h4 class="timeline-title"> added Edwin Li as a friend</h4>
+					     <img class="profile-pic" src="<%= @user.profile_pic_link %>"><h4 class="name"><%= @user.first_name + " " + @user.last_name %></h4><h4 class="timeline-title"> added Edwin Li as a friend</h4>
 					   </div>
 					   <div class="timeline-body">
 					   </div>
@@ -127,9 +127,10 @@
 	var body1 = document.getElementById("timeline-body1");
 	<% @recent_photos.each do |photo| %>
 		var img = document.createElement("img");
-		img.setAttribute("src","<%= photo.link %>");
+		img.setAttribute("src",'<%= raw(photo.link) %>');	//ensures characters such as ampersand are escaped
 		img.setAttribute("class", "thumbnail");
 		body1.appendChild(img);
+		console.log(img);
 	<% end %>
 
 	//var body2 = document.getElementById("timeline-body2");
@@ -138,35 +139,48 @@
 
 <hr>
 <!---########################### Recent albums ########################-->
-	<div id="recent-albums" class="container">
+	<div id="recent-photos" class="container">
 	   <div class="section-icon">
 		<span class="glyphicon glyphicon-picture"></span>
 		</div>
-		<h1 class="section-title"> Recent albums </h1>
+		<h1 class="section-title"> Recent photos </h1>
 			<select id="search-friends" class="demo-default search-friends" placeholder="Search for a friend...">
 				<%= render :partial => "layouts/selectizefriends" %>
 			</select>
 			<script>
 				$("#search-friends").selectize();
-				/*
 				//when user selects a friend
 				$("#search-friends").change(function() {
 					var f = document.getElementById("search-friends");
-					var friend = { id: f.options[f.selectedIndex].value; };
+					var friend = { id: f.options[f.selectedIndex].value };
 					$.ajax({
 						type: 'POST',
-						url: 'friend-photos',
-						dataType: 'application/json',
-						contentType: 'json',
+						url: 'friendPhotos',
+						dataType: 'json',
+						contentType: 'application/json',
+						data: JSON.stringify(friend),
 						success: function(response) {
-							
+							console.log(response);
+							var pictures = document.getElementById("pictures-1");
+							while (pictures.firstChild) pictures.removeChild(pictures.firstChild);
+							for (var i = 0; i < response.msg.length; i++) {
+								var div = document.createElement("div");
+								div.setAttribute("class", "col-md-4 portfolio-item");
+								pictures.appendChild(div);
+								var image = document.createElement("img");
+								image.setAttribute("class", "img-responsive friend-photo");
+								image.setAttribute("src", response.msg[i].link);
+								div.appendChild(image);
+								div.innerHTML += "<h3>" + response.msg[i].photo_name + "</h3>" +
+														"<p>" + response.msg[i].location_name + "</p>";
+							}
 						}
 					});
-				});*/
+				});
 			</script>
 
 	     <!-- Projects Row -->
-	     <div class="row">
+	     <div class="row" id="pictures-1">
 	         <div class="col-md-4 portfolio-item">
 	             <a href="#">
 	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
@@ -229,7 +243,7 @@
 	     <!-- /.row -->
 		  <hr>
     </div>
-    <!-- /.recent-albums -->
+    <!-- /.recent-photos -->
 	</div>
 	<!-- /.page-content-wrapper -->
 </div>

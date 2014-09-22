@@ -646,8 +646,10 @@
 	$(document).bind("FBSDKLoaded", function() {
 	FB.getLoginStatus(function(response) {
 		if (response.status === "connected") {
+			var numFriendsVisited = 0;
 			FB.api("/me/friends", function (response) {
 				if (response && !response.error) {
+					numFriendsVisited = response.data.length;
 					for (var i = 0; i < response.data.length; i++) {
 						(function() {	//closure to ensure asynchronous calls to FB APIs is correct
 							var j = i;
@@ -684,7 +686,7 @@
 				}
 			});
 			var text = document.getElementById("popover-text");
-			text.innerHTML = "<hr><p>You and <strong>2</strong> friends have visited this place.</p>";
+			text.innerHTML = "<hr><p>You and <strong>" + numFriendsVisited + "</strong> friends have visited this place.</p>";
 		}
 	});
 	});

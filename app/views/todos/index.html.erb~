@@ -476,7 +476,6 @@
       <div class="enlargedImageModal">
 			<div id="enlargedImageBody"></div>
 			<div id="fb-comment-box">
-			<h2> Comments </h2>
 			<div class="fb-comments" data-href="https://www.facebook.com/photo.php?fbid=1458709894389852&set=a.1457888027805372.1073741827.100007525659896&type=3&theater" data-numposts="5" data-colorscheme="light"></div>
 			</div>
       </div>
@@ -647,8 +646,10 @@
 	$(document).bind("FBSDKLoaded", function() {
 	FB.getLoginStatus(function(response) {
 		if (response.status === "connected") {
+			var numFriendsVisited;
 			FB.api("/me/friends", function (response) {
 				if (response && !response.error) {
+					numFriendsVisited = response.data.length;
 					for (var i = 0; i < response.data.length; i++) {
 						(function() {	//closure to ensure asynchronous calls to FB APIs is correct
 							var j = i;
@@ -685,7 +686,7 @@
 				}
 			});
 			var text = document.getElementById("popover-text");
-			text.innerHTML = "<hr><p>You and <strong>2</strong> friends have visited this place.</p>";
+			text.innerHTML = "<hr><p>You and <strong>" + numFriendsVisited + "</strong> friends have visited this place.</p>";
 		}
 	});
 	});

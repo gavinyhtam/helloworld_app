@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   get 'profiles/index'
+  get 'profiles/friend'
 
   get 'static_pages/home'
 
