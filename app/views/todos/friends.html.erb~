@@ -6,10 +6,21 @@
 				if (response.status === "connected") {
 					FB.api("/me/friends", function (response) {
 						if (response && !response.error) {
-							//console.log(response);
+							console.log(response);
 							document.getElementById("friends-list").innerHTML += 
-							"<br>"+"You currently have " + response.summary.total_count + " friends on Hello World.";
-							for (var i = 0; i < response.data.length; i++) {
+							"<br>"+"You currently have " + "<%= @users.length %>" + " friends on Hello World.";
+							//"<br>"+"You currently have " + response.summary.total_count + " friends on Hello World.";
+
+							<% @users.each do |user| %>
+							var picElement = document.getElementById("friends");
+							//create div for portfolio column
+							var HTML =  '<div class="row friend"><img class="friend-image img-responsive" src="'+
+							"<%= user.profile_pic_link %>" +'">'+'<a class="friend-text" href="http://localhost:3000/profiles/friend' + "?id=" + "<%= user.fb_id %>" + '">' + '<%= user.first_name + " " + user.last_name %>' + '</a></div>'
+							//place friend name and end the div
+							picElement.innerHTML += HTML;
+							console.log(picElement.innerHTML);
+							<% end %>
+							/*for (var i = 0; i < response.data.length; i++) {
 								
 								//console.log("top" + i);
 								(function() {	//closure to ensure asynchronous calls to FB APIs is correct
@@ -34,7 +45,7 @@
 									});
 									//console.log(response.data.length + "and" + i);
 								})();
-							}
+							}*/
 						}
 					});
 				}

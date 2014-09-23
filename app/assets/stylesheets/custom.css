@@ -5,6 +5,8 @@
 .home-icon {
 	padding-left: 50px;
 	padding-right: 50px;
+	margin-top: 5px;
+	height: 40px;
 }
 .navbar-nav {
 	text-align: center;

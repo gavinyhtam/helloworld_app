@@ -44,6 +44,7 @@
 
 <!-- ************** Country Selector. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
 	<section class="search-box">
+		<div id="help"><span class="glyphicon glyphicon-info-sign" id="help-icon"></span><h3 id="guide">Guide<h3></div>
 		<div class="header h1" id="navigate-country">
 			<span class="glyphicon glyphicon-search"></span> Navigate to a country:
 		</div>
@@ -57,6 +58,9 @@
 				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"><span class="glyphicon glyphicon-upload"></span> Upload photos</button>
 			</div>
 		<script>
+		$("#help").on('click',function() {
+			$("#howTo").modal("show");
+		});
 		$("#select-country").selectize();
 		//when user selects a country
 		$("#select-country").change(function() {
@@ -80,7 +84,7 @@
 		        </h4>
 		      </div>
 		      <div class="modal-body">
-		      	<p> Click on any picture to view</p>
+		      	<p> Click on any picture to view or comment</p>
 					<!--div id="myFBImage"></div-->
 					<div id="timeline-anchor">
 					<div id="my-timeline"></div>
@@ -195,7 +199,8 @@
 					}
 				};
 
-				<% @user.photos.each do |photo| %>
+			<% @all_friends.each do |friend| %>
+				<% friend.photos.each do |photo| %>
 					if ("<%= photo.location_name %>" === currLocation) {
 						var data = {
 							startDate: parseDate("<%= photo.date %>"),
@@ -203,7 +208,7 @@
 							headline: "<%= photo.photo_name %>",
 							text: "<%= photo.location_name %><p>Taken by <%= User.find_by(id: photo.user_id).first_name %> " + 
 									"<%= User.find_by(id: photo.user_id).last_name %></p>" +
-									'<img src="<%= @user.profile_pic_link %>">',
+									'<img src="<%= friend.profile_pic_link %>">',
 							asset: {
 								media: "<%= photo.link %>"
 							}
@@ -213,6 +218,7 @@
 						photos["timeline"]["asset"] = { media: "<%= photo.link %>" }
 				}
 				<% end %>
+			<% end %>
 				console.log(photos);
 
 				//remake destroyed div to place timeline in
@@ -330,6 +336,7 @@
 	<script type="text/javascript">
 		var map;
 		var currLocation;
+		var hoverLocation;
 		//when AmMap to ready to load
 		AmCharts.ready(function() {
 			 map = new AmCharts.AmMap(); //make new Map
@@ -389,6 +396,36 @@
 			 });
 
 			map.addListener("rollOverMapObject", function(e) {
+				hoverLocation = e.mapObject.id;
+				//console.log(hoverLocation);
+				//get users who have visited the hovered country and the number of people who have visited
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					contentType: "application/json",
+					url: "findLocation",
+					headers: {
+					  'X-Transaction': 'POST Example',
+					  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+					},
+					data: JSON.stringify({ location: hoverLocation }),
+					success: function(response) {
+						hoverLocation = response.msg[0].location_name;
+						var text = document.getElementById("popover-text");
+						if (response.msg.length === 1) {		//if only one friend has visited the place
+							text.innerHTML = '<hr class="popover-separator"><p><strong>' + response.msg.length + "</strong> person has visited " + hoverLocation + ".</p>";
+						} else {		//otherwise, use pluralised form
+							text.innerHTML = '<hr class="popover-separator"><p><strong>' + response.msg.length + "</strong> people have visited " + hoverLocation + ".</p>";
+						}
+						var picElement = document.getElementById("visited");
+						while (picElement.firstChild) picElement.removeChild(picElement.firstChild);
+						//create div for portfolio column
+						for (var i = 0; i < response.msg.length; i++) {
+							picElement.innerHTML +=  '<img class=img-horizontal src='+
+							response.profiles[i].profile_pic_link +'>';
+						}
+					}
+				});
 				if (e.mapObject.color == "#4444ff") {
 					var mousePos = { x: -1, y: -1};
 					mousePos.x = e.event.pageX;
@@ -402,6 +439,7 @@
 
 			map.addListener("rollOutMapObject", function(event) {
 				console.log("inside");
+				hoverLocation = undefined;
 				 $('.popover').hide();
 			});
 			map.addListener("positionChanged", function(event) {
@@ -529,9 +567,9 @@
 							dateFormat: 'dd-mm-yy'
 						});
 						$("#select-country"+i).selectize();
-						$(".remove").on('click',function() {
+						/*$(".remove").on('click',function() {
 							$(this)
-						});
+						});*/
 
 						document.getElementById('description-'+i).onclick = function() { showForm("descriptionForm",i); hideForm("dateForm",i); hideForm("locationForm", i); };
 						document.getElementById('date-'+i).onclick = function() { showForm("dateForm",i); hideForm("descriptionForm",i); hideForm("locationForm", i); };
@@ -636,62 +674,14 @@
 	}
 </script>
 
+
+<!--Popover showing the friends who have visited the country-->
 <div class="popover" id="popover">
 	<div id="visited"></div>
 	<div id="popover-text"></div>
 </div>
 
 <script>
-(function($) {
-	$(document).bind("FBSDKLoaded", function() {
-	FB.getLoginStatus(function(response) {
-		if (response.status === "connected") {
-			var numFriendsVisited = 0;
-			FB.api("/me/friends", function (response) {
-				if (response && !response.error) {
-					numFriendsVisited = response.data.length;
-					for (var i = 0; i < response.data.length; i++) {
-						(function() {	//closure to ensure asynchronous calls to FB APIs is correct
-							var j = i;
-							FB.api("/" + response.data[j].id + "/picture", {
-								"redirect": false,
-								"height": "50",
-								"type": "normal",
-								"width": "50"
-							},
-							function (picResponse) {
-								if (picResponse && !picResponse.error) {
-									var picElement = document.getElementById("visited");
-									//create div for portfolio column
-									picElement.innerHTML +=  '<img class=img-horizontal src='+
-									picResponse.data.url+'>';
-								}
-							});
-						})();
-					}
-					FB.api("/me/picture", {
-						"redirect": false,
-						"height": "50",
-						"type": "normal",
-						"width": "50"
-					}, function(picResponse) {
-						if (picResponse && !picResponse.error) {
-							var picElement = document.getElementById("visited");
-							//create div for portfolio column
-							var HTML =  '<img src='+
-							picResponse.data.url+'>';
-							picElement.innerHTML += HTML;
-						}
-					});
-					var text = document.getElementById("popover-text");
-					text.innerHTML = "<hr><p>You and <strong>" + numFriendsVisited + "</strong> friends have visited this place.</p>";
-				}
-			});
-		}
-	});
-	});
-})(jQuery);
-
 //hide popovers when user clicks
 $(document).on('click', function(e) {
 	$(".popover").hide();

@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 	has_many :photos
+	has_many :locations
 
 	before_save { username.downcase! } #ensure username is stored as lowercase
 

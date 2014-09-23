@@ -44,6 +44,10 @@
 }
 
 /* Sidebar Styles */
+.sidebar-icon {
+	margin-right: 5px;
+}
+
 
 .sidebar-nav {
     position: absolute;

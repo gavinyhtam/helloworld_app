@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post 'todos/create' => 'todos#create'
   post 'todos/createPhoto' => 'todos#createPhoto'
   post 'todos/friendPhotos' => 'todos#friendPhotos'
+  post 'todos/findLocation' => 'todos#findLocation'
   post 'login' => 'static_pages#login'
 
   # You can have the root of your site routed with "root"

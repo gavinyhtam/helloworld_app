@@ -1,44 +1,5 @@
+<!--Render navigation bar-->
 <%= render("layouts/todos") %>	
-
-<script type="text/javascript">
-	var name, numFriends;
-	(function($) {
-		$(document).bind("FBSDKLoaded", function() {
-			FB.getLoginStatus(function(response) {
-				if (response.status === "connected") {
-					FB.api("/" + "<%= @user_id %>" +"/picture", {
-						"redirect": false,
-						"height": "200",
-						"type": "normal",
-						"width": "200"
-					}, function(picResponse) {
-						if (picResponse && !picResponse.error) {
-							var picElement = document.getElementById("profile-pic");
-							//create div for portfolio column
-							var HTML =  '<img src='+
-							picResponse.data.url+'>';
-							picElement.innerHTML += HTML;
-						}
-					});
-					FB.api("/" + "<%= @user_id %>", function (response) {
-						if (response && !response.error) {
-							name = response.first_name + " " + response.last_name;
-						}
-					});
-					FB.api("/" + "<%= @user_id %>" + "/friends", function (response) {
-						if (response && !response.error) {
-							numFriends = response.summary.total_count;
-							document.getElementById("friends-number").innerHTML += 
-							name + " currently have <strong>" + numFriends + "</strong> Facebook friends and <strong>" +
-							response.data.length + "</strong> Hello World friends";
-						}
-					});
-				}
-			});
-		});
-	})(jQuery);
-</script>
-
 <div id="wrapper">
 	  <!-- Sidebar -->
 	  <div id="sidebar-wrapper">
@@ -49,13 +10,13 @@
 		           </a>
 		       </li>
 		       <li>
-		           <a href="#recent-activity">Recent Activity</a>
+		           <a href="#recent-activity"><span class="sidebar-icon glyphicon glyphicon-time"></span>Recent Activity</a>
 		       </li>
 		       <li>
-		           <a href="#locations">Locations</a>
+		           <a href="#locations"><span class="sidebar-icon glyphicon glyphicon-globe"></span>Locations</a>
 		       </li>
 		       <li>
-		           <a href="#friends">Friends</a>
+		           <a href="#friends"><span class="sidebar-icon glyphicon glyphicon-user"></span>Friends</a>
 		       </li>
 		   </ul>
 	  </div>
@@ -70,7 +31,7 @@
 					<span class="glyphicon glyphicon-content glyphicon-time"></span>
 					<h1>Recent activity</h1>
 						<p id="last-location">
-						You last went to
+						<%= @user.first_name + " " + @user.last_name %> last went to <%= @last_location.location_name %>
 						!
 						</p>
 					<div class="container" id="gallery">
@@ -83,6 +44,18 @@
 		         <div class="col-lg-12 page-section" id="locations">
 					<span class="glyphicon glyphicon-content glyphicon-globe"></span>
 						<h1>Locations</h1>
+						<p><%= @user.first_name + " " + @user.last_name %> has been to
+							<% if @locations.length == 0 %>
+								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
+							<% else %>
+								<% @locations.each do |location| %>
+									<h5 class="country-name">
+									<%= location %>,
+									</h5>
+								<% end %>
+							<% end %>
+							and are yet to visit <%= 256 - @locations.size %> other places!
+						</p>
 					</div>
 				</div>
 				<hr>
@@ -105,4 +78,44 @@
 	  e.preventDefault();
 	  $("#wrapper").toggleClass("toggled");
 	});
+</script>
+
+<script>
+	var gallery = document.getElementById("gallery");
+	var numPhotos = 0;
+	<% @last_location_photos.each do |photo| %>
+		gallery.innerHTML += '<div class="col-md-4"><div class="well">' +
+			'<img class="thumbnail img-responsive" src=<%=photo.link%>>' + '</div></div>';
+		numPhotos++;
+	<% end %>
+</script>
+
+
+<script type="text/javascript">
+	(function($) {
+		$(document).bind("FBSDKLoaded", function() {
+			FB.getLoginStatus(function(response) {
+				if (response.status === "connected") {
+					FB.api("/" + "<%= @user_id %>" +"/picture", {
+						"redirect": false,
+						"height": "200",
+						"type": "normal",
+						"width": "200"
+					}, function(picResponse) {
+						if (picResponse && !picResponse.error) {
+							var picElement = document.getElementById("profile-pic");
+							//create div for portfolio column
+							var HTML =  '<img src='+
+							picResponse.data.url+'>';
+							picElement.innerHTML += HTML;
+						}
+					});
+					document.getElementById("profile-name").innerHTML += '<%= @user.first_name + " " + @user.last_name %>';
+					document.getElementById("friends-number").innerHTML += 
+							'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + '<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
+							'<%= User.all.length %>' + "</strong> Hello World friends";
+				}
+			});
+		});
+	})(jQuery);
 </script>
