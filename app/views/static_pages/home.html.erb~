@@ -60,7 +60,7 @@
 						data: JSON.stringify({ username: response.email, first_name: response.first_name, last_name: response.last_name, fb_id: response.id, profile_pic_link: profile_pic}),
 						success: function(r) {
 							console.log(r.msg);
-							window.location = "http://localhost:3000/todos/index" + "?id=" + response.id;//------REDIRECT IS BUGGY
+							window.location = "http://localhost:3000/todos/index" + "?username=" + response.email;//------REDIRECT IS BUGGY
 						}
 					});
 				});
@@ -109,7 +109,7 @@
                     <div class="intro-message">
                         <h1>Travel. Share. Discover.</h1>
                         <h3>Join us now and discover!</h3>
-                        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_photos" onlogin="checkLoginState();">Sign in with Facebook</div>
+                        <div class="fb-login-button" data-max-rows="1" data-size="xlarge" data-show-faces="false" data-auto-logout-link="false" data-scope="public_profile,email,user_friends,user_photos" onlogin="checkLoginState();">Sign in with Facebook</div>
                     </div>
                 </div>
             </div>

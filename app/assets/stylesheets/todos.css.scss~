@@ -184,13 +184,6 @@
 	margin-top:10px;	//for some reason, this is required for arrow to be in right position
 }
 
-
-
-
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 #wrap {
     margin: 0 auto;
@@ -241,6 +234,7 @@
     text-decoration: none;
 }
 
+////////////////////////////////////////////////////////////////////////////////
 /*!
  * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
@@ -522,6 +516,7 @@
 .name {
 	color: #3333EE;
 }
+
 .thumbnail {
 	max-width: 30%;
 	float: left;
@@ -591,6 +586,10 @@
 	padding-bottom: 20px;
 }
 
-.friend-photos {
+.friend-photo {
 	height: 200px;
+}
+
+.time-icon {
+	padding-left: 
 }

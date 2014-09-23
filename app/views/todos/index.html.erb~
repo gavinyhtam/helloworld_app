@@ -646,7 +646,7 @@
 	$(document).bind("FBSDKLoaded", function() {
 	FB.getLoginStatus(function(response) {
 		if (response.status === "connected") {
-			var numFriendsVisited;
+			var numFriendsVisited = 0;
 			FB.api("/me/friends", function (response) {
 				if (response && !response.error) {
 					numFriendsVisited = response.data.length;

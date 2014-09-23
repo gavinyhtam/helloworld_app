@@ -669,24 +669,24 @@
 							});
 						})();
 					}
+					FB.api("/me/picture", {
+						"redirect": false,
+						"height": "50",
+						"type": "normal",
+						"width": "50"
+					}, function(picResponse) {
+						if (picResponse && !picResponse.error) {
+							var picElement = document.getElementById("visited");
+							//create div for portfolio column
+							var HTML =  '<img src='+
+							picResponse.data.url+'>';
+							picElement.innerHTML += HTML;
+						}
+					});
+					var text = document.getElementById("popover-text");
+					text.innerHTML = "<hr><p>You and <strong>" + numFriendsVisited + "</strong> friends have visited this place.</p>";
 				}
 			});
-		 	FB.api("/me/picture", {
-				"redirect": false,
-				"height": "50",
-				"type": "normal",
-				"width": "50"
-			}, function(picResponse) {
-				if (picResponse && !picResponse.error) {
-					var picElement = document.getElementById("visited");
-					//create div for portfolio column
-					var HTML =  '<img src='+
-					picResponse.data.url+'>';
-					picElement.innerHTML += HTML;
-				}
-			});
-			var text = document.getElementById("popover-text");
-			text.innerHTML = "<hr><p>You and <strong>" + numFriendsVisited + "</strong> friends have visited this place.</p>";
 		}
 	});
 	});

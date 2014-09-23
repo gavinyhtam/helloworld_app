@@ -1,7 +1,7 @@
 	<!--Contains friends for the Selectize selector-->
    <option value="">Search for a friend...</option>
-	<option value="1440333479560827">Gavin Tam</option>
-	<option value="1475644006031269">Simon Brooke</option>
+	<option value=1440333479560827>Gavin Tam</option>
+	<option value=1475644006031269>Simon Brooke</option>
 
 
 

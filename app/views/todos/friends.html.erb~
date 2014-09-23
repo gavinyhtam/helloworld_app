@@ -168,46 +168,26 @@
 								div.setAttribute("class", "col-md-4 portfolio-item");
 								pictures.appendChild(div);
 								var image = document.createElement("img");
-								image.setAttribute("class", "img-responsive");
+								image.setAttribute("class", "img-responsive friend-photo");
 								image.setAttribute("src", response.msg[i].link);
 								div.appendChild(image);
 								div.innerHTML += "<h3>" + response.msg[i].photo_name + "</h3>" +
-														"<p>" + response.msg[i].location_name + "</p>";
+														"<p>" + response.msg[i].location_name + " on " + '<span class="glyphicon glyphicon-time time-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
 							}
 						}
 					});
 				});
+
+			//parses JSON (ISO8601) to dd/mm/yyyy format
+			function parseDate(string) {
+				var date = new Date(string);
+				return date.getUTCDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear();
+			}
 			</script>
 
 	     <!-- Projects Row -->
 	     <div class="row" id="pictures-1">
-	         <div class="col-md-4 portfolio-item">
-	             <a href="#">
-	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-	             </a>
-	             <h3>
-	                 <a href="#">Project Name</a>
-	             </h3>
-	             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-	         </div>
-	         <div class="col-md-4 portfolio-item">
-	             <a href="#">
-	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-	             </a>
-	             <h3>
-	                 <a href="#">Project Name</a>
-	             </h3>
-	             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-	         </div>
-	         <div class="col-md-4 portfolio-item">
-	             <a href="#">
-	                 <img class="img-responsive" src="http://placehold.it/700x400" alt="">
-	             </a>
-	             <h3>
-	                 <a href="#">Project Name</a>
-	             </h3>
-	             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>
-	         </div>
+	        <!--Content for recent photos goes here-->
 	     </div><!-- /.row -->
 
 	     <hr>
