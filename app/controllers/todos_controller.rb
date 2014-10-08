@@ -45,7 +45,7 @@ class TodosController < ApplicationController
 			@user.photos.build(link: params[:link], location_name: params[:location_name], date: params[:date], photo_name: params[:photo_name], photo_id: params[:photo_id])
 			if @user.save	#if the photo was saved successfully
 				@user.locations.build(location_name: params[:location_name])
-				@user.save unless @user.locations.include? params[:location_name]
+				@user.save unless @user.locations.find_by(location_name: params[:location_name])
 				respond_to do |format|
 					format.json { render :json => { msg: "Posted!" } }
 				end

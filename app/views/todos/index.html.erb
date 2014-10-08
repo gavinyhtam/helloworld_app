@@ -40,37 +40,10 @@
 		    </div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
-			
 
-<!-- ************** Country Selector. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
-	<section class="search-box">
-		<div id="help"><span class="glyphicon glyphicon-info-sign" id="help-icon"></span><h3 id="guide">Guide<h3></div>
-		<div class="header h1" id="navigate-country">
-			<span class="glyphicon glyphicon-search"></span> Navigate to a country:
-		</div>
-		<div class="sandbox">
-			<label for="select-country">Country:</label>
-			<select class="select-countries" id="select-country" class="demo-default" placeholder="Select a country...">
-			<%= render :partial => "layouts/selectize" %>
-			</select>
-		</div>
-			<div id="upload-button">
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"><span class="glyphicon glyphicon-upload"></span> Upload photos</button>
-			</div>
-		<script>
-		$("#help").on('click',function() {
-			$("#howTo").modal("show");
-		});
-		$("#select-country").selectize();
-		//when user selects a country
-		$("#select-country").change(function() {
-			var c = document.getElementById("select-country");
-			var country = c.options[c.selectedIndex].value;
-			//console.log("hello" + country);
-			map.selectObject(map.getObjectById(country));
-		});
-		</script>
-	</section>
+		<!--div id="upload-button">
+			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"><span class="glyphicon glyphicon-upload"></span> Upload photos</button>
+		</div-->
 
 		<!--Modal for photo browser-->
 		<div class="modal fade" id="myModal">
@@ -105,7 +78,37 @@
 		  </div>
 		</div-->
 		<!--Display AmMaps javascript-->
-		<div id="mapdiv"></div>
+		<div id="map">
+			<!-- ************** Country Selector. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
+			<section class="search-box">
+				<div id="search-country" class="sandbox">
+					<label><span class="glyphicon glyphicon-search" id="search-icon"></span></label>
+					<select class="select-countries" id="select-country" class="demo-default" placeholder="Select a country...">
+					<%= render :partial => "layouts/selectize" %>
+					</select>
+				</div>
+				<script>
+				$("#select-country").selectize();
+				//when user selects a country
+				$("#select-country").change(function() {
+					var c = document.getElementById("select-country");
+					var country = c.options[c.selectedIndex].value;
+					//console.log("hello" + country);
+					map.selectObject(map.getObjectById(country));
+				});
+				</script>
+			</section>
+			<div id="mapdiv"></div>
+			<div class="icon-side">
+				<div class="icon-side-element" id="help-icon"><span class="glyphicon glyphicon-info-sign icon-bar"></span></div>
+				<div class="icon-side-element" id="upload-icon"><span class="glyphicon glyphicon-upload icon-bar"></span></div>
+			</div>
+			<script>
+				$("#help-icon").on('click',function() {
+					$("#howTo").modal("show");
+				});
+			</script>
+		</div>
 	
 <!--**********************************TIMELINE*****************************-->
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
@@ -163,26 +166,24 @@
 				function(response) {
 					console.log(response);
 					console.log(response.data);
-					$(document).ready(function() {
-						for (var i = 0; i < response.data.length; i++) {
-							console.log(response.data[i]);
-							if (response.data[i].place === undefined || response.data[i].name === undefined) {
-								continue;	//if no location or photo name specified
-							}
-							var date = response.data[i].created_time; //default date is created time unless user has date attached
-							if (response.data[i].backdated_time !== undefined) {
-								date = response.data[i].backdated_time;	//update date to user described date
-							}
-							var dbPhotoJson = {
-								link: response.data[i].source,
-								date: date,
-								location_name: response.data[i].place.name,
-								photo_name: response.data[i].name,
-								photo_id: response.data[i].id
-							}
-							addPhoto(dbPhotoJson);
+					for (var i = 0; i < response.data.length; i++) {
+						console.log(response.data[i]);
+						if (response.data[i].place === undefined || response.data[i].name === undefined) {
+							continue;	//if no location or photo name specified
 						}
-					});
+						var date = response.data[i].created_time; //default date is created time unless user has date attached
+						if (response.data[i].backdated_time !== undefined) {
+							date = response.data[i].backdated_time;	//update date to user described date
+						}
+						var dbPhotoJson = {
+							link: response.data[i].source,
+							date: date,
+							location_name: response.data[i].place.name,
+							photo_name: response.data[i].name,
+							photo_id: response.data[i].id
+						}
+						addPhoto(dbPhotoJson);
+					}
 			});
 		}
 		
@@ -225,12 +226,14 @@
 				$("#timeline-anchor").append("<div id=my-timeline></div>");
 				 //create the TimelineJS
 				//width is inherited from parent div to ensure responsiveness
-				createStoryJS({
-					  type:       'timeline',
-					  height:     '600',
-					  source:     photos,
-					  embed_id:   'my-timeline'
-				 });
+				$(document).ready(function() {
+					createStoryJS({
+						  type:       'timeline',
+						  height:     '600',
+						  source:     photos,
+						  embed_id:   'my-timeline'
+					 });
+				});
 			});
 		}
 
@@ -366,7 +369,7 @@
 
 			//map.backgroundColor = "#ABD8F6";
 			//map.backgroundAlpha = 0.1;
-			 map.smallMap = new AmCharts.SmallMap();
+			 //map.smallMap = new AmCharts.SmallMap();
 			 
 			 //when country is selected
 			 map.addListener("clickMapObject", function (event) {
@@ -509,6 +512,12 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<script>
+	$("#upload-icon").on('click',function() {
+		$("#upload").modal("show");
+	});
+</script>
+
 <!--Modal for Enlarged Image-->
 	<div class="modal fade" id="enlargedImage">
       <div class="enlargedImageModal">
@@ -643,7 +652,7 @@
 			f.append("source", imageFiles.files[i]);
 			f.append("message", description.value);
 			f.append("backdated_time", date.value);
-			f.append("place", 108191385876482);		//add Australia as location for now ************************************
+			f.append("place", 111559695526620);		//add Russia as location for now ************************************
 			//f.append("location", location.options[location.selectedIndex].value);
 			console.log(location.selectedIndexvalue);
 			(function() {
@@ -666,6 +675,7 @@
 		              complete: function () {
 		                  console.log("Posted to facebook");
 								$("#process-upload").hide();
+								//window.location = "http://localhost:3000/todos/index"
 		              }
 		          });
 				});

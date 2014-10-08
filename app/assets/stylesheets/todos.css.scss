@@ -5,28 +5,60 @@
 .header {
 	text-align: center
 }
-
-/////////////////////////////////////////////////////////////////////////////////
-#help-icon {
-	font-size: 30px;
-	position: fixed;
-	top: 80px;
-	left: 10px;
-	color: rgba(0,0,0,0.5)
-}
-
-#guide {
-	position: fixed;
-	color: rgba(0,0,0,0.5);
-	top: 60px;
-	left: 50px;	//place "Guide" next to help icon
-}
 ////////////////////////////////////////////////////////////////////////////////
+
+#map {
+	margin-top: 50px;
+	position: relative;
+}
+
+#search-country {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
 
 #mapdiv {
 	width: 100%;
 	min-height: 720px;
 }
+
+#search-icon {
+	position: absolute;
+	top: 25px;
+	right: 260px;
+	font-size: 12pt;
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+.icon-bar-text {
+	font-size: 30px;
+	color: rgba(0,0,0,0.5);
+}
+
+.icon-bar {
+	margin-bottom: 30px;
+	font-size: 60px;
+	color: rgba(0,0,0,0.5);
+	left: 50px;
+	float: left;
+}
+.icon-bar:hover {
+	color: rgba(0,0,0,1);
+}
+
+
+.icon-bar-element {
+	display: inline-block;
+}
+
+.icon-side {
+	position: absolute;
+	bottom: 0;
+	display: table-cell;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 .inner-item {
     text-align: center;
@@ -44,7 +76,9 @@
 }
 
 .sandbox {
-	padding-left: 50px;
+	float: right;
+	width: 250px;
+	//padding-left: 50px;
 	padding-right: 50px;
 }
 
