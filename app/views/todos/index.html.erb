@@ -103,6 +103,10 @@
 				<div class="icon-side-element" id="help-icon"><span class="glyphicon glyphicon-info-sign icon-bar"></span></div>
 				<div class="icon-side-element" id="upload-icon"><span class="glyphicon glyphicon-upload icon-bar"></span></div>
 			</div>
+			<div id="country-info">
+				<div id="country-flag"></div>
+				<div id="country-description"></div>
+			</div>
 			<script>
 				$("#help-icon").on('click',function() {
 					$("#howTo").modal("show");
@@ -413,20 +417,30 @@
 					},
 					data: JSON.stringify({ location: hoverLocation }),
 					success: function(response) {
-						hoverLocation = response.msg[0].location_name;
-						var text = document.getElementById("popover-text");
-						if (response.msg.length === 1) {		//if only one friend has visited the place
-							text.innerHTML = '<hr class="popover-separator"><p><strong>' + response.msg.length + "</strong> person has visited " + hoverLocation + ".</p>";
-						} else {		//otherwise, use pluralised form
-							text.innerHTML = '<hr class="popover-separator"><p><strong>' + response.msg.length + "</strong> people have visited " + hoverLocation + ".</p>";
+						hoverLocation = response.country;
+						if (response.msg.length > 0) {
+							var text = document.getElementById("popover-text");
+							if (response.msg.length === 1) {		//if only one friend has visited the place
+								text.innerHTML = '<hr class="popover-separator"><p><strong>' + response.msg.length + "</strong> person has visited " + hoverLocation + ".</p>";
+							} else {		//otherwise, use pluralised form
+								text.innerHTML = '<hr class="popover-separator"><p><strong>' + response.msg.length + "</strong> people have visited " + hoverLocation + ".</p>";
+							}
+							var picElement = document.getElementById("visited");
+							while (picElement.firstChild) picElement.removeChild(picElement.firstChild);
+							//create div for portfolio column
+							for (var i = 0; i < response.msg.length; i++) {
+								picElement.innerHTML +=  '<img class=img-horizontal src='+
+								response.profiles[i].profile_pic_link +'>';
+							}
 						}
-						var picElement = document.getElementById("visited");
-						while (picElement.firstChild) picElement.removeChild(picElement.firstChild);
-						//create div for portfolio column
-						for (var i = 0; i < response.msg.length; i++) {
-							picElement.innerHTML +=  '<img class=img-horizontal src='+
-							response.profiles[i].profile_pic_link +'>';
-						}
+						var page = pageID(hoverLocation);	//get country FB page ID
+						FB.api('/'+page, function(r) {
+
+							document.getElementById('country-description').innerHTML = r.description.substring(0,140) + "..." + '<a href="' + r.link + '" target="_blank">read more</a>';
+						});
+						FB.api('/'+page+'/picture', { "type": "normal" }, function(r) {
+							document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
+						});
 					}
 				});
 				if (e.mapObject.color == "#4444ff") {

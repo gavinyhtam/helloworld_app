@@ -5,7 +5,7 @@ class TodosController < ApplicationController
 		#determines whether introduction of web app to new users should be shown
 		@new_user = session[:new_user]
 		session[:new_user] = false
-		@user = User.find_or_create_by(username: cookies[:username])	#find or create the logged in user
+		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		@all_friends = User.all
 		@locations = []
 		@all_friends.each do |friend|
@@ -18,7 +18,7 @@ class TodosController < ApplicationController
 
 	def friends
 		@users = User.all
-		@user = User.find_or_create_by(username: cookies[:username])	#find or create the logged in user
+		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		sorted_photos = @user.photos.sort_by &:updated_at
 		@recent_location = sorted_photos[0].location_name
 		@recent_photos = @user.photos.limit(3).where(location_name: @recent_location)
@@ -32,7 +32,7 @@ class TodosController < ApplicationController
 	end
 
 	def createPhoto
-		@user = User.find_by(username: cookies[:username])
+		@user = User.find_by(fb_id: cookies[:fb_id])
 		#if photo already exists, update attributes
 		photo = @user.photos.find_by(photo_id: params[:photo_id])
 		if (photo)
@@ -77,12 +77,7 @@ class TodosController < ApplicationController
 			@user_profiles.push(User.find_by(id: user.user_id))
 		end
 		respond_to do |format|
-			format.json { render :json => { msg: @users, profiles: @user_profiles }}
+			format.json { render :json => { country: country(location), msg: @users, profiles: @user_profiles }}
 		end
 	end
-
-	def refresh
-		redirect_to :back
-	end
-	helper_method :refresh
 end

@@ -15,7 +15,7 @@ class StaticPagesController < ApplicationController
 	end
     User.create(username: params[:username], first_name: params[:first_name], 
 					last_name: params[:last_name], fb_id: params[:fb_id], profile_pic_link: params[:profile_pic_link])
-    cookies[:username] = params[:username]
+    cookies[:fb_id] = params[:fb_id]
     respond_to do |format|
        format.json { render :json => { msg: "Logging in..." } }
 	 end
