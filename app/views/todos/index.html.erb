@@ -81,6 +81,7 @@
 			<a href="#demo4" data-toggle="collapse">Info</a>
 			 <div class="collapse" id="demo4">
 				<div id="google-maps"></div>
+				<div id="attraction-info"></div>
 			</div>
 		</div>
 		<!--Display AmMaps javascript-->
@@ -122,24 +123,31 @@
 			<script>
 				var map;
 				var infowindow;
+				var geocoder;
+				var place;
 
-				function initialise(lat,long) {
-				  var place = new google.maps.LatLng(lat, long);
-
+				function initialise(country) {
+					geocoder = new google.maps.Geocoder();
+					geocoder.geocode( { 'address': country }, function(results, status) {
+						 if (status == google.maps.GeocoderStatus.OK) {
+							console.log(results);
+				  			//place = new google.maps.LatLngBounds(results.geometry.bounds);
+						 } else {
+							alert('Geocode was not successful for the following reason: ' + status);
+						 }
+					});
+/*
 				  map = new google.maps.Map(document.getElementById('google-maps'), {
 					 center: place,
 					 zoom: 6
 				  });
 
 				  var request = {
-					 location: place,
-					 radius: 50000,
-					 types: ["aquarium","zoo","amusement_park","art_gallery","casino","museum"],
-					 rankby: "prominence"
+					 query: "tourist attractions in Australia"
 				  };
 				  infowindow = new google.maps.InfoWindow();
 				  var service = new google.maps.places.PlacesService(map);
-				  service.nearbySearch(request, callback);
+				  service.textSearch(request, callback);	//find the tourist attractions of the country*/
 				}
 
 				function callback(results, status) {
@@ -147,6 +155,7 @@
 				  if (status == google.maps.places.PlacesServiceStatus.OK) {
 					 for (var i = 0; i < results.length; i++) {
 						createMarker(results[i]);
+						createAttractionInfo(results[i]);
 					 }
 				  }
 				}
@@ -162,6 +171,12 @@
 					 infowindow.setContent(place.name);
 					 infowindow.open(map, this);
 				  });
+				}
+
+				function createAttractionInfo(place) {
+					var info = document.getElementById('attractions-info');
+					info.innerHTML += place.name;
+
 				}
 
 				google.maps.event.addDomListener(window, 'load', initialise);
@@ -525,7 +540,7 @@
 
 							document.getElementById('country-description').innerHTML = r.description.substring(0,140) + "..." + '<a href="' + r.link + '" target="_blank">read more</a>';
 							console.log(r.location.latitude, r.location.longitude);							
-							initialise(r.location.latitude,r.location.longitude);
+							initialise(hoverLocation);
 						});
 						FB.api('/'+page+'/picture', { "type": "normal" }, function(r) {
 							document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
