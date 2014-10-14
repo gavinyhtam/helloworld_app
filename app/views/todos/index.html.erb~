@@ -77,6 +77,12 @@
 		    97%
 		  </div>
 		</div-->
+		<div id="google-info">
+			<a href="#demo4" data-toggle="collapse">Info</a>
+			 <div class="collapse" id="demo4">
+				<div id="google-maps"></div>
+			</div>
+		</div>
 		<!--Display AmMaps javascript-->
 		<div id="map">
 			<!-- ************** Country Selector. All credits go to http://brianreavis.github.io/selectize.js/ ************** -->
@@ -112,6 +118,86 @@
 					$("#howTo").modal("show");
 				});
 			</script>
+			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+			<script>
+				var map;
+				var infowindow;
+
+				function initialise(lat,long) {
+				  var place = new google.maps.LatLng(lat, long);
+
+				  map = new google.maps.Map(document.getElementById('google-maps'), {
+					 center: place,
+					 zoom: 6
+				  });
+
+				  var request = {
+					 location: place,
+					 radius: 50000,
+					 types: ["aquarium","zoo","amusement_park","art_gallery","casino","museum"]
+				  };
+				  infowindow = new google.maps.InfoWindow();
+				  var service = new google.maps.places.PlacesService(map);
+				  service.nearbySearch(request, callback);
+				}
+
+				function callback(results, status) {
+				console.log(results);
+				  if (status == google.maps.places.PlacesServiceStatus.OK) {
+					 for (var i = 0; i < results.length; i++) {
+						createMarker(results[i]);
+					 }
+				  }
+				}
+
+				function createMarker(place) {
+				  var placeLoc = place.geometry.location;
+				  var marker = new google.maps.Marker({
+					 map: map,
+					 position: place.geometry.location
+				  });
+
+				  google.maps.event.addListener(marker, 'click', function() {
+					 infowindow.setContent(place.name);
+					 infowindow.open(map, this);
+				  });
+				}
+
+				google.maps.event.addDomListener(window, 'load', initialise);
+			</script>
+			<!--script src="http://js.api.here.com/se/2.5.3/jsl.js" type="text/javascript" charset="utf-8"></script>
+			<script>
+				/*	Setup authentication app_id and app_code 
+				*	WARNING: this is a demo-only key
+				*	please register for an Evaluation, Base or Commercial key for use in your app.
+				*	Just visit http://developer.here.com/get-started for more details. Thank you!
+				*/
+				nokia.Settings.set("app_id", "EY131OWdrD2A2iehjYpa"); 
+				nokia.Settings.set("app_code", "AYNsV3SQRBAvnaPZhnW1Tw");
+				// Use staging environment (remove the line for production environment)
+				//nokia.Settings.set("serviceMode", "cit");
+
+				// Get the DOM node to which we will append the map
+				var mapContainer = document.getElementById("google-maps");
+				// Create a map inside the map container DOM node
+				var map = new nokia.maps.map.Display(mapContainer, {
+					// initial center and zoom level of the map
+					center: [52.51, 13.4],
+					zoomLevel: 10
+				});
+
+				/* We create a UI notecontainer for example description
+				 * NoteContainer is a UI helper function and not part of the Maps API for JavaScript
+				 * See exampleHelpers.js for implementation details 
+				 */
+				 /*var noteContainer = new NoteContainer({
+					id: "basicMapUi",
+					parent: document.getElementById("google-maps"),
+					title: "Basic map example",
+					content:
+						'<p>This example shows how to create a basic map with few lines of code</p>'
+				});*/
+			</script-->
 		</div>
 	
 <!--**********************************TIMELINE*****************************-->
@@ -437,9 +523,11 @@
 						FB.api('/'+page, function(r) {
 
 							document.getElementById('country-description').innerHTML = r.description.substring(0,140) + "..." + '<a href="' + r.link + '" target="_blank">read more</a>';
+							console.log(r.location.latitude, r.location.longitude);							
+							initialise(r.location.latitude,r.location.longitude);
 						});
 						FB.api('/'+page+'/picture', { "type": "normal" }, function(r) {
-							document.getElementById('country-flag').innerHTML = '<img class="flag" src="' + r.data.url + '">';
+							document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
 						});
 					}
 				});
