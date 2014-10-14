@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
 	VALID_USERNAME_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :username, 
-		presence: true, 
+		#presence: true, 
 		uniqueness: {case_sensitive: false},
 		format: {with: VALID_USERNAME_REGEX}
 	validates	 :first_name,

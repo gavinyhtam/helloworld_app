@@ -81,7 +81,27 @@
 			<a href="#demo4" data-toggle="collapse">Info</a>
 			 <div class="collapse" id="demo4">
 				<div id="google-maps"></div>
-				<div id="attraction-info"></div>
+				<div id="attractions-info">
+					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+					<!-- Indicators -->
+					  <ol class="carousel-indicators">
+						 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+						 <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+						 <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+					  </ol>
+					  <!-- Wrapper for slides -->
+					  <div class="carousel-inner" id="attractions">
+					  </div>
+
+					  <!-- Controls -->
+					  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+						 <span class="glyphicon glyphicon-chevron-left"></span>
+					  </a>
+					  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+						 <span class="glyphicon glyphicon-chevron-right"></span>
+					  </a>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--Display AmMaps javascript-->
@@ -119,107 +139,6 @@
 					$("#howTo").modal("show");
 				});
 			</script>
-			<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
-			<script>
-				var map;
-				var infowindow;
-				var geocoder;
-				var place, placeCoordinates;
-
-				function initialise(lat,lng) {
-					/*geocoder = new google.maps.Geocoder();
-					geocoder.geocode( { 'address': country }, function(results, status) {
-						 if (status == google.maps.GeocoderStatus.OK) {
-							console.log(results);
-				  			place = new google.maps.LatLngBounds(new google.maps.LatLng(results[0].geometry.bounds.Ea.j,results[0].geometry.bounds.Ea.k),
-																			new google.maps.LatLng(results[0].geometry.bounds.va.j,results[0].geometry.bounds.Ea.k));
-							placeCoordinates = new google.maps.LatLng((results[0].geometry.bounds.Ea.j+results[0].geometry.bounds.va.j)/2,
-																					(results[0].geometry.bounds.Ea.k+results[0].geometry.bounds.va.k)/2);
-							console.log(placeCoordinates);
-						 } else {
-							alert('Geocode was not successful for the following reason: ' + status);
-						 }
-					});*/
-				  place = new google.maps.LatLng(lat,lng);
-				  map = new google.maps.Map(document.getElementById('google-maps'), {
-					 center: place,
-					 zoom: 6
-				  });
-				  console.log("map is ", map);
-
-				  var request = {
-					 query: "tourist attractions in " + hoverLocation
-				  };
-				  infowindow = new google.maps.InfoWindow();
-				  var service = new google.maps.places.PlacesService(map);
-				  service.textSearch(request, callback);	//find the tourist attractions of the country*/
-				}
-
-				function callback(results, status) {
-				console.log(results);
-				  if (status == google.maps.places.PlacesServiceStatus.OK) {
-					 for (var i = 0; i < results.length; i++) {
-						createMarker(results[i]);
-						createAttractionInfo(results[i]);
-					 }
-				  }
-				}
-
-				function createMarker(place) {
-				  var placeLoc = place.geometry.location;
-				  var marker = new google.maps.Marker({
-					 map: map,
-					 position: place.geometry.location
-				  });
-
-				  google.maps.event.addListener(marker, 'click', function() {
-					 infowindow.setContent(place.name);
-					 infowindow.open(map, this);
-				  });
-				}
-
-				function createAttractionInfo(place) {
-					var info = document.getElementById('attraction-info');
-					info.innerHTML += "<p>" + place.name + "</p>";
-					console.log(place.photos[0].getUrl({height: 100, width: 100 }));
-					info.innerHTML += '<img src="' + place.photos[0].getUrl + '">';
-				}
-
-				google.maps.event.addDomListener(window, 'load', initialise);
-			</script>
-			<!--script src="http://js.api.here.com/se/2.5.3/jsl.js" type="text/javascript" charset="utf-8"></script>
-			<script>
-				/*	Setup authentication app_id and app_code 
-				*	WARNING: this is a demo-only key
-				*	please register for an Evaluation, Base or Commercial key for use in your app.
-				*	Just visit http://developer.here.com/get-started for more details. Thank you!
-				*/
-				nokia.Settings.set("app_id", "EY131OWdrD2A2iehjYpa"); 
-				nokia.Settings.set("app_code", "AYNsV3SQRBAvnaPZhnW1Tw");
-				// Use staging environment (remove the line for production environment)
-				//nokia.Settings.set("serviceMode", "cit");
-
-				// Get the DOM node to which we will append the map
-				var mapContainer = document.getElementById("google-maps");
-				// Create a map inside the map container DOM node
-				var map = new nokia.maps.map.Display(mapContainer, {
-					// initial center and zoom level of the map
-					center: [52.51, 13.4],
-					zoomLevel: 10
-				});
-
-				/* We create a UI notecontainer for example description
-				 * NoteContainer is a UI helper function and not part of the Maps API for JavaScript
-				 * See exampleHelpers.js for implementation details 
-				 */
-				 /*var noteContainer = new NoteContainer({
-					id: "basicMapUi",
-					parent: document.getElementById("google-maps"),
-					title: "Basic map example",
-					content:
-						'<p>This example shows how to create a basic map with few lines of code</p>'
-				});*/
-			</script-->
 		</div>
 	
 <!--**********************************TIMELINE*****************************-->
@@ -769,16 +688,12 @@
 			if (document.getElementById("select-country" + i)) {
 				location = document.getElementById("select-country" + i);
 			}
-			//console.log(location.options[location.selectedIndex].value);
-			//console.log(description.value);
 			$("#process-upload").modal("show");
-			var f = new FormData();
+			var f = new FormData();	//create upload photo formdata
 			f.append("source", imageFiles.files[i]);
 			f.append("message", description.value);
 			f.append("backdated_time", date.value);
-			f.append("place", 111559695526620);		//add Russia as location for now ************************************
-			//f.append("location", location.options[location.selectedIndex].value);
-			console.log(location.selectedIndexvalue);
+			f.append("place", pageID(location.options[location.selectedIndex].value));
 			(function() {
             var fCopy = f;
 				FB.api('/me/albums', function(response) {

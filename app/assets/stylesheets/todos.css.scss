@@ -36,7 +36,7 @@
 	left: 100px;
 	width: 300px;
 	min-height: 100px;
-	background-color: rgba(0,0,255,0.2);
+	background-color: rgba(255,255,255,0.7);
 	overflow: hidden;
 }
 
@@ -46,6 +46,7 @@
 }
 
 #google-maps {
+	float: left;
 	min-height: 300px;
 	max-width: 30%;
 }
@@ -58,6 +59,11 @@
 #google-info {
 	padding-top: 20px;
 	padding-left: 20px;
+}
+
+#attractions-info {
+	float: left;
+	min-height: 300px;
 }
 /////////////////////////////////////////////////////////////////////////////////
 .icon-bar-text {
