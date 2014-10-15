@@ -222,41 +222,82 @@
 					<% end %>
 				<% end %>
 				console.log(photos);
-
-				//remake destroyed div to place timeline in
-				$("#timeline-anchor").append("<div id=my-timeline></div>");
-
-				if (isEmpty) {	//if no photos are present for that country
-					document.getElementById("filters").innerHTML = "";
-					var timeline = document.getElementById("my-timeline");
-					var newDiv = document.createElement('div');
-					newDiv.id = "timeline-default";
-					newDiv.innerHTML = '<span class="glyphicon glyphicon-upload" onclick="showUpload()"></span><h1>Upload a photo now</h1>';
-					timeline.appendChild(newDiv);
-				} else {
-					 //create the TimelineJS
-					//width is inherited from parent div to ensure responsiveness
-					$(document).ready(function() {
-						createStoryJS({
-							  type:       'timeline',
-							  height:     '600',
-							  source:     photos,
-							  embed_id:   'my-timeline'
-						 });
-					});
-					var filters = document.getElementById("filters");
-					var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
-   												'<option value="">Search for a friend...</option>';
-					for (var i = 0; i < peopleVisited.length; i++) {
-						HTML += '<option value=' + peopleVisited[i].id + '>' + 
-													peopleVisited[i].first_name + " " + peopleVisited[i].last_name
-													+ "</option>";
-					}
-					HTML += "</select>";
-					filters.innerHTML = HTML;
-					$("#filter-friends").selectize();			
-				}
+				createTimeline(photos);
 			});
+		}
+
+		function getFriendPhotos(friendPhotos) {
+			$(document).ready(function() {
+				var photos = { 
+					timeline: {
+						headline: currLocation + " trip",
+						type: "default",
+						text: "<p>Album</p>",
+						date: [],
+						era: [],
+					}
+				};
+
+				var isEmpty = true;
+				for (var i = 0; i < 
+						if ("<%= photo.location_name %>" === currLocation) {
+							isEmpty = false;
+							var data = {
+								startDate: parseDate("<%= photo.date %>"),
+								endDate: parseDate("<%= photo.date %>"),
+								headline: "<%= photo.photo_name %>",
+								text: "<%= photo.location_name %><p>Taken by <%= User.find_by(id: photo.user_id).first_name %> " + 
+										"<%= User.find_by(id: photo.user_id).last_name %></p>" +
+										'<img src="<%= friend.profile_pic_link %>">',
+								asset: {
+									media: "<%= photo.link %>"
+								}
+							};
+							photos["timeline"]["date"].push(data);
+							photos["timeline"]["era"].push(data);
+							photos["timeline"]["asset"] = { media: "<%= photo.link %>" }
+					}
+					<% end %>
+				<% end %>
+				console.log(photos);
+				createTimeline(photos);
+			});
+		}
+
+		function createTimeline(photos) {
+			//remake destroyed div to place timeline in
+			$("#timeline-anchor").append("<div id=my-timeline></div>");
+
+			if (isEmpty) {	//if no photos are present for that country
+				document.getElementById("filters").innerHTML = "";
+				var timeline = document.getElementById("my-timeline");
+				var newDiv = document.createElement('div');
+				newDiv.id = "timeline-default";
+				newDiv.innerHTML = '<span class="glyphicon glyphicon-upload" onclick="showUpload()"></span><h1>Upload a photo now</h1>';
+				timeline.appendChild(newDiv);
+			} else {
+				 //create the TimelineJS
+				//width is inherited from parent div to ensure responsiveness
+				$(document).ready(function() {
+					createStoryJS({
+						  type:       'timeline',
+						  height:     '600',
+						  source:     photos,
+						  embed_id:   'my-timeline'
+					 });
+				});
+				var filters = document.getElementById("filters");
+				var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
+												'<option value="">Search for a friend...</option>';
+				for (var i = 0; i < peopleVisited.length; i++) {
+					HTML += '<option value=' + peopleVisited[i].id + '>' + 
+												peopleVisited[i].first_name + " " + peopleVisited[i].last_name
+												+ "</option>";
+				}
+				HTML += "</select>";
+				filters.innerHTML = HTML;
+				//$("#filter-friends").selectize();			
+			}
 		}
 
 		function showUpload() {
@@ -359,6 +400,26 @@
 			var date = new Date(string);
 			return date.getFullYear() + "," + (date.getMonth()+1) + "," + date.getUTCDate();
 		}
+
+		$("#filter-friends").on("change", function() {
+			var filter = document.getElementById("filter-friends");
+			var friend = filter.options[filter.selectedIndex].value;
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				contentType: "application/json",
+				url: "friendPhotos",
+				headers: {
+				  'X-Transaction': 'POST Example',
+				  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+				},
+				data: JSON.stringify({ id: friend }),
+				success: function(response) {
+					$("#my-timeline").remove();
+					
+				}
+			});
+		});
 	</script>
 
 <!--******************************TRAVELDEX MAP*******************************-->

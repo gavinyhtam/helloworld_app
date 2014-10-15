@@ -152,7 +152,8 @@
 							console.log(response);
 							var pictures = document.getElementById("pictures-1");
 							while (pictures.firstChild) pictures.removeChild(pictures.firstChild);
-							for (var i = 0; i < response.msg.length; i++) {
+							//show a max of 3 photos
+							for (var i = 0; i < Math.min(response.msg.length,3); i++) {
 								var div = document.createElement("div");
 								div.setAttribute("class", "col-md-4 portfolio-item");
 								pictures.appendChild(div);
