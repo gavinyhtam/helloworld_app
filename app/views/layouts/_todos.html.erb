@@ -1,3 +1,6 @@
+		<!--Font-->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+
 		<!--Navigation Bar-->
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		  <div class="container-fluid">
@@ -15,8 +18,15 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav">
-		        <li class="<%= "active" if params[:action] == "index" && params[:controller] == "todos" %>"><%= link_to "TravelDex", todos_index_path%></li>
-		        <li class="<%= "active" if params[:action] == "friends" && params[:controller] == "todos" %>"><%= link_to "Friends", todos_friends_path%></li>
+		      	<li class="<%= "active" if params[:action] == "index" && params[:controller] == "todos" %>">
+		      		<!-- <label><span class="glyphicon glyphicon-globe"></span></label> -->
+		      		<%= link_to "TravelDex", todos_index_path%>
+		      	</li>
+		        
+		        <li class="<%= "active" if params[:action] == "friends" && params[:controller] == "todos" %>">
+		        	<!-- <label><span class="glyphicon glyphicon-comment"></span></label> -->
+		        	<%= link_to "Friends", todos_friends_path%>
+		        </li>
 		      </ul>
 		    
 		      <ul class="nav navbar-nav navbar-right">
