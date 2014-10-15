@@ -64,7 +64,7 @@ class TodosController < ApplicationController
 		@recent_location = sorted_photos[0].location_name
 		@recent_photos = @user.photos.where(location_name: @recent_location)
 		respond_to do |format|
-			format.json { render :json => { msg: @recent_photos }}
+			format.json { render :json => { msg: @recent_photos, user: @user }}
 		end
 	end
 
