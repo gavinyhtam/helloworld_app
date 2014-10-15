@@ -222,7 +222,7 @@
 					<% end %>
 				<% end %>
 				console.log(photos);
-				createTimeline(photos);
+				createTimeline(photos,isEmpty);
 			});
 		}
 
@@ -239,32 +239,26 @@
 				};
 
 				var isEmpty = true;
-				for (var i = 0; i < 
-						if ("<%= photo.location_name %>" === currLocation) {
-							isEmpty = false;
-							var data = {
-								startDate: parseDate("<%= photo.date %>"),
-								endDate: parseDate("<%= photo.date %>"),
-								headline: "<%= photo.photo_name %>",
-								text: "<%= photo.location_name %><p>Taken by <%= User.find_by(id: photo.user_id).first_name %> " + 
-										"<%= User.find_by(id: photo.user_id).last_name %></p>" +
-										'<img src="<%= friend.profile_pic_link %>">',
-								asset: {
-									media: "<%= photo.link %>"
-								}
-							};
-							photos["timeline"]["date"].push(data);
-							photos["timeline"]["era"].push(data);
-							photos["timeline"]["asset"] = { media: "<%= photo.link %>" }
+				for (var i = 0; i < friendPhotos.length; i++) {
+					if (friendsPhotos[i].location_name === currLocation) {
+						isEmpty = false;
+						var data = {
+							startDate: parseDate(friendsPhotos[i].date),
+							endDate: parseDate(friendsPhotos[i].date),
+							headline: friendsPhotos[i].photo_name,
+							text: friendsPhotos[i].location_name + "<p>Taken by " + + friendsPhotos[i].first_name + " " + 
+									friendsPhotos[i].last_name + "</p>",
+						};
+						photos["timeline"]["date"].push(data);
+						photos["timeline"]["era"].push(data);
 					}
-					<% end %>
-				<% end %>
+				}
 				console.log(photos);
 				createTimeline(photos);
 			});
 		}
 
-		function createTimeline(photos) {
+		function createTimeline(photos,isEmpty) {
 			//remake destroyed div to place timeline in
 			$("#timeline-anchor").append("<div id=my-timeline></div>");
 
@@ -416,7 +410,7 @@
 				data: JSON.stringify({ id: friend }),
 				success: function(response) {
 					$("#my-timeline").remove();
-					
+					getFriendPhotos();
 				}
 			});
 		});
