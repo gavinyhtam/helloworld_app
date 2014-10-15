@@ -1,6 +1,7 @@
 function pageID(country) {	
+	console.log(country + "1234");
 	switch(country) {  
-		case "﻿Andorra": return "112408992104370";
+		case "Andorra": return "112408992104370";
 		case "United Arab Emirates": return "105821052786102";
 		case "Afghanistan": return "109447849081319";
 		case "Antigua and Barbuda": return "112620048753696";

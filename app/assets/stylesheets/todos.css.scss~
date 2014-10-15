@@ -36,7 +36,7 @@
 	left: 100px;
 	width: 300px;
 	min-height: 100px;
-	background-color: rgba(255,255,255,0.4);
+	background-color: rgba(255,255,255,0.7);
 	overflow: hidden;
 }
 
@@ -323,6 +323,11 @@
 .friend:hover #friend-text{
     color: white;
     text-decoration: none;
+}
+
+#friend-stats span {
+	padding-left: 10px;
+	padding-right: 5px;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -651,6 +656,17 @@
 	padding-top: 40px;
 }
 
+#timeline-default {
+	min-height: 600px;
+	text-align: center;
+	padding-top: 200px;
+}
+
+#timeline-default span.glyphicon-upload {
+	padding-top: 20px;
+	font-size: 150px;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 .fb-comments {
 	//text-align: center;
@@ -684,4 +700,9 @@
 .time-icon {
 	padding-left: 5px;
 	padding-right: 5px;
+}
+
+.selectize {
+	position: absolute;
+	z-index: 2000;
 }

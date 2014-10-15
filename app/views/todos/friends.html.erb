@@ -17,7 +17,8 @@
 							var HTML =  '<div class="row friend"><img class="friend-image img-responsive" src="'+
 							"<%= user.profile_pic_link %>" +'">'+'<a class="friend-text" href="http://localhost:3000/profiles/friend' + "?id=" + "<%= user.fb_id %>" + '">' + 
 							'<%= user.first_name + " " + user.last_name %></a>'+
-							'<p><span class="glyphicon glyphicon-star"></span></p>' +
+							'<p id="friend-stats"><span class="glyphicon glyphicon-map-marker"></span>10' +
+							'<span class="glyphicon glyphicon-camera"></span>10</p>' +
 							'</div>';
 							//place friend name and end the div
 							picElement.innerHTML += HTML;
