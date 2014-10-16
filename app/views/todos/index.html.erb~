@@ -106,7 +106,6 @@
 		$("#help-icon").on('click',function() {
 			$("#howTo").modal("show");
 		});
-		$("#filter-friends").selectize();
 	</script>
 
 <!--**********************************TIMELINE*****************************-->
@@ -227,7 +226,6 @@
 		}
 
 		function getFriendPhotos(friendPhotos,user) {
-			console.log(friendPhotos);
 			$(document).ready(function() {
 				var photos = { 
 					timeline: {
@@ -264,6 +262,7 @@
 			});
 		}
 
+		var newCountrySelected = true;
 		function createTimeline(photos,isEmpty) {
 			//remake destroyed div to place timeline in
 			$("#timeline-anchor").append("<div id=my-timeline></div>");
@@ -286,47 +285,51 @@
 						  embed_id:   'my-timeline'
 					 });
 				});
-				var filters = document.getElementById("filters");
-				var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
-												'<option value="all">All</option>';
-				for (var i = 0; i < peopleVisited.length; i++) {
-					HTML += '<option value=' + peopleVisited[i].fb_id + '>' + 
-												peopleVisited[i].first_name + " " + peopleVisited[i].last_name
-												+ "</option>";
-				}
-				HTML += "</select>";
-				filters.innerHTML = HTML;
-				$("#filter-friends").selectize();	
-				$("#filter-friends").change(function() {
-					var filter = document.getElementById("filter-friends");
-					var friend = filter.options[filter.selectedIndex].value;
-					$('#filter-friends option:selected').attr('selected','selected');
-					if (friend === "all") {
-						//console.log(friend);
-						$("#my-timeline").remove();
-						getPhotos();
-					} else {
-						$.ajax({
-							type: "POST",
-							dataType: "json",
-							contentType: "application/json",
-							url: "friendPhotos",
-							headers: {
-							  'X-Transaction': 'POST Example',
-							  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-							},
-							data: JSON.stringify({ id: friend, location: currLocation }),
-							success: function(response) {
-								$("#my-timeline").remove();
-								console.log(response);
-								getFriendPhotos(response.msg, response.user);
-							}
-						});
+				if (newCountrySelected) {	//remake filters only when new country selected
+					var filters = document.getElementById("filters");
+					var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
+													'<option value="all">All</option>';
+					for (var i = 0; i < peopleVisited.length; i++) {
+						HTML += '<option value=' + peopleVisited[i].fb_id + '>' + 
+													peopleVisited[i].first_name + " " + peopleVisited[i].last_name
+													+ "</option>";
 					}
-				});		
+					HTML += "</select>";
+					filters.innerHTML = HTML;
+					$("#filter-friends").selectize();	
+					$("#filter-friends").change(function() {
+						var filter = document.getElementById("filter-friends");
+						var friend = filter.options[filter.selectedIndex].value;
+						if (friend === "all") {
+							$("#my-timeline").remove();
+							getPhotos();
+						} else {
+							$.ajax({
+								type: "POST",
+								dataType: "json",
+								contentType: "application/json",
+								url: "friendPhotos",
+								headers: {
+								  'X-Transaction': 'POST Example',
+								  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+								},
+								data: JSON.stringify({ id: friend, location: currLocation }),
+								success: function(response) {
+									$("#my-timeline").remove();
+									getFriendPhotos(response.msg, response.user);
+								}
+							});
+						}
+					});	
+					selectedFilter = true;
+				}
 			}
-			document.getElementById("timeline-title").innerHTML = '<img src="' 
-					+ countryFlagLink + '" class="timeline-flag">' + currLocation;
+			if (countryFlagLink) {	//if country flag link is defined
+				document.getElementById("timeline-title").innerHTML = '<img src="' 
+						+ countryFlagLink + '" class="timeline-flag">' + currLocation;
+			} else {
+				document.getElementById("timeline-title").innerHTML = 'View your experiences<span class="glyphicon glyphicon-camera"></span>';
+			}
 		}
 
 		function showUpload() {
@@ -471,29 +474,27 @@
 			 
 			 //when country is selected
 			 map.addListener("clickMapObject", function (event) {
-			 	//if country is in the 'been to' colour
-				  //if (event.mapObject.color == "#4444ff") {
-						currLocation = event.mapObject.id;
-						//console.log(currLocation);
-						$.ajax({
-							type: "POST",
-							dataType: "json",
-							contentType: "application/json",
-							url: "create",
-							headers: {
-							  'X-Transaction': 'POST Example',
-							  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-							},
-							data: JSON.stringify({ countryname: currLocation }),
-							success: function(response) {
-								currLocation = response.msg;
-							}
-						});
-						console.log(currLocation);
-				      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
-				          show: true
-				      });
-				  //}
+				selectedFilter = false;
+				currLocation = event.mapObject.id;
+				//console.log(currLocation);
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					contentType: "application/json",
+					url: "create",
+					headers: {
+					  'X-Transaction': 'POST Example',
+					  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+					},
+					data: JSON.stringify({ countryname: currLocation }),
+					success: function(response) {
+						currLocation = response.msg;
+					}
+				});
+				console.log(currLocation);
+		      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
+		          show: true
+		      });
 			 });
 
 			map.addListener("rollOverMapObject", function(e) {
@@ -638,12 +639,162 @@
       </div>
 	</div><!-- /.modal -->
 
-<%= javascript_include_tag("upload") %>
 <script>
 	$(".datepicker").datepicker({
 		dateFormat: 'dd-mm-yy'
 	});
+	function previewImages() {
+		var gallery = document.getElementById("preview-gallery");
+		while (gallery.firstChild) gallery.removeChild(gallery.firstChild);
+		var imageFiles = document.getElementById("upload-photo-form-file");
+		if (imageFiles.files.length === 0) {
+			gallery.innerHTML += '<div id="placeholder"><h3 class="placeholder-text">No image selected.</h3></div>';
+		} else {
+			var numRows = Math.ceil(imageFiles.files.length/3);	//find number of rows for images
+			for (var i = 0; i < numRows; i++) {		//for each row, create a row div to the gallery
+				var rowDiv = document.createElement('div');
+				rowDiv.className = 'row';
+				rowDiv.id = 'row' + i;
+				gallery.appendChild(rowDiv);
+			}
+			//for each image, insert into appropriate row and column in the gallery
+			for (var i = 0; i < imageFiles.files.length; i++) {
+				(function(i) {
+					var fileReader = new FileReader();
+					fileReader.readAsDataURL(imageFiles.files[i]);
+					fileReader.onload = function (e) {
+						var rowDiv = document.getElementById('row' + Math.floor(i/3));	//get row number of the image
+						var newDiv = document.createElement('div');
+						newDiv.className = 'col-md-4 row-md-4';
+						newDiv.innerHTML += '<div class="img-div">'
+						+ '<img class="thumbnail-upload img-responsive" src=' + e.target.result + ' id=img-'+ i + '><span class="remove glyphicon glyphicon-remove"></span>'
+						+ '<div class="btn-group">'
+						+ '<button type="button" id="description-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Add description"><span class="glyphicon glyphicon-pencil"></span></button>'
+						+ '<button type="button" id="date-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select date"><span class="glyphicon glyphicon-calendar"></span></button>'
+						+ '<button type="button" id="location-' + i + '" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Select location"><span class="glyphicon glyphicon-map-marker"></span></button></div>'
+						+'<form id="descriptionForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
+							'Title: <input id="upload-message-img' + i + '" type="text"></form>'
+						+'<form id="dateForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
+							'Date: <input class="datepicker" id="upload-date-img' + i + '" type="text"></form>'
+						+'<form id="locationForm-' + i +'" target="upload_iframe" method="post" enctype="multipart/form-data" style="display:none">' +
+							'Location: <div id="upload-location-img' + i + '"><select class="select-countries" id="select-country' + i + 
+						'" class="demo-default" placeholder="Select a country...">' +
+						'<%= escape_javascript(render :partial => "layouts/selectize") %></select></div></form>' +
+						'</div></div>';
+
+						rowDiv.appendChild(newDiv);	//register child div in the DOM
+						$(".datepicker").datepicker({
+							dateFormat: 'dd-mm-yy'
+						});
+						$("#select-country"+i).selectize();
+						/*$(".remove").on('click',function() {
+							$(this)
+						});*/
+
+						document.getElementById('description-'+i).onclick = function() { showForm("descriptionForm",i); hideForm("dateForm",i); hideForm("locationForm", i); };
+						document.getElementById('date-'+i).onclick = function() { showForm("dateForm",i); hideForm("descriptionForm",i); hideForm("locationForm", i); };
+						document.getElementById('location-'+i).onclick = function() { showForm("locationForm",i); hideForm("dateForm",i); hideForm("descriptionForm", i); };
+						document.getElementById('img-'+i).onclick = function() { showEnlargedImage('img-' +i) }
+					};
+				})(i);
+			}
+		}
+	}
+
+	function showEnlargedImage(imgID) {
+		var modal = document.getElementById("enlargedImageBody");
+		while (modal.firstChild) modal.removeChild(modal.firstChild);
+		var src = $("#" + imgID).clone();
+		console.log(src);
+		console.log(modal);
+		$(modal).html(src);
+		console.log(modal);
+		$("#enlargedImage").modal('show');
+		$("#enlargedImage").on('click',function() {
+			$("#enlargedImage").modal('hide');
+		});
+	}
+
+	function showForm(type, i) {
+		document.getElementById(type + "-" + i).style.display = "block";
+	}
+
+	function hideForm(type, i) {
+		document.getElementById(type + "-" + i).style.display = "none";
+	}
+	
 </script>
+
+<!--Sourced from https://gist.github.com/nseo/2910244-->
+<script type="application/javascript">
+	var accessToken;
+	(function($) {
+		$(document).bind("FBSDKLoaded", function() {
+			FB.getLoginStatus(function(response){
+			if (response.status == 'connected') {
+			  accessToken = response.authResponse.accessToken;
+			}
+		  });
+		});
+	})(jQuery);
+	  
+	//Upload a local file image
+	function fileUpload() {
+	  //ask for upload photo permissions
+	  FB.login(function(r) {}, {scope: 'publish_actions' });
+		var imageFiles = document.getElementById("upload-photo-form-file");
+		var description = document.getElementById("upload-message");
+		var date = document.getElementById("upload-date");
+		var location = document.getElementById("img-select-country");
+		console.log(location);
+		for (var i = 0; i < imageFiles.files.length; i++) {
+			if (document.getElementById("upload-message-img" + i)) {
+				description = document.getElementById("upload-message-img" + i);
+			}
+			if (document.getElementById("upload-date-img" + i)) {
+				date = document.getElementById("upload-date-img" + i);
+			}
+			if (document.getElementById("select-country" + i)) {
+				location = document.getElementById("select-country" + i);
+				console.log(location);
+			}
+			$("#process-upload").modal("show");
+			var f = new FormData();	//create upload photo formdata
+			f.append("source", imageFiles.files[i]);
+			f.append("message", description.value);
+			f.append("backdated_time", date.value);
+			//get FB page ID of the selected country
+			f.append("place", pageID(country(location.options[location.selectedIndex].value)));
+
+			(function() {
+            var fCopy = f;
+				FB.api('/me/albums', function(response) {
+					var album = response.data[0]; // Now, upload the image to first found album for easiness.
+		          $.ajax({
+		              url: 'https://graph.facebook.com/' + album.id + '/photos?access_token=' +  accessToken,
+		              type: "POST",
+		              data: fCopy,
+		              processData: false,
+		              contentType: false,
+		              cache: false,
+		              success: function (data) {
+		                  console.log("success " + data);
+		              },
+		              error: function (shr, status, data) {
+		                  console.log("error " + data + " Status " + shr.status);
+		              },
+		              complete: function () {
+		                  console.log("Posted to facebook");
+								$("#process-upload").hide();
+								//window.location = "http://localhost:3000/todos/index";
+		              }
+		          });
+				});
+			})();
+		}
+	}
+</script>
+
 
 <!--Popover showing the friends who have visited the country-->
 <div class="popover" id="popover">
@@ -652,13 +803,13 @@
 </div>
 
 <script>
-//hide popovers when user clicks
-$(document).on('click', function(e) {
-	$(".popover").hide();
-});
+	//hide popovers when user clicks
+	$(document).on('click', function(e) {
+		$(".popover").hide();
+	});
 </script>
 
 <!--Tooltip-->
 <script type="text/javascript">
-$("body").tooltip({ selector: '[data-toggle="tooltip"]' });
+	$("body").tooltip({ selector: '[data-toggle="tooltip"]' });
 </script>

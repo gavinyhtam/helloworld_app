@@ -106,7 +106,6 @@
 		$("#help-icon").on('click',function() {
 			$("#howTo").modal("show");
 		});
-		$("#filter-friends").selectize();
 	</script>
 
 <!--**********************************TIMELINE*****************************-->
@@ -227,7 +226,6 @@
 		}
 
 		function getFriendPhotos(friendPhotos,user) {
-			console.log(friendPhotos);
 			$(document).ready(function() {
 				var photos = { 
 					timeline: {
@@ -264,6 +262,7 @@
 			});
 		}
 
+		var newCountrySelected = true;
 		function createTimeline(photos,isEmpty) {
 			//remake destroyed div to place timeline in
 			$("#timeline-anchor").append("<div id=my-timeline></div>");
@@ -286,47 +285,51 @@
 						  embed_id:   'my-timeline'
 					 });
 				});
-				var filters = document.getElementById("filters");
-				var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
-												'<option value="all">All</option>';
-				for (var i = 0; i < peopleVisited.length; i++) {
-					HTML += '<option value=' + peopleVisited[i].fb_id + '>' + 
-												peopleVisited[i].first_name + " " + peopleVisited[i].last_name
-												+ "</option>";
-				}
-				HTML += "</select>";
-				filters.innerHTML = HTML;
-				$("#filter-friends").selectize();	
-				$("#filter-friends").change(function() {
-					var filter = document.getElementById("filter-friends");
-					var friend = filter.options[filter.selectedIndex].value;
-					$('#filter-friends option:selected').attr('selected','selected');
-					if (friend === "all") {
-						//console.log(friend);
-						$("#my-timeline").remove();
-						getPhotos();
-					} else {
-						$.ajax({
-							type: "POST",
-							dataType: "json",
-							contentType: "application/json",
-							url: "friendPhotos",
-							headers: {
-							  'X-Transaction': 'POST Example',
-							  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-							},
-							data: JSON.stringify({ id: friend, location: currLocation }),
-							success: function(response) {
-								$("#my-timeline").remove();
-								console.log(response);
-								getFriendPhotos(response.msg, response.user);
-							}
-						});
+				if (newCountrySelected) {	//remake filters only when new country selected
+					var filters = document.getElementById("filters");
+					var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
+													'<option value="all">All</option>';
+					for (var i = 0; i < peopleVisited.length; i++) {
+						HTML += '<option value=' + peopleVisited[i].fb_id + '>' + 
+													peopleVisited[i].first_name + " " + peopleVisited[i].last_name
+													+ "</option>";
 					}
-				});		
+					HTML += "</select>";
+					filters.innerHTML = HTML;
+					$("#filter-friends").selectize();	
+					$("#filter-friends").change(function() {
+						var filter = document.getElementById("filter-friends");
+						var friend = filter.options[filter.selectedIndex].value;
+						if (friend === "all") {
+							$("#my-timeline").remove();
+							getPhotos();
+						} else {
+							$.ajax({
+								type: "POST",
+								dataType: "json",
+								contentType: "application/json",
+								url: "friendPhotos",
+								headers: {
+								  'X-Transaction': 'POST Example',
+								  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+								},
+								data: JSON.stringify({ id: friend, location: currLocation }),
+								success: function(response) {
+									$("#my-timeline").remove();
+									getFriendPhotos(response.msg, response.user);
+								}
+							});
+						}
+					});	
+					newCountrySelected = false;
+				}
 			}
-			document.getElementById("timeline-title").innerHTML = '<img src="' 
-					+ countryFlagLink + '" class="timeline-flag">' + currLocation;
+			if (countryFlagLink) {	//if country flag link is defined
+				document.getElementById("timeline-title").innerHTML = '<img src="' 
+						+ countryFlagLink + '" class="timeline-flag">' + currLocation;
+			} else {
+				document.getElementById("timeline-title").innerHTML = 'View your experiences<span class="glyphicon glyphicon-camera"></span>';
+			}
 		}
 
 		function showUpload() {
@@ -471,29 +474,27 @@
 			 
 			 //when country is selected
 			 map.addListener("clickMapObject", function (event) {
-			 	//if country is in the 'been to' colour
-				  //if (event.mapObject.color == "#4444ff") {
-						currLocation = event.mapObject.id;
-						//console.log(currLocation);
-						$.ajax({
-							type: "POST",
-							dataType: "json",
-							contentType: "application/json",
-							url: "create",
-							headers: {
-							  'X-Transaction': 'POST Example',
-							  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-							},
-							data: JSON.stringify({ countryname: currLocation }),
-							success: function(response) {
-								currLocation = response.msg;
-							}
-						});
-						console.log(currLocation);
-				      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
-				          show: true
-				      });
-				  //}
+				selectedFilter = false;
+				currLocation = event.mapObject.id;
+				//console.log(currLocation);
+				$.ajax({
+					type: "POST",
+					dataType: "json",
+					contentType: "application/json",
+					url: "create",
+					headers: {
+					  'X-Transaction': 'POST Example',
+					  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+					},
+					data: JSON.stringify({ countryname: currLocation }),
+					success: function(response) {
+						currLocation = response.msg;
+					}
+				});
+				console.log(currLocation);
+		      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
+		          show: true
+		      });
 			 });
 
 			map.addListener("rollOverMapObject", function(e) {
@@ -762,8 +763,8 @@
 			f.append("source", imageFiles.files[i]);
 			f.append("message", description.value);
 			f.append("backdated_time", date.value);
-			var currLocation = location.options[location.selectedIndex].value;
-			f.append("place", pageID(country(currLocation)));
+			//get FB page ID of the selected country
+			f.append("place", pageID(country(location.options[location.selectedIndex].value)));
 
 			(function() {
             var fCopy = f;
@@ -802,13 +803,13 @@
 </div>
 
 <script>
-//hide popovers when user clicks
-$(document).on('click', function(e) {
-	$(".popover").hide();
-});
+	//hide popovers when user clicks
+	$(document).on('click', function(e) {
+		$(".popover").hide();
+	});
 </script>
 
 <!--Tooltip-->
 <script type="text/javascript">
-$("body").tooltip({ selector: '[data-toggle="tooltip"]' });
+	$("body").tooltip({ selector: '[data-toggle="tooltip"]' });
 </script>
