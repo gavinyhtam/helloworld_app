@@ -18,4 +18,5 @@
 //= require jquery-ui
 //= require jquery.turbolinks
 //= require selectize
+//= require owl.carousel
 //= require_tree .

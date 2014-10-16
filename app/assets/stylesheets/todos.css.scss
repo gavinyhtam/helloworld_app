@@ -316,6 +316,14 @@
 	padding-right: 5px;
 }
 
+#friend-stats > .glyphicon-map-marker {
+	color: #ff0000;
+}
+
+#friend-stats > .glyphicon-camera {
+	color: #ffffee;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 /*!
  * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
@@ -700,4 +708,19 @@
 .time-icon {
 	padding-left: 5px;
 	padding-right: 5px;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#carousel {
+	min-height: 200px;
+}
+
+#carousel div {
+	margin: 3px;
+}
+
+#carousel img {
+  display: block;
+  width: 100%;
+  height: auto;
 }

@@ -21,8 +21,16 @@ class TodosController < ApplicationController
 		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		sorted_photos = @user.photos.sort_by &:updated_at
 		@recent_location = sorted_photos[0].location_name
-		@recent_photos = @user.photos.limit(3).where(location_name: @recent_location)
+		@recent_photos = @user.photos.where(location_name: @recent_location)
 		puts @recent_photos
+
+		@locations = []
+		@users.each do |friend|
+			friend.photos.each do |photo|
+				#add unique locations to the @locations (inefficient but will change to use a set instead)
+				@locations.push(code(photo.location_name)) unless @locations.include? code(photo.location_name)
+			end
+		end
 	end
 	
 	def create
@@ -31,6 +39,8 @@ class TodosController < ApplicationController
 		end
 	end
 
+	#create a new record in the database for a given new photo,
+	#or updates photo information e.g. changes in title, date or location
 	def createPhoto
 		@user = User.find_by(fb_id: cookies[:fb_id])
 		#if photo already exists, update attributes
@@ -57,10 +67,17 @@ class TodosController < ApplicationController
 		end
 	end
 
+	#finds the user associated with the given FB id and returns user info,
+	#locations visited and recent photos
 	def friendPhotos
 		id = params[:id]
 		country = params[:location]
 		@user = User.find_by(fb_id: id)
+		locations = @user.locations.all
+		@locations = []
+		locations.each do |location|
+			@locations.push(code(location.location_name))  unless @locations.include? code(location.location_name)
+		end
 		if (country)
 			@photos = @user.photos.where(location_name: country)
 			respond_to do |format|
@@ -71,11 +88,12 @@ class TodosController < ApplicationController
 			@recent_location = sorted_photos[0].location_name
 			@recent_photos = @user.photos.where(location_name: @recent_location)
 			respond_to do |format|
-				format.json { render :json => { msg: @recent_photos, user: @user }}
+				format.json { render :json => { msg: @recent_photos, user: @user, locations: @locations }}
 			end
 		end
 	end
 
+	#finds the country, users and user profiles associated with a given country code
 	def findLocation
 		location = params[:location]
 		puts location, "++++++++++++++++++++++++++++++++++++++++++++++++++++++"

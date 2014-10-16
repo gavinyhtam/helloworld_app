@@ -6,7 +6,6 @@
 				if (response.status === "connected") {
 					FB.api("/me/friends", function (response) {
 						if (response && !response.error) {
-							console.log(response);
 							document.getElementById("friends-list").innerHTML += 
 							"<br>"+"You currently have " + "<%= @users.length %>" + " friends on Hello World.";
 							//"<br>"+"You currently have " + response.summary.total_count + " friends on Hello World.";
@@ -22,7 +21,6 @@
 							'</div>';
 							//place friend name and end the div
 							picElement.innerHTML += HTML;
-							console.log(picElement.innerHTML);
 							<% end %>
 						}
 					});
@@ -114,7 +112,7 @@
 
 <script>
 	var body1 = document.getElementById("timeline-body1");
-	<% @recent_photos.each do |photo| %>
+	<% @recent_photos[0..2].each do |photo| %>
 		var img = document.createElement("img");
 		img.setAttribute("src",'<%= raw(photo.link) %>');	//ensures characters such as ampersand are escaped
 		img.setAttribute("class", "thumbnail");
@@ -150,19 +148,23 @@
 						data: JSON.stringify(friend),
 						success: function(response) {
 							console.log(response);
-							var pictures = document.getElementById("pictures-1");
-							while (pictures.firstChild) pictures.removeChild(pictures.firstChild);
-							for (var i = 0; i < Math.min(response.msg.length,3); i++) {
+							var pictures = document.getElementById("carousel");
+							pictures.innerHTML = "";
+							for (var i = 0; i < response.msg.length; i++) {
 								var div = document.createElement("div");
-								div.setAttribute("class", "col-md-4 portfolio-item");
-								pictures.appendChild(div);
 								var image = document.createElement("img");
-								image.setAttribute("class", "img-responsive friend-photo");
 								image.setAttribute("src", response.msg[i].link);
 								div.appendChild(image);
-								div.innerHTML += "<h3>" + response.msg[i].photo_name + "</h3>" +
-														"<p>" + response.msg[i].location_name + " on " + '<span class="glyphicon glyphicon-time time-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
+								//div.innerHTML += "<h3>" + response.msg[i].photo_name + "</h3>" +
+														//"<p>" + response.msg[i].location_name + " on " + '<span class="glyphicon glyphicon-time time-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
+								pictures.appendChild(div);
 							}
+							$("#carousel").owlCarousel();
+							$("#mapdiv").remove();
+							var newMapDiv = document.createElement('div');
+							newMapDiv.id = "mapdiv";
+							document.getElementById("map").appendChild(newMapDiv);
+							createMap(response.locations);
 						}
 					});
 				});
@@ -178,39 +180,12 @@
 	     <div class="row" id="pictures-1">
 	        <!--Content for recent photos goes here-->
 	     </div><!-- /.row -->
+			<div class="owl-carousel" id="carousel">
 
-	     <hr>
-
-	     <!-- Pagination -->
-	     <div class="row text-center">
-	         <div class="col-lg-12">
-	             <ul class="pagination">
-	                 <li>
-	                     <a href="#">&laquo;</a>
-	                 </li>
-	                 <li class="active">
-	                     <a href="#">1</a>
-	                 </li>
-	                 <li>
-	                     <a href="#">2</a>
-	                 </li>
-	                 <li>
-	                     <a href="#">3</a>
-	                 </li>
-	                 <li>
-	                     <a href="#">4</a>
-	                 </li>
-	                 <li>
-	                     <a href="#">5</a>
-	                 </li>
-	                 <li>
-	                     <a href="#">&raquo;</a>
-	                 </li>
-	             </ul>
-	         </div>
-	     </div>
-	     <!-- /.row -->
-		  <hr>
+			</div>
+			<div id="map">
+				<div id="mapdiv"></div>
+			</div>
     </div>
     <!-- /.recent-photos -->
 	</div>
@@ -225,3 +200,36 @@
      $("#wrapper").toggleClass("toggled");
  });
  </script>
+
+<script>
+createMap(<%= raw @locations.to_json %>);
+function createMap(locations) {
+	var map;
+	$(document).ready(function() {
+		 map = new AmCharts.AmMap(); //make new Map
+		 map.pathToImages = "http://www.ammap.com/lib/images/";
+		 //map.panEventsEnabled = true; // this line enables pinch-zooming and dragging on touch devices
+		 map.balloon.color = "#000000";
+
+		 var worldDataProvider = {
+			  mapVar: AmCharts.maps.worldHigh,
+			  getAreasFromMap: true,
+			  areas: []
+		 };
+
+		for (var i = 0; i < locations.length; i++) {
+			worldDataProvider.areas.push({ id: locations[i], color: "#4444ff" });
+		}
+
+		 map.dataProvider = worldDataProvider;
+		 map.areasSettings = {
+			  selectedColor: "#5E88D2", //colour when country is selected
+				color: "#BFFC65",
+				rollOverOutlineThickness: 0.3,
+				rollOverOutlineColor: "#B9EE8B",
+				rollOverColor: "#618E1C"
+		 };
+		 map.write("mapdiv");
+	});
+}
+</script>

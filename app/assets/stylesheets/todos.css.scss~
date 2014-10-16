@@ -15,6 +15,7 @@
 #menu {
 	padding-top: 30px;
 	height: 50px;
+	margin-bottom: 30px;
 }
 
 .menu-item {
@@ -313,6 +314,14 @@
 #friend-stats span {
 	padding-left: 10px;
 	padding-right: 5px;
+}
+
+#friend-stats > .glyphicon-map-marker {
+	color: #ff0000;
+}
+
+#friend-stats > .glyphicon-camera {
+	color: #ff0000;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -699,4 +708,19 @@
 .time-icon {
 	padding-left: 5px;
 	padding-right: 5px;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#carousel {
+	min-height: 200px;
+}
+
+#carousel div {
+	margin: 3px;
+}
+
+#carousel img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
