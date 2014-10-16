@@ -8,8 +8,33 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #map {
-	margin-top: 50px;
+	//margin-top: 50px;
 	position: relative;
+}
+
+#menu {
+	padding-top: 30px;
+	height: 50px;
+}
+
+.menu-item {
+	color: rgba(0,0,0,0.5);
+	float: left;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.menu-item > strong {
+	font-size: 20px;
+}
+
+.menu-icon {
+	padding-right: 15px;
+	font-size: 25px;
+}
+
+.menu-item:hover {
+	color: rgba(0,0,0,1);
 }
 
 #search-country {
@@ -36,7 +61,7 @@
 	left: 100px;
 	width: 300px;
 	padding: 10px 10px 10px 10px;
-	box-shadow: 10px 10px 5px #888888;
+	box-shadow: 5px 5px 5px #888888;
 	min-height: 100px;
 	background-color: rgba(255,255,255,0.7);
 	overflow: hidden;
@@ -67,50 +92,8 @@
 	float: left;
 	min-height: 300px;
 }
-/////////////////////////////////////////////////////////////////////////////////
-.icon-bar-text {
-	font-size: 30px;
-	color: rgba(0,0,0,0.5);
-}
-
-.icon-bar {
-	margin-bottom: 30px;
-	font-size: 60px;
-	color: rgba(0,0,0,0.5);
-	left: 50px;
-	float: left;
-}
-.icon-bar:hover {
-	color: rgba(0,0,0,1);
-}
-
-
-.icon-bar-element {
-	display: inline-block;
-}
-
-.icon-side {
-	position: absolute;
-	bottom: 0;
-	display: table-cell;
-}
 
 ////////////////////////////////////////////////////////////////////////////////
-
-.inner-item {
-    text-align: center;
-}
-
-.carousel {
-	overflow:hidden;
-}
-
-.inner-item > img {
-	width: 100%;
-	//margin-top: -15%;
-	//margin-bottom: -15%;
-	opacity: 0.6
-}
 
 .sandbox {
 	float: right;
@@ -674,9 +657,13 @@
 	padding-right: 10px;
 }
 
-////////////////////////////////////////////////////////////////////////////////
 #filters > .selectize-control {
 	z-index: 200;
+}
+
+#travel-guide-link {
+	float: right;
+	padding-right: 10px;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
