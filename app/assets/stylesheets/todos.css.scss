@@ -659,12 +659,22 @@
 #timeline-default {
 	min-height: 600px;
 	text-align: center;
-	padding-top: 200px;
+	padding-top: 100px;
 }
 
 #timeline-default span.glyphicon-upload {
 	padding-top: 20px;
 	font-size: 150px;
+}
+
+.timeline-flag {
+	height: 50px;
+	padding-right: 10px;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#filters > .selectize-control {
+	z-index: 200;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -51,7 +51,7 @@
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		        <h4 class="modal-title">
+		        <h4 class="modal-title" id="timeline-title">
 		        	View your experiences
 		        	<span class="glyphicon glyphicon-camera"></span>
 		        </h4>
@@ -273,7 +273,7 @@
 				var timeline = document.getElementById("my-timeline");
 				var newDiv = document.createElement('div');
 				newDiv.id = "timeline-default";
-				newDiv.innerHTML = '<span class="glyphicon glyphicon-upload" onclick="showUpload()"></span><h1>Upload a photo now</h1>';
+				newDiv.innerHTML = '<h3>No photos found!</h3><span class="glyphicon glyphicon-upload" onclick="showUpload()"></span><h1>Upload a photo now</h1>';
 				timeline.appendChild(newDiv);
 			} else {
 				 //create the TimelineJS
@@ -288,7 +288,7 @@
 				});
 				var filters = document.getElementById("filters");
 				var HTML = 	'<select id="filter-friends" class="demo-default" placeholder="Search for a friend...">'+
-												'<option value="">Search for a friend...</option>';
+												'<option value="all">All</option>';
 				for (var i = 0; i < peopleVisited.length; i++) {
 					HTML += '<option value=' + peopleVisited[i].fb_id + '>' + 
 												peopleVisited[i].first_name + " " + peopleVisited[i].last_name
@@ -296,28 +296,37 @@
 				}
 				HTML += "</select>";
 				filters.innerHTML = HTML;
-				//$("#filter-friends").selectize();	
+				$("#filter-friends").selectize();	
 				$("#filter-friends").change(function() {
 					var filter = document.getElementById("filter-friends");
 					var friend = filter.options[filter.selectedIndex].value;
-					//console.log(friend);
-					$.ajax({
-						type: "POST",
-						dataType: "json",
-						contentType: "application/json",
-						url: "friendPhotos",
-						headers: {
-						  'X-Transaction': 'POST Example',
-						  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
-						},
-						data: JSON.stringify({ id: friend }),
-						success: function(response) {
-							$("#my-timeline").remove();
-							getFriendPhotos(response.msg, response.user);
-						}
-					});
+					$('#filter-friends option:selected').attr('selected','selected');
+					if (friend === "all") {
+						//console.log(friend);
+						$("#my-timeline").remove();
+						getPhotos();
+					} else {
+						$.ajax({
+							type: "POST",
+							dataType: "json",
+							contentType: "application/json",
+							url: "friendPhotos",
+							headers: {
+							  'X-Transaction': 'POST Example',
+							  'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+							},
+							data: JSON.stringify({ id: friend, location: currLocation }),
+							success: function(response) {
+								$("#my-timeline").remove();
+								console.log(response);
+								getFriendPhotos(response.msg, response.user);
+							}
+						});
+					}
 				});		
 			}
+			document.getElementById("timeline-title").innerHTML = '<img src="' 
+					+ countryFlagLink + '" class="timeline-flag">' + currLocation;
 		}
 
 		function showUpload() {
@@ -428,6 +437,7 @@
 		var currLocation;
 		var hoverLocation;
 		var peopleVisited = [];
+		var countryFlagLink;
 		//when AmMap to ready to load
 		AmCharts.ready(function() {
 			 map = new AmCharts.AmMap(); //make new Map
@@ -525,6 +535,7 @@
 						});
 						FB.api('/'+page+'/picture', { "type": "normal" }, function(r) {
 							document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
+							countryFlagLink = r.data.url;
 						});
 					}
 				});
@@ -774,7 +785,7 @@
 		              complete: function () {
 		                  console.log("Posted to facebook");
 								$("#process-upload").hide();
-								window.location = "http://localhost:3000/todos/index";
+								//window.location = "http://localhost:3000/todos/index";
 		              }
 		          });
 				});
