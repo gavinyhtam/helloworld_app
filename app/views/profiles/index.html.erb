@@ -33,7 +33,6 @@
 	})(jQuery);
 </script>
 
-<!--div id="profile-pic"><h3><%= @user.first_name + " " + @user.last_name %></h3></div-->
 <div id="wrapper">
 	  <!-- Sidebar -->
 	  <div id="sidebar-wrapper">
@@ -59,7 +58,6 @@
 	  <!-- Page Content -->
 	  <div id="page-content-wrapper">
 		   <div class="container-fluid">
-				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
 				<div class="row">
 	           <div class="col-lg-12 page-section" id="recent-activity">
 					<span class="glyphicon glyphicon-content glyphicon-time"></span>
@@ -73,7 +71,7 @@
 						</strong>
 						!
 						</p>
-					<div class="container" id="gallery">
+					<div class="container col-md-12 row-md-12" id="gallery">
 						<!--Content for image gallery-->
 					</div>
 	           </div>
@@ -102,7 +100,8 @@
 		         <div class="col-lg-12 page-section" id="friends">
 						<span class="glyphicon glyphicon-content glyphicon-user"></span>
 						<h1>Friends</h1>
-						<div id="friends-number"</div>
+						<div id="friends-number"></div>
+						<div id="friend-photos"></div>
 					</div>
 				</div>
 		   </div>
@@ -111,20 +110,31 @@
 </div>
 <!-- /#wrapper -->
 
-<!-- Menu Toggle Script -->
-<script>
-	$("#menu-toggle").click(function(e) {
-	  e.preventDefault();
-	  $("#wrapper").toggleClass("toggled");
-	});
-</script>
-
 <script>
 	var gallery = document.getElementById("gallery");
 	var numPhotos = 0;
+	var numRows = Math.ceil(<%= @last_location_photos.length %>/3);	//find number of rows for images
+	for (var i = 0; i < numRows; i++) {		//for each row, create a row div to the gallery
+		var rowDiv = document.createElement('div');
+		rowDiv.className = 'row';
+		rowDiv.id = 'row' + i;
+		gallery.appendChild(rowDiv);
+	}
 	<% @last_location_photos.each do |photo| %>
-		gallery.innerHTML += '<div class="col-md-4"><div class="well">' +
-			'<img class="thumbnail img-responsive" src=<%=photo.link%>>' + '</div></div>';
+		var row = document.createElement("div");
+		row.className = "col-md-4 row-md-4";
+		row.innerHTML += '<img class="thumbnail img-responsive" src=<%=photo.link%>>';
+		document.getElementById('row' + Math.floor(numPhotos/3)).appendChild(row);	//get row number of the image
 		numPhotos++;
+	<% end %>
+</script>
+
+<script>
+	var friendPhotos = document.getElementById("friend-photos");
+	<% @users.each do |user| %>
+		var photo = document.createElement("img");
+		photo.className = "img-horizontal";
+		photo.src = "<%= raw user.profile_pic_link %>";
+		friendPhotos.appendChild(photo);
 	<% end %>
 </script>

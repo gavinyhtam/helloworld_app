@@ -16,8 +16,8 @@
 							var HTML =  '<div class="row friend"><img class="friend-image img-responsive" src="'+
 							"<%= user.profile_pic_link %>" +'">'+'<a class="friend-text" href="http://localhost:3000/profiles/friend' + "?id=" + "<%= user.fb_id %>" + '">' + 
 							'<%= user.first_name + " " + user.last_name %></a>'+
-							'<p id="friend-stats"><span class="glyphicon glyphicon-map-marker"></span>10' +
-							'<span class="glyphicon glyphicon-camera"></span>10</p>' +
+							'<p id="friend-stats"><span class="glyphicon glyphicon-map-marker"></span>' + '<%= @friend_location_stats[user.fb_id] %>' + 
+							'<span class="glyphicon glyphicon-camera"></span>' + '<%= @friend_photo_stats[user.fb_id] %>' + '</p>' +
 							'</div>';
 							//place friend name and end the div
 							picElement.innerHTML += HTML;
@@ -112,7 +112,7 @@
 
 <script>
 	var body1 = document.getElementById("timeline-body1");
-	<% @recent_photos[0..2].each do |photo| %>
+	<% @recent_photos[0..2].each do |photo| %>	//only show first 3 recent photos in feed
 		var img = document.createElement("img");
 		img.setAttribute("src",'<%= raw(photo.link) %>');	//ensures characters such as ampersand are escaped
 		img.setAttribute("class", "thumbnail");
@@ -156,8 +156,8 @@
 								image.setAttribute("id", "img-"+i);
 								div.innerHTML += "<h4>" + response.msg[i].photo_name + "</h4>" +
 														'<p class="slider-photo-info"><span class="glyphicon glyphicon-globe slider-icon"></span>' + response.msg[i].location_name + "   " + '<span class="glyphicon glyphicon-time slider-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
+								image.onclick = function() { showEnlargedImage(this.src); }
 								div.appendChild(image);
-								image.onclick = function() { showEnlargedImage("img-"+i); }
 								pictures.appendChild(div);
 							}
 							document.getElementById("owl-wrapper").appendChild(pictures);
@@ -214,13 +214,13 @@
 	</div><!-- /.modal -->
 
 <script>
-	function showEnlargedImage(imgID) {
+	function showEnlargedImage(src) {
 		var modal = document.getElementById("enlargedImageBody");
 		while (modal.firstChild) modal.removeChild(modal.firstChild);
-		var src = $("#" + imgID).clone();
-		console.log(src);
-		console.log(modal);
-		$(modal).html(src);
+		var image = document.createElement("img");
+		image.setAttribute("src",src);
+		image.setAttribute("class", "bigImage");
+		$(modal).html(image);
 		console.log(modal);
 		$("#enlargedImage").modal('show');
 		$("#enlargedImage").on('click',function() {

@@ -1,8 +1,4 @@
 	<%= render("layouts/todos") %>
-	<link rel="stylesheet" href="custom.css">
-	<link rel="stylesheet" href="timeline.css">
-	<link rel="stylesheet" href="sidebar.css">
-	<link rel="stylesheet" href="popover.css">
 	<script type="text/javascript">
 		 $(window).load(function(){
 			<% if @new_user %>
@@ -337,7 +333,9 @@
 				document.getElementById("timeline-title").innerHTML = '<img src="' +
 						countryFlagLink + '" class="timeline-flag">' + currLocation +
 						'<a id="travel-guide-link" href="http://www.lonelyplanet.com/search?q=' + 
-						currLocation.replace(/ /g, "+") + '" target="_blank">Travel Guide</a>';
+						currLocation.replace(/ /g, "+") + '" target="_blank">' +
+						'<span class="glyphicon glyphicon-share-alt img-horizontal"></span>' +
+						'<img class="lonely-planet-link img-horizontal" src="<%= asset_path "lonelyplanet.png" %>"></a>';
 			} else {
 				document.getElementById("timeline-title").innerHTML = 'View your experiences<span class="glyphicon glyphicon-camera"></span>';
 			}

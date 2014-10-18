@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import url("custom.css");
+
 #wrapper {
     padding-left: 0;
     -webkit-transition: all 0.5s ease;
@@ -170,4 +172,9 @@ h3 {
 
 .country-name {
 	color: #004466;
+}
+
+#friend-photos {
+	padding-top: 30px;
+	padding-bottom: 30px;
 }

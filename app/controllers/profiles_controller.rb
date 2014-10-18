@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   def index
+		@users = User.all
 		@user = User.find_by(fb_id: cookies[:fb_id])
 		if @user.photos.size >= 1
 			@last_location = @user.photos.order(:date).last;

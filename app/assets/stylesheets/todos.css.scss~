@@ -2,7 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-
+@import url("custom.css");
+@import url("timeline.css");
+@import url("sidebar.css");
 
 .header {
 	text-align: center
@@ -196,6 +198,73 @@
 	padding-top: 25%;
 }
 
+//Styling of popover borrowed from http://jsfiddle.net/2EBGE/30/
+.popover {
+    position:absolute;
+    display:none;
+    background:#fff;
+    border: 1px solid #999;
+    padding:10px;
+    width:auto;
+    box-shadow:0 0 10px rgba(0, 0, 0, .5);
+}
+.popover:after, .popover:before {
+    right: 100%;
+    border: solid transparent;
+    content:" ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.popover:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #ffffff;
+    border-width: 10px;
+    top: 50%;
+    margin-top: -10px;
+}
+.popover:before {
+    border-color: rgba(201, 201, 201, 0);
+    border-right-color: #c9c9c9;
+    border-width: 11px;
+    top: 50%;
+    margin-top: -11px;
+}
+//---End popover styling
+.popover-separator {
+	margin-top: 50px;
+}
+
+.img-horizontal {
+	float:left;
+}
+
+.datepicker {
+	z-index: 1051 !important;	//place in front of modal
+}
+
+#enlargedImage {
+	background: rgba(0,0,0,0.8);
+}
+
+#commentsDiv {
+	background: #FFFFFF;
+	min-height: 100px;
+}
+
+#process-upload {
+	text-align: center;
+}
+
+/*.tooltip > .tooltip-inner {
+	background-color: #0000FF;
+}*/
+
+.tooltip > .tooltip-arrow { 
+	margin-top:10px;	//for some reason, this is required for arrow to be in right position
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 #wrap {
     margin: 0 auto;
@@ -356,6 +425,10 @@
 #travel-guide-link {
 	float: right;
 	padding-right: 10px;
+}
+
+.lonely-planet-link {
+	height: 30px;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
