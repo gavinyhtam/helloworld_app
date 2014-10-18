@@ -1,5 +1,8 @@
 	<%= render("layouts/todos") %>
-
+	<link rel="stylesheet" href="custom.css">
+	<link rel="stylesheet" href="timeline.css">
+	<link rel="stylesheet" href="sidebar.css">
+	<link rel="stylesheet" href="popover.css">
 	<script type="text/javascript">
 		 $(window).load(function(){
 			<% if @new_user %>
@@ -71,8 +74,8 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		<div id="menu">
-			<div class="menu-item" id="help-icon"><span class="glyphicon glyphicon-question-sign"></span><strong>HELP</strong></div>
-			<div class="menu-item" id="upload-icon"><span class="glyphicon glyphicon-upload"></span><strong>UPLOAD</strong></div>
+			<div class="menu-item" id="help-icon"><span class="glyphicon glyphicon-question-sign menu-icon"></span><strong>HELP</strong></div>
+			<div class="menu-item" id="upload-icon"><span class="glyphicon glyphicon-upload menu-icon"></span><strong>UPLOAD</strong></div>
 		</div>
 		<!--Display AmMaps javascript-->
 		<div id="map">
@@ -641,7 +644,7 @@
 	});
 </script>
 
-<!--Modal for Enlarged Image-->
+<!--Modal for Enlarged Image + Comments box-->
 	<div class="modal fade" id="enlargedImage">
       <div class="enlargedImageModal">
 			<div id="enlargedImageBody"></div>
@@ -706,7 +709,7 @@
 						document.getElementById('description-'+i).onclick = function() { showForm("descriptionForm",i); hideForm("dateForm",i); hideForm("locationForm", i); };
 						document.getElementById('date-'+i).onclick = function() { showForm("dateForm",i); hideForm("descriptionForm",i); hideForm("locationForm", i); };
 						document.getElementById('location-'+i).onclick = function() { showForm("locationForm",i); hideForm("dateForm",i); hideForm("descriptionForm", i); };
-						document.getElementById('img-'+i).onclick = function() { showEnlargedImage('img-' +i) }
+						document.getElementById('img-'+i).onclick = function() { showEnlargedImage('img-' +i) };
 					};
 				})(i);
 			}

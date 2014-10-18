@@ -1,5 +1,4 @@
 	<%= render("layouts/todos") %>
-
 	<script type="text/javascript">
 		 $(window).load(function(){
 			<% if @new_user %>
@@ -641,7 +640,7 @@
 	});
 </script>
 
-<!--Modal for Enlarged Image-->
+<!--Modal for Enlarged Image + Comments box-->
 	<div class="modal fade" id="enlargedImage">
       <div class="enlargedImageModal">
 			<div id="enlargedImageBody"></div>
@@ -706,7 +705,7 @@
 						document.getElementById('description-'+i).onclick = function() { showForm("descriptionForm",i); hideForm("dateForm",i); hideForm("locationForm", i); };
 						document.getElementById('date-'+i).onclick = function() { showForm("dateForm",i); hideForm("descriptionForm",i); hideForm("locationForm", i); };
 						document.getElementById('location-'+i).onclick = function() { showForm("locationForm",i); hideForm("dateForm",i); hideForm("descriptionForm", i); };
-						document.getElementById('img-'+i).onclick = function() { showEnlargedImage('img-' +i) }
+						document.getElementById('img-'+i).onclick = function() { showEnlargedImage('img-' +i) };
 					};
 				})(i);
 			}

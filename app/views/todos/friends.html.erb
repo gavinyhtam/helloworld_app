@@ -119,9 +119,6 @@
 		body1.appendChild(img);
 		console.log(img);
 	<% end %>
-
-	//var body2 = document.getElementById("timeline-body2");
-	
 </script>
 
 <hr>
@@ -148,21 +145,32 @@
 						data: JSON.stringify(friend),
 						success: function(response) {
 							console.log(response);
-							var pictures = document.getElementById("carousel");
-							pictures.innerHTML = "";
+							$("#carousel").remove();
+							var pictures = document.createElement("div");
+							pictures.className = "owl-carousel";
+							pictures.id = "carousel";
 							for (var i = 0; i < response.msg.length; i++) {
 								var div = document.createElement("div");
 								var image = document.createElement("img");
 								image.setAttribute("src", response.msg[i].link);
+								image.setAttribute("id", "img-"+i);
+								div.innerHTML += "<h4>" + response.msg[i].photo_name + "</h4>" +
+														'<p class="slider-photo-info"><span class="glyphicon glyphicon-globe slider-icon"></span>' + response.msg[i].location_name + "   " + '<span class="glyphicon glyphicon-time slider-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
 								div.appendChild(image);
-								//div.innerHTML += "<h3>" + response.msg[i].photo_name + "</h3>" +
-														//"<p>" + response.msg[i].location_name + " on " + '<span class="glyphicon glyphicon-time time-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
+								image.onclick = function() { showEnlargedImage("img-"+i); }
 								pictures.appendChild(div);
 							}
-							$("#carousel").owlCarousel();
-							$("#mapdiv").remove();
+							document.getElementById("owl-wrapper").appendChild(pictures);
+							$("#carousel").owlCarousel({
+								autoPlay: 5000,
+								paginationSpeed: 200,
+								rewindSpeed: 300,
+								stopOnHover: true,
+								items: 4
+							});
+							$("#friendmapdiv").remove();
 							var newMapDiv = document.createElement('div');
-							newMapDiv.id = "mapdiv";
+							newMapDiv.id = "friendmapdiv";
 							document.getElementById("map").appendChild(newMapDiv);
 							createMap(response.locations);
 						}
@@ -180,11 +188,12 @@
 	     <div class="row" id="pictures-1">
 	        <!--Content for recent photos goes here-->
 	     </div><!-- /.row -->
-			<div class="owl-carousel" id="carousel">
-
+			<div id="owl-wrapper">
+				<div class="owl-carousel" id="carousel">
+				</div>
 			</div>
 			<div id="map">
-				<div id="mapdiv"></div>
+				<div id="friendmapdiv"></div>
 			</div>
     </div>
     <!-- /.recent-photos -->
@@ -193,6 +202,32 @@
 </div>
 <!-- ./wrapper -->
 
+
+<!--Modal for Enlarged Image-->
+	<div class="modal fade" id="enlargedImage">
+      <div class="enlargedImageModal">
+			<div id="enlargedImageBody"></div>
+			<div id="fb-comment-box">
+			<div class="fb-comments" data-href="https://www.facebook.com/photo.php?fbid=1458709894389852&set=a.1457888027805372.1073741827.100007525659896&type=3&theater" data-numposts="5" data-colorscheme="light"></div>
+			</div>
+      </div>
+	</div><!-- /.modal -->
+
+<script>
+	function showEnlargedImage(imgID) {
+		var modal = document.getElementById("enlargedImageBody");
+		while (modal.firstChild) modal.removeChild(modal.firstChild);
+		var src = $("#" + imgID).clone();
+		console.log(src);
+		console.log(modal);
+		$(modal).html(src);
+		console.log(modal);
+		$("#enlargedImage").modal('show');
+		$("#enlargedImage").on('click',function() {
+			$("#enlargedImage").modal('hide');
+		});
+	}
+</script>
  <!-- Menu Toggle Script -->
  <script>
  $("#menu-toggle").click(function(e) {
@@ -229,7 +264,7 @@ function createMap(locations) {
 				rollOverOutlineColor: "#B9EE8B",
 				rollOverColor: "#618E1C"
 		 };
-		 map.write("mapdiv");
+		 map.write("friendmapdiv");
 	});
 }
 </script>

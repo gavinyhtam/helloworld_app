@@ -14,5 +14,7 @@
  *= require selectize.default
  *= require_self
  *= require jquery-ui
+ *= require owl.carousel
+ *= require owl.theme
  *= require custom
  */

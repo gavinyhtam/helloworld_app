@@ -2,6 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.home-icon {
+	padding-left: 30px;
+	padding-right: 50px;
+	margin-top: 5px;
+	height: 40px;
+}
+
 span.glyphicon-briefcase {
 	font-size: 15vw;
 }
@@ -186,7 +193,7 @@ h6 {
 .banner {
     padding: 100px 0;
     color: #f8f8f8;
-    background: url(../img/banner-bg.jpg) no-repeat center center;
+    background: url("http://www.belionline.com.my/UserFiles/image/signup_banner.jpg") no-repeat center center;
     background-size: cover;
 }
 
