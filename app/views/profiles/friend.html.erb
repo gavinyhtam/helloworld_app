@@ -25,16 +25,22 @@
 <!-- Page Content -->
 	  <div id="page-content-wrapper">
 		   <div class="container-fluid">
-				<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
 				<div class="row">
 	           <div class="col-lg-12 page-section" id="recent-activity">
 					<span class="glyphicon glyphicon-content glyphicon-time"></span>
 					<h1>Recent activity</h1>
 						<p id="last-location">
-						<%= @user.first_name + " " + @user.last_name %> last went to <%= @last_location.location_name %>
-						!
+						<% if @last_location %>
+							<%= @user.first_name + " " + @user.last_name %> last went to 
+							<strong>
+							<%= @last_location.location_name %>
+							</strong>
+							!
+						<% else %>
+							<%= @user.first_name + " " + @user.last_name %> hasn't travelled to anywhere yet!
+						<% end %>
 						</p>
-					<div class="container" id="gallery">
+					<div class="owl-carousel" id="gallery">
 						<!--Content for image gallery-->
 					</div>
 	           </div>
@@ -63,7 +69,8 @@
 		         <div class="col-lg-12 page-section" id="friends">
 						<span class="glyphicon glyphicon-content glyphicon-user"></span>
 						<h1>Friends</h1>
-						<div id="friends-number"</div>
+						<div id="friends-number"></div>
+						<div id="friend-photos"></div>
 					</div>
 				</div>
 		   </div>
@@ -72,24 +79,31 @@
 </div>
 <!-- /#wrapper -->
 
-<!-- Menu Toggle Script -->
 <script>
-	$("#menu-toggle").click(function(e) {
-	  e.preventDefault();
-	  $("#wrapper").toggleClass("toggled");
+	var gallery = document.getElementById("gallery");
+	<% @last_location_photos.each do |photo| %>
+		var pic = document.createElement("div");
+		pic.innerHTML += '<img class="thumbnail img-responsive" src=<%=photo.link%>>';
+		gallery.appendChild(pic);	//get row number of the image
+	<% end %>
+	$("#gallery").owlCarousel({
+		autoPlay: 5000,
+		paginationSpeed: 200,
+		rewindSpeed: 300,
+		stopOnHover: true,
+		items: 4
 	});
 </script>
 
 <script>
-	var gallery = document.getElementById("gallery");
-	var numPhotos = 0;
-	<% @last_location_photos.each do |photo| %>
-		gallery.innerHTML += '<div class="col-md-4"><div class="well">' +
-			'<img class="thumbnail img-responsive" src=<%=photo.link%>>' + '</div></div>';
-		numPhotos++;
+	var friendPhotos = document.getElementById("friend-photos");
+	<% @users.each do |user| %>
+		var photo = document.createElement("img");
+		photo.className = "img-horizontal";
+		photo.src = "<%= raw user.profile_pic_link %>";
+		friendPhotos.appendChild(photo);
 	<% end %>
 </script>
-
 
 <script type="text/javascript">
 	(function($) {
@@ -112,8 +126,9 @@
 					});
 					document.getElementById("profile-name").innerHTML += '<%= @user.first_name + " " + @user.last_name %>';
 					document.getElementById("friends-number").innerHTML += 
-							'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + '<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
-							'<%= User.all.length %>' + "</strong> Hello World friends";
+							'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + 
+							'<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
+							'<%= User.all.length %>' + "</strong> Hello World friends.";
 				}
 			});
 		});

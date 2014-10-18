@@ -451,7 +451,7 @@
 		var peopleVisited = [];
 		var countryFlagLink;
 		//when AmMap to ready to load
-		AmCharts.ready(function() {
+		$(document).ready(function() {
 			 map = new AmCharts.AmMap(); //make new Map
 			 map.pathToImages = "http://www.ammap.com/lib/images/";
 			 //map.panEventsEnabled = true; // this line enables pinch-zooming and dragging on touch devices

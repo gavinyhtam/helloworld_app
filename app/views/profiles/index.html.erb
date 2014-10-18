@@ -19,12 +19,20 @@
 							picElement.innerHTML += HTML;
 						}
 					});
-					FB.api("/me/friends", function (response) {
+					/*FB.api("/me/friends", function (response) {
 						if (response && !response.error) {
 							//console.log(response);
 							document.getElementById("friends-number").innerHTML += 
 							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends and <strong>" +
 							response.data.length + "</strong> Hello World friends";
+						}
+					});*/
+					FB.api("/me/friends", function (response) {
+						if (response && !response.error) {
+							//console.log(response);
+							document.getElementById("friends-number").innerHTML += 
+							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends" +
+							' and <strong><%= User.all.length %></strong> Hello World friends.';
 						}
 					});
 				}
@@ -63,15 +71,17 @@
 					<span class="glyphicon glyphicon-content glyphicon-time"></span>
 					<h1>Recent activity</h1>
 						<p id="last-location">
+						<% if @last_location %>
 						You last went to
 						<strong>
-						<% if @last_location %>
 							<%= @last_location.location_name %>
-						<% end %>
 						</strong>
 						!
+						<% else %>
+							You haven't travelled to anywhere yet!
+						<% end %>
 						</p>
-					<div class="container col-md-12 row-md-12" id="gallery">
+					<div class="owl-carousel" id="gallery">
 						<!--Content for image gallery-->
 					</div>
 	           </div>
@@ -112,21 +122,18 @@
 
 <script>
 	var gallery = document.getElementById("gallery");
-	var numPhotos = 0;
-	var numRows = Math.ceil(<%= @last_location_photos.length %>/3);	//find number of rows for images
-	for (var i = 0; i < numRows; i++) {		//for each row, create a row div to the gallery
-		var rowDiv = document.createElement('div');
-		rowDiv.className = 'row';
-		rowDiv.id = 'row' + i;
-		gallery.appendChild(rowDiv);
-	}
 	<% @last_location_photos.each do |photo| %>
-		var row = document.createElement("div");
-		row.className = "col-md-4 row-md-4";
-		row.innerHTML += '<img class="thumbnail img-responsive" src=<%=photo.link%>>';
-		document.getElementById('row' + Math.floor(numPhotos/3)).appendChild(row);	//get row number of the image
-		numPhotos++;
+		var pic = document.createElement("div");
+		pic.innerHTML += '<img class="thumbnail img-responsive" src=<%=photo.link%>>';
+		gallery.appendChild(pic);	//get row number of the image
 	<% end %>
+	$("#gallery").owlCarousel({
+		autoPlay: 5000,
+		paginationSpeed: 200,
+		rewindSpeed: 300,
+		stopOnHover: true,
+		items: 4
+	});
 </script>
 
 <script>
