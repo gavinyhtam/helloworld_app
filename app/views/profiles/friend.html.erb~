@@ -128,7 +128,7 @@
 					document.getElementById("friends-number").innerHTML += 
 							'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + 
 							'<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
-							'<%= User.all.length %>' + "</strong> Hello World friends";
+							'<%= User.all.length %>' + "</strong> Hello World friends.";
 				}
 			});
 		});
