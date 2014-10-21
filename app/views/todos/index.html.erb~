@@ -258,7 +258,7 @@
 		}
 
 		var newCountrySelected = true;
-		var timeline;
+		var timelineJS;
 		function createTimeline(photos,isEmpty) {
 			//remake destroyed div to place timeline in
 			$("#timeline-anchor").append("<div id=my-timeline></div>");
@@ -273,13 +273,7 @@
 			} else {
 				 //create the TimelineJS
 				//width is inherited from parent div to ensure responsiveness
-				if (typeof timeline !== 'undefined') {
-					timeline.config.current_slide = 0;
-					console.log("slide is" + timeline.config.current_slide);
-					timeline.slider.setSlide(0);
-					timeline.timenav.setMarker(0, timeline.config.ease,timeline.config.duration);
-				}
-				timeline = createStoryJS({
+				createStoryJS({
 					  type:       'timeline',
 					  height:     '600',
 					  source:     photos,
