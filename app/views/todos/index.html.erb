@@ -112,8 +112,7 @@
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
 					if (response.status === "connected") {
-						//console.log(refreshed);
-						//if (refreshed) {
+						if (refreshed) {
 							getFBPhotos();
 							getPhotos();
 							$('#myModal').on('shown.bs.modal', function () {
@@ -124,8 +123,8 @@
 									addImageView();
 								});
 							});
-						//	refreshed = false;
-						//}
+							refreshed = false;
+						}
 					}
 				});
 			});
