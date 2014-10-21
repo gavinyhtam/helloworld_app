@@ -20,7 +20,7 @@ class TodosController < ApplicationController
 		@users = User.all
 		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		sorted_photos = @user.photos.sort_by &:updated_at
-		@recent_location = sorted_photos[0].location_name
+		@recent_location = sorted_photos[0].location_name || "nowhere"
 		@recent_photos = @user.photos.where(location_name: @recent_location)
 		puts @recent_photos
 
@@ -97,7 +97,7 @@ class TodosController < ApplicationController
 			end
 		else
 			sorted_photos = @user.photos.sort_by &:updated_at
-			@recent_location = sorted_photos[0].location_name
+			@recent_location = sorted_photos[0].location_name || "nowhere"
 			@recent_photos = @user.photos.where(location_name: @recent_location)
 			respond_to do |format|
 				format.json { render :json => { msg: @recent_photos, user: @user, locations: @locations }}
