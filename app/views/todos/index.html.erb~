@@ -112,6 +112,7 @@
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
 					if (response.status === "connected") {
+						console.log(refreshed);
 						if (refreshed) {
 							getFBPhotos();
 							getPhotos();
@@ -277,7 +278,8 @@
 					  type:       'timeline',
 					  height:     '600',
 					  source:     photos,
-					  embed_id:   'my-timeline'
+					  embed_id:   'my-timeline',
+					  current_slide: 0
 				 });
 				if (newCountrySelected) {	//remake filters only when new country selected
 					var filters = document.getElementById("filters");

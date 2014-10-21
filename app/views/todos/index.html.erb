@@ -107,12 +107,13 @@
 	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
-		var refreshed = true;
+		//var refreshed = true;
 		(function($) {
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
 					if (response.status === "connected") {
-						if (refreshed) {
+						console.log(refreshed);
+						//if (refreshed) {
 							getFBPhotos();
 							getPhotos();
 							$('#myModal').on('shown.bs.modal', function () {
@@ -123,8 +124,8 @@
 									addImageView();
 								});
 							});
-							refreshed = false;
-						}
+						//	refreshed = false;
+						//}
 					}
 				});
 			});
