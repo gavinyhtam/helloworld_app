@@ -37,7 +37,7 @@
 		            <li><a href="#">Blog</a></li>
 		            <li><a href="#">Settings</a></li>
 		            <li class="divider"></li>
-		            <li><a href="http://localhost:3000" onclick="logout();">Log out</a></li>
+		            <li><a href="http://mysterious-atoll-6223.herokuapp.com/" onclick="logout();">Log out</a></li>
 		          </ul>
 		        </li>
 		      </ul>
