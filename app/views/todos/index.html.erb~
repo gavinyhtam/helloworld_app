@@ -272,14 +272,16 @@
 			} else {
 				 //create the TimelineJS
 				//width is inherited from parent div to ensure responsiveness
-				createStoryJS({
+				var timeline_config = {
 					  type:       'timeline',
 					  height:     '600',
 					  source:     photos,
-					start_at_slide: 0,
-					  current_slide: 0,
+					  start_at_slide: 0,
+					   current_slide: 0,
 					  embed_id:   'my-timeline'
-				 });
+				 };
+				storyjs_embedjs = new VMM.Timeline('timeline-embed');
+				storyjs_embedjs.init(timeline_config);
 				if (newCountrySelected) {	//remake filters only when new country selected
 					var filters = document.getElementById("filters");
 					//make filter
