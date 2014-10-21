@@ -11,6 +11,10 @@ class ProfilesController < ApplicationController
 				#add unique locations to the @locations (inefficient but will change to use a set instead)
 				@locations.push(photo.location_name) unless @locations.include? photo.location_name
 			end
+		else
+			@last_location = "nowhere"
+			@last_location_photos = []
+			@locations = []
 		end
   end
 
