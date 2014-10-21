@@ -149,30 +149,32 @@
 							var pictures = document.createElement("div");
 							pictures.className = "owl-carousel";
 							pictures.id = "carousel";
-							for (var i = 0; i < response.msg.length; i++) {
-								var div = document.createElement("div");
-								var image = document.createElement("img");
-								image.setAttribute("src", response.msg[i].link);
-								image.setAttribute("id", "img-"+i);
-								div.innerHTML += "<h4>" + response.msg[i].photo_name + "</h4>" +
-														'<p class="slider-photo-info"><span class="glyphicon glyphicon-globe slider-icon"></span>' + response.msg[i].location_name + "   " + '<span class="glyphicon glyphicon-time slider-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
-								image.onclick = function() { showEnlargedImage(this.src); }
-								div.appendChild(image);
-								pictures.appendChild(div);
+							if (response.msg) {	//if that friend has visited a country
+								for (var i = 0; i < response.msg.length; i++) {
+									var div = document.createElement("div");
+									var image = document.createElement("img");
+									image.setAttribute("src", response.msg[i].link);
+									image.setAttribute("id", "img-"+i);
+									div.innerHTML += "<h4>" + response.msg[i].photo_name + "</h4>" +
+															'<p class="slider-photo-info"><span class="glyphicon glyphicon-globe slider-icon"></span>' + response.msg[i].location_name + "   " + '<span class="glyphicon glyphicon-time slider-icon"></span>' + parseDate(response.msg[i].date) + "</p>";
+									image.onclick = function() { showEnlargedImage(this.src); }
+									div.appendChild(image);
+									pictures.appendChild(div);
+								}
+								document.getElementById("owl-wrapper").appendChild(pictures);
+								$("#carousel").owlCarousel({
+									autoPlay: 5000,
+									paginationSpeed: 200,
+									rewindSpeed: 300,
+									stopOnHover: true,
+									items: 4
+								});
+								$("#friendmapdiv").remove();
+								var newMapDiv = document.createElement('div');
+								newMapDiv.id = "friendmapdiv";
+								document.getElementById("map").appendChild(newMapDiv);
+								createMap(response.locations);
 							}
-							document.getElementById("owl-wrapper").appendChild(pictures);
-							$("#carousel").owlCarousel({
-								autoPlay: 5000,
-								paginationSpeed: 200,
-								rewindSpeed: 300,
-								stopOnHover: true,
-								items: 4
-							});
-							$("#friendmapdiv").remove();
-							var newMapDiv = document.createElement('div');
-							newMapDiv.id = "friendmapdiv";
-							document.getElementById("map").appendChild(newMapDiv);
-							createMap(response.locations);
 						}
 					});
 				});
