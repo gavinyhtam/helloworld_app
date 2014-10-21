@@ -102,7 +102,7 @@ class TodosController < ApplicationController
 			end
 		else
 			sorted_photos = @user.photos.sort_by &:updated_at
-			if (sorted_photos >= 1)
+			if (sorted_photos.length >= 1)
 				@recent_location = sorted_photos[0].location_name 
 				@recent_photos = @user.photos.where(location_name: @recent_location)
 			else
