@@ -40,10 +40,6 @@
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 
-		<!--div id="upload-button">
-			<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#upload"><span class="glyphicon glyphicon-upload"></span> Upload photos</button>
-		</div-->
-
 		<!--Modal for photo browser-->
 		<div class="modal fade" id="myModal">
 		  <div class="modal-dialog modal-lg">
@@ -95,10 +91,6 @@
 				</script>
 			</section>
 			<div id="mapdiv"></div>
-			<!--div class="icon-side">
-				<div class="icon-side-element" id="help-icon"><span class="glyphicon glyphicon-info-sign icon-bar"></span></div>
-				<div class="icon-side-element" id="upload-icon"><span class="glyphicon glyphicon-upload icon-bar"></span></div>
-			</div-->
 			<div id="country-info">
 				<div id="country-flag"></div>
 				<div id="country-description"></div>
@@ -800,7 +792,7 @@
 		              complete: function () {
 		                  console.log("Posted to facebook");
 								$("#process-upload").hide();
-								//window.location = "http://localhost:3000/todos/index";
+								window.location = "/todos/index";
 		              }
 		          });
 				});
