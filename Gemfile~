@@ -48,4 +48,4 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 gem "selectize-rails"
-
+gem "owlcarousel-rails"
