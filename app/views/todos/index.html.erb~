@@ -104,7 +104,7 @@
 	</script>
 
 <!--**********************************TIMELINE*****************************-->
-	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script-->
+	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
 		var refreshed = true;
@@ -560,11 +560,15 @@
 		function updateCountryInfo(location) {
 			var page = pageID(location);	//get country FB page ID
 			FB.api('/'+page, function(r) {
-				document.getElementById('country-description').innerHTML = r.description.substring(0,140) + "..." + '<a href="' + r.link + '" target="_blank">read more</a>';
+				if (r.description && r.link) {
+					document.getElementById('country-description').innerHTML = r.description.substring(0,140) + "..." + '<a href="' + r.link + '" target="_blank">read more</a>';
+				}
 			});
 			FB.api('/'+page+'/picture', { "type": "normal" }, function(r) {
-				document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
-				countryFlagLink = r.data.url;
+				if (r.data && r.data.url) {
+					document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
+					countryFlagLink = r.data.url;
+				}
 			});
 		}
 	</script>
