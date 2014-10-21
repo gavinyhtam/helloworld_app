@@ -275,6 +275,9 @@
 				//width is inherited from parent div to ensure responsiveness
 				if (timeline) {
 					timeline.config.current_slide = 0;
+					console.log("slide is" + timeline.config.current_slide);
+					timeline.slider.setSlide(0);
+					timeline.timenav.setMarker(0, timeline.config.ease,timeline.config.duration);
 				}
 				timeline = createStoryJS({
 					  type:       'timeline',
