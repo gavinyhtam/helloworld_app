@@ -23,8 +23,8 @@ class ProfilesController < ApplicationController
 		@user_id = params[:id]
 		@user = User.find_by(fb_id: params[:id])
 		if @user.photos.size >= 1
-			@last_location = @user.photos.order(:date).first;
-			@last_location_photos = @user.photos.where(location_name: @last_location.location_name);
+			@last_location = @user.photos.order(:date).first.location_name;
+			@last_location_photos = @user.photos.where(location_name: @last_location);
 			puts @last_location_photos
 			@locations = []
 			@user.photos.each do |photo|
