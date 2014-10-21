@@ -20,7 +20,7 @@ class TodosController < ApplicationController
 		@users = User.all
 		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		sorted_photos = @user.photos.sort_by &:updated_at
-		if (sorted_photos)
+		if (sorted_photos.length >= 1)
 			@recent_location = sorted_photos[0].location_name 
 			@recent_photos = @user.photos.where(location_name: @recent_location)
 		else
@@ -102,7 +102,7 @@ class TodosController < ApplicationController
 			end
 		else
 			sorted_photos = @user.photos.sort_by &:updated_at
-			if (sorted_photos)
+			if (sorted_photos >= 1)
 				@recent_location = sorted_photos[0].location_name 
 				@recent_photos = @user.photos.where(location_name: @recent_location)
 			else
