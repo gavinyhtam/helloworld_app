@@ -273,7 +273,6 @@
 			} else {
 				 //create the TimelineJS
 				//width is inherited from parent div to ensure responsiveness
-				console.log(timeline);
 				if (typeof timeline !== 'undefined') {
 					timeline.config.current_slide = 0;
 					console.log("slide is" + timeline.config.current_slide);

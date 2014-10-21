@@ -258,7 +258,7 @@
 		}
 
 		var newCountrySelected = true;
-		var timeline;
+		var timelineJS;
 		function createTimeline(photos,isEmpty) {
 			//remake destroyed div to place timeline in
 			$("#timeline-anchor").append("<div id=my-timeline></div>");
@@ -273,20 +273,19 @@
 			} else {
 				 //create the TimelineJS
 				//width is inherited from parent div to ensure responsiveness
-				console.log(timeline);
-				if (typeof timeline !== 'undefined') {
+				if (typeof timelineJS !== 'undefined') {
 					timeline.config.current_slide = 0;
 					console.log("slide is" + timeline.config.current_slide);
 					timeline.slider.setSlide(0);
 					timeline.timenav.setMarker(0, timeline.config.ease,timeline.config.duration);
 				}
-				timeline = createStoryJS({
+				timelineJS = createStoryJS({
 					  type:       'timeline',
 					  height:     '600',
 					  source:     photos,
 					  embed_id:   'my-timeline'
 				 });
-				console.log(timeline);
+				console.log(timelineJS);
 				if (newCountrySelected) {	//remake filters only when new country selected
 					var filters = document.getElementById("filters");
 					//make filter
