@@ -104,7 +104,7 @@
 	</script>
 
 <!--**********************************TIMELINE*****************************-->
-	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script>
+	<script type="text/javascript" src="http://cdn.knightlab.com/libs/timeline/latest/js/storyjs-embed.js"></script-->
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
 		var refreshed = true;
