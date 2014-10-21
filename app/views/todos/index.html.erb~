@@ -276,7 +276,7 @@
 					  type:       'timeline',
 					  height:     '600',
 					  source:     photos,
-					  start_at_slide: '0',
+					start_at_slide: 0,
 					  current_slide: 0,
 					  embed_id:   'my-timeline'
 				 });
