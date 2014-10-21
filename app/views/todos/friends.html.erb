@@ -14,7 +14,7 @@
 							var picElement = document.getElementById("friends");
 							//create div for portfolio column
 							var HTML =  '<div class="row friend"><img class="friend-image img-responsive" src="'+
-							"<%= user.profile_pic_link %>" +'">'+'<a class="friend-text" href="http://localhost:3000/profiles/friend' + "?id=" + "<%= user.fb_id %>" + '">' + 
+							"<%= user.profile_pic_link %>" +'">'+'<a class="friend-text" href="/profiles/friend' + "?id=" + "<%= user.fb_id %>" + '">' + 
 							'<%= user.first_name + " " + user.last_name %></a>'+
 							'<p id="friend-stats"><span class="glyphicon glyphicon-map-marker"></span>' + '<%= @friend_location_stats[user.fb_id] %>' + 
 							'<span class="glyphicon glyphicon-camera"></span>' + '<%= @friend_photo_stats[user.fb_id] %>' + '</p>' +
