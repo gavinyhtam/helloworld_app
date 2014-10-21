@@ -498,6 +498,7 @@
 					data: JSON.stringify({ countryname: currLocation }),
 					success: function(response) {
 						currLocation = response.msg;
+						newCountrySelected = true;	//country selected from map
 					}
 				});
 				console.log(currLocation);
@@ -799,7 +800,7 @@
 		              complete: function () {
 		                  console.log("Posted to facebook");
 								$("#process-upload").hide();
-								//window.location = "http://localhost:3000/todos/index";
+								window.location = "/todos/index";
 		              }
 		          });
 				});
