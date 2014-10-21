@@ -79,7 +79,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                 <a href="http://localhost:3000"><img class="home-icon" src='<%= asset_path "logo-with-name-grey.png" %>'></a>
+                 <a href="http://mysterious-atoll-6223.herokuapp.com/"><img class="home-icon" src='<%= asset_path "logo-with-name-grey.png" %>'></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -118,19 +118,30 @@
     </div>
     <!-- /.intro-header -->
 
-    <!-- Page Content -->
-
+	<!-- Page Content -->
     <div class="content-section-a">
         <div class="container">
             <div class="row">
-                <div class="col-lg-5 col-sm-6">
+                <div class="col-md-4" id="features">
+                    
+                    <center><img src='<%= asset_path "Icon1.png" %>' class="features-image"></center>
                     <hr class="section-heading-spacer">
-                    <div class="clearfix"></div>
                     <h2 class="section-heading">Travel.</h2>
-                    <p class="lead">Reach out to the boundaries of the world.</p>
+                    <p class="text-center">Reach out to the boundaries of the world.</p>
                 </div>
-                <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="https://cdn4.iconfinder.com/data/icons/insurance/60/insurance-14-512.png" alt="" style="width:250px;height:250px">
+                <div class="col-md-4" id="featuresmid">
+                    
+                    <center><img src='<%= asset_path "Icon2.png" %>' class="features-image"></center>
+                    <hr class="section-heading-spacer">
+                    <h2 class="section-heading">Share.</h2>
+                    <p class="text-center">Experience. Share yours. Relive theirs'.</p>
+                </div>
+                <div class="col-md-4" id="features">
+                    
+                    <center><img src='<%= asset_path "Icon3.png" %>' class="features-image"></center>
+                    <hr class="section-heading-spacer">
+                    <h2 class="section-heading">Discover.</h2>
+                    <p class="text-center">Explore and you will discover things you have never experienced before.</p>
                 </div>
             </div>
         </div>
