@@ -60,6 +60,7 @@
 					</div>
 		      </div>
 		      <div class="modal-footer">
+					<button type="button" id="upload-button" class="btn btn-success" onclick="showUpload();">Upload</button>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
@@ -335,6 +336,8 @@
 
 		function showUpload() {
 			$("#upload").modal("show");
+			var select = $upload_selectize[0].selectize;
+			select.setValue(currLocationID);	//set default location to country selected
 		}
 
 		function addImageView() {
@@ -439,6 +442,7 @@
 	<script type="text/javascript">
 		var map;
 		var currLocation;	//currently selected country
+		var currLocationID;
 		var hoverLocation;	//currently hovered country
 		var peopleVisited = [];
 		var countryFlagLink;
@@ -477,6 +481,7 @@
 			 map.addListener("clickMapObject", function (event) {
 				selectedFilter = false;
 				currLocation = event.mapObject.id;
+				currLocationID = event.mapObject.id;
 				//console.log(currLocation);
 				$.ajax({
 					type: "POST",
@@ -600,7 +605,7 @@
 						</select></div></div>
 			  </form>
 				<script>
-					$("#img-select-country").selectize();
+					var $upload_selectize = $("#img-select-country").selectize();
 				</script>
 			  <iframe id="upload_iframe" name="upload_iframe" width="0px" height="0px" border="0" style="width:0; height:0; border:none;"></iframe>
 			</div>

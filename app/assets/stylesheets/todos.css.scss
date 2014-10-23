@@ -77,27 +77,6 @@
 	padding-right: 20px;
 }
 
-#google-maps {
-	float: left;
-	min-height: 300px;
-	max-width: 30%;
-}
-
-#google-maps div {
-	height: 300px;
-	width: 300px;
-}
-
-#google-info {
-	padding-top: 20px;
-	padding-left: 20px;
-}
-
-#attractions-info {
-	float: left;
-	min-height: 300px;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
 .sandbox {
@@ -108,9 +87,8 @@
 }
 
 #upload-button {
-	text-align: center;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	margin-left: 20px;
+	float: left;
 }
 
 #introModal {
