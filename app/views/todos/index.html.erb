@@ -41,7 +41,7 @@
 		</div><!-- /.modal -->
 
 		<!--Modal for photo browser-->
-		<div class="modal fade" id="myModal">
+		<div class="modal fade" id="timeline-modal">
 		  <div class="modal-dialog modal-lg">
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -60,7 +60,7 @@
 					</div>
 		      </div>
 		      <div class="modal-footer">
-					<button type="button" id="upload-button" class="btn btn-success" onclick="showUpload();">Upload</button>
+					<button type="button" class="btn btn-success" onclick="showUpload();">Upload</button>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		      </div>
 		    </div><!-- /.modal-content -->
@@ -116,7 +116,7 @@
 						if (refreshed) {
 							getFBPhotos();
 							getPhotos();
-							$('#myModal').on('shown.bs.modal', function () {
+							$('#timeline-modal').on('shown.bs.modal', function () {
 								$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
 	  							getPhotos();		//get photos once modal is on
 								//setTimeout(function() {addImageView();},3000); //HACK FOR NOW--Lazy loading causing image divs to not be created yet so wait 3 seconds
@@ -499,7 +499,7 @@
 					}
 				});
 				console.log(currLocation);
-		      jQuery("#myModal").modal({  //show the modal dialog box with the pictures
+		      jQuery("#timeline-modal").modal({  //show the modal dialog box with the pictures
 		          show: true
 		      });
 			 });
@@ -801,7 +801,7 @@
 		              complete: function () {
 		                  console.log("Posted to facebook");
 								$("#process-upload").hide();
-								window.location = "/todos/index";
+								window.location = "/todos/index";	//refresh page after upload
 		              }
 		          });
 				});
