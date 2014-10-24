@@ -819,7 +819,6 @@
 	}
 </script>
 
-
 <!--Popover showing the friends who have visited the country-->
 <div class="popover" id="popover">
 	<div id="visited"></div>
