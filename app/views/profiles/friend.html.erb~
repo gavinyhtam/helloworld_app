@@ -54,7 +54,7 @@
 							<% if @locations.size == 0 %>
 								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
 							<% else %>
-								<% @locations[0..2].each do |location,value| %>
+								<% @locations.keys[0..2].each do |location| %>
 									<h5 class="country-name">
 									<%= location %>,
 									</h5>
@@ -85,6 +85,7 @@
 <!-- /#wrapper -->
 
 <script>
+	//build photo gallery
 	var gallery = document.getElementById("gallery");
 	<% @last_location_photos.each do |photo| %>
 		var pic = document.createElement("div");
@@ -101,6 +102,7 @@
 </script>
 
 <script>
+	//show friend profile pics
 	var friendPhotos = document.getElementById("friend-photos");
 	<% @users.each do |user| %>
 		var photo = document.createElement("img");
@@ -115,7 +117,7 @@
 		$(document).bind("FBSDKLoaded", function() {
 			FB.getLoginStatus(function(response) {
 				if (response.status === "connected") {
-					FB.api("/" + "<%= @user_id %>" +"/picture", {
+					FB.api("/<%= @user_id %>/picture", {
 						"redirect": false,
 						"height": "200",
 						"type": "normal",
@@ -129,11 +131,20 @@
 							picElement.innerHTML += HTML;
 						}
 					});
+
+					FB.api("/<%= @user_id %>/friends", function (response) {
+						if (response && !response.error) {
+							//console.log(response);
+							document.getElementById("friends-number").innerHTML += 
+							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends" +
+							' and <strong><%= User.all.length %></strong> Hello World friends.';
+						}
+					});
 					document.getElementById("profile-name").innerHTML += '<%= @user.first_name + " " + @user.last_name %>';
-					document.getElementById("friends-number").innerHTML += 
-							'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + 
-							'<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
-							'<%= User.all.length %>' + "</strong> Hello World friends.";
+					//document.getElementById("friends-number").innerHTML += 
+						//	'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + 
+							//'<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
+							//'<%= User.all.length %>' + "</strong> Hello World friends.";
 				}
 			});
 		});
