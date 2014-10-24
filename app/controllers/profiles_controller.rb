@@ -6,10 +6,10 @@ class ProfilesController < ApplicationController
 			@last_location = @user.photos.order(:date).last.location_name;
 			@last_location_photos = @user.photos.where(location_name: @last_location);
 			puts @last_location_photos
-			@locations = []
+			@locations = Hash.new
 			@user.photos.each do |photo|
 				#add unique locations to the @locations (inefficient but will change to use a set instead)
-				@locations.push(photo.location_name) unless @locations.include? photo.location_name
+				@locations[photo.location_name] = 1
 			end
 		else
 			@last_location = "nowhere"
@@ -26,10 +26,10 @@ class ProfilesController < ApplicationController
 			@last_location = @user.photos.order(:date).first.location_name;
 			@last_location_photos = @user.photos.where(location_name: @last_location);
 			puts @last_location_photos
-			@locations = []
+			@locations = Hash.new
 			@user.photos.each do |photo|
 				#add unique locations to the @locations (inefficient but will change to use a set instead)
-				@locations.push(photo.location_name) unless @locations.include? photo.location_name
+				@locations[photo.location_name] = 1
 			end
 		else 
 			@last_location = "nowhere"
