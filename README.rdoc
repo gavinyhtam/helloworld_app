@@ -4,10 +4,13 @@ This is a web application developed for viewing travel experiences, and sharing 
 
 Features:
 
-* TravelDex
-
-* Friends
-
-* Travel Blog
+* Integration with Facebook, including authentication system, inheritance of social networking graphs, user profile information and synchronisation with existing photos
+* TravelDex, with the colouration of the map based on the number of friends visiting any given country
+* Timeline gallery, displaying photos from members of the user’s social network in chronological order, which narrate their journeys collectively
+* Photo uploading, including the ability to specify description, date and location details for individual photos or the entire album, and support for multiple file uploads
+* Photo commenting, including liking and replying to posts
+* Social networking and sharing, including viewing photo albums of a friend’s recent trip and invite friends to join the web application
+* Profile information, showing recent travel activities, locations visited and friends in the user’s social network
+* Travel guide information, via providing links to the Lonely Planet website and the Facebook page for the given country
 
 ...and more to come.
