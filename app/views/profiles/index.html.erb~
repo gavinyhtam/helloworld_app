@@ -106,7 +106,7 @@
 									</h5>
 								<% end %>
 							<% end %>
-							and are yet to visit <%= 256 - @locations.length %> other places!
+							and are yet to visit <%= 256 - @locations.size %> other places!
 						</p>
 					</div>
 				</div>

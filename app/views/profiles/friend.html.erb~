@@ -59,13 +59,13 @@
 									<%= location %>,
 									</h5>
 								<% end %>
-								<% if @locations.length > 3 %>
+								<% if @locations.size > 3 %>
 									<h5>
-									and <%= @locations.length-3 %> places,
+									and <%= @locations.size-3 %> places,
 									</h5>
 								<% end %>
 							<% end %>
-							and is yet to visit <%= 256 - @locations.length %> other places!
+							and is yet to visit <%= 256 - @locations.size %> other places!
 						</p>
 					</div>
 				</div>
