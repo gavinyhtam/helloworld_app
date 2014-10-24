@@ -3,7 +3,7 @@ class TodosController < ApplicationController
 	include LocationCode
   def index
 		#determines whether introduction of web app to new users should be shown
-		@new_user = session[:new_user]
+		@new_user = cookies[:new_user]
 		session[:new_user] = false
 		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		@all_friends = User.all
@@ -21,9 +21,11 @@ class TodosController < ApplicationController
 		@user = User.find_or_create_by(fb_id: cookies[:fb_id])	#find or create the logged in user
 		sorted_photos = @user.photos.sort_by &:updated_at
 		if (sorted_photos.length >= 1)
+			#get most recent location
 			@recent_location = sorted_photos[0].location_name 
+			#get all photos from this recent location
 			@recent_photos = @user.photos.where(location_name: @recent_location)
-		else
+		else	#if no photos uploaded by user
 			@recent_location = "nowhere"
 			@recent_photos = []
 		end
@@ -33,12 +35,12 @@ class TodosController < ApplicationController
 		@friend_location_stats = Hash.new(0)
 		@locations = []
 		@users.each do |friend|
-			@friend_photo_stats[friend.fb_id] = friend.photos.length
+			@friend_photo_stats[friend.fb_id] = friend.photos.length	#count number of photos uploaded
 			friend_locations = Hash.new
 			friend.photos.each do |photo|
 				#unless location for friend was already added
 				unless friend_locations[photo.location_name]
-					@friend_location_stats[friend.fb_id] += 1;
+					@friend_location_stats[friend.fb_id] += 1;	#count number of locations visited
 				end
 				#see location as visited
 				friend_locations[photo.location_name] = 1
@@ -63,13 +65,15 @@ class TodosController < ApplicationController
 		#if photo already exists, update attributes
 		photo = @user.photos.find_by(photo_id: params[:photo_id])
 		if (photo)
-			photo.update_attributes(location_name: params[:location_name], date: params[:date], photo_name: params[:photo_name], link: params[:link])
+			photo.update_attributes(location_name: params[:location_name], date: params[:date], 
+											photo_name: params[:photo_name], link: params[:link])
 			respond_to do |format|
 				format.json { render :json => { msg: "Updated photo information!" } }
 			end
 		else
 		#create the photo from the given attributes
-			@user.photos.build(link: params[:link], location_name: params[:location_name], date: params[:date], photo_name: params[:photo_name], photo_id: params[:photo_id])
+			@user.photos.build(link: params[:link], location_name: params[:location_name], 
+				date: params[:date], photo_name: params[:photo_name], photo_id: params[:photo_id])
 			if @user.save	#if the photo was saved successfully
 				@user.locations.build(location_name: params[:location_name])
 				@user.save unless @user.locations.find_by(location_name: params[:location_name])
@@ -118,10 +122,10 @@ class TodosController < ApplicationController
 	#finds the country, users and user profiles associated with a given country code
 	def findLocation
 		location = params[:location]
-		puts location, "++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 		@users = Location.where(location_name: country(location))
 		@user_profiles = []
 		@users.each do |user|
+			#get user profiles of users who have visited the location
 			@user_profiles.push(User.find_by(id: user.user_id))
 		end
 		respond_to do |format|

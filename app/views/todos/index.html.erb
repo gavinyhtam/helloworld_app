@@ -221,6 +221,8 @@
 			});
 		}
 
+		//gets friend's photos and shows photos from the currently selected location
+		//in the timeline
 		function getFriendPhotos(friendPhotos,user) {
 			$(document).ready(function() {
 				var photos = { 
@@ -373,6 +375,7 @@
 					modal.appendChild(commentsDiv);
 				}
 			});*/
+			//show enlarged image with comments box when clicked
 			$("#enlargedImage").on('click',function() {
 				$("#enlargedImage").modal('hide');
 			});
@@ -459,7 +462,8 @@
 				  areas: []
 			 };
 
-			<% @locations.each do |location| %>
+			//colour map according to locations visited by user and friends
+			<% @locations.keys.each do |location| %>
 				worldDataProvider.areas.push({ id: "<%= location %>", color: "#4444ff" });
 			<% end %>
 
@@ -504,6 +508,8 @@
 		      });
 			 });
 
+			//when rolling over a country, show friends visited popover
+			//if someone in social network has visited the country
 			map.addListener("rollOverMapObject", function(e) {
 				hoverLocation = e.mapObject.id;
 				//console.log(hoverLocation);
@@ -551,6 +557,7 @@
 				}
 			});
 
+			//when rolling out of country, hide friends visited popover
 			map.addListener("rollOutMapObject", function(event) {
 				console.log("inside");
 				hoverLocation = undefined;
@@ -559,9 +566,10 @@
 			map.addListener("positionChanged", function(event) {
 				 $('.popover').hide();
 			});
-			 map.write("mapdiv");
+			 map.write("mapdiv");	//show map
 		});
 
+		//update brief description of country on page
 		function updateCountryInfo(location) {
 			var page = pageID(location);	//get country FB page ID
 			FB.api('/'+page, function(r) {
@@ -569,6 +577,7 @@
 					document.getElementById('country-description').innerHTML = r.description.substring(0,140) + "..." + '<a href="' + r.link + '" target="_blank">read more</a>';
 				}
 			});
+			//get flag of country
 			FB.api('/'+page+'/picture', { "type": "normal" }, function(r) {
 				if (r.data && r.data.url) {
 					document.getElementById('country-flag').innerHTML = '<img src="' + r.data.url + '">';
@@ -809,7 +818,6 @@
 		}
 	}
 </script>
-
 
 <!--Popover showing the friends who have visited the country-->
 <div class="popover" id="popover">

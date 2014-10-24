@@ -117,6 +117,7 @@
 		$(document).bind("FBSDKLoaded", function() {
 			FB.getLoginStatus(function(response) {
 				if (response.status === "connected") {
+					//get large size user profile pic
 					FB.api("/<%= @user_id %>/picture", {
 						"redirect": false,
 						"height": "200",
@@ -132,19 +133,10 @@
 						}
 					});
 
-					FB.api("/<%= @user_id %>/friends", function (response) {
-						if (response && !response.error) {
-							//console.log(response);
-							document.getElementById("friends-number").innerHTML += 
-							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends" +
-							' and <strong><%= User.all.length %></strong> Hello World friends.';
-						}
-					});
 					document.getElementById("profile-name").innerHTML += '<%= @user.first_name + " " + @user.last_name %>';
-					//document.getElementById("friends-number").innerHTML += 
-						//	'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + 
-							//'<%= User.all.length %>' + "</strong> Facebook friends and <strong>" +
-							//'<%= User.all.length %>' + "</strong> Hello World friends.";
+					document.getElementById("friends-number").innerHTML += 
+							'<%= @user.first_name + " " + @user.last_name %>' + " currently has <strong>" + 
+							'<%= User.all.length %>' + "</strong> Hello World friends.";
 				}
 			});
 		});

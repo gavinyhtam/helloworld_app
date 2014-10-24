@@ -19,14 +19,6 @@
 							picElement.innerHTML += HTML;
 						}
 					});
-					/*FB.api("/me/friends", function (response) {
-						if (response && !response.error) {
-							//console.log(response);
-							document.getElementById("friends-number").innerHTML += 
-							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends and <strong>" +
-							response.data.length + "</strong> Hello World friends";
-						}
-					});*/
 					FB.api("/me/friends", function (response) {
 						if (response && !response.error) {
 							//console.log(response);
@@ -126,6 +118,7 @@
 <!-- /#wrapper -->
 
 <script>
+	//show photo gallery of recent trip
 	var gallery = document.getElementById("gallery");
 	<% @last_location_photos.each do |photo| %>
 		var pic = document.createElement("div");
@@ -142,6 +135,7 @@
 </script>
 
 <script>
+	//show friend profile pics
 	var friendPhotos = document.getElementById("friend-photos");
 	<% @users.each do |user| %>
 		var photo = document.createElement("img");

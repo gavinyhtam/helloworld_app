@@ -19,14 +19,6 @@
 							picElement.innerHTML += HTML;
 						}
 					});
-					/*FB.api("/me/friends", function (response) {
-						if (response && !response.error) {
-							//console.log(response);
-							document.getElementById("friends-number").innerHTML += 
-							"You currently have <strong>" + response.summary.total_count + "</strong> Facebook friends and <strong>" +
-							response.data.length + "</strong> Hello World friends";
-						}
-					});*/
 					FB.api("/me/friends", function (response) {
 						if (response && !response.error) {
 							//console.log(response);
@@ -95,7 +87,7 @@
 							<% if @locations.size == 0 %>
 								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
 							<% else %>
-								<% @locations[0..2].each do |location,value| %>
+								<% @locations.keys[0..2].each do |location| %>
 									<h5 class="country-name">
 									<%= location %>,
 									</h5>
@@ -126,6 +118,7 @@
 <!-- /#wrapper -->
 
 <script>
+	//show photo gallery of recent trip
 	var gallery = document.getElementById("gallery");
 	<% @last_location_photos.each do |photo| %>
 		var pic = document.createElement("div");
