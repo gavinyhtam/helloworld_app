@@ -133,6 +133,7 @@
 					});
 
 					FB.api("/<%= @user_id %>/friends", function (response) {
+						console.log(response);
 						if (response && !response.error) {
 							//console.log(response);
 							document.getElementById("friends-number").innerHTML += 
