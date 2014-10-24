@@ -54,13 +54,18 @@
 							<% if @locations.length == 0 %>
 								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
 							<% else %>
-								<% @locations.each do |location,value| %>
+								<% @locations[0..2].each do |location,value| %>
 									<h5 class="country-name">
 									<%= location %>,
 									</h5>
 								<% end %>
+								<% if @locations.length > 3 %>
+									<h5>
+									and <%= @locations.length-3 %> places,
+									</h5>
+								<% end %>
 							<% end %>
-							and is yet to visit <%= 256 - @locations.size %> other places!
+							and is yet to visit <%= 256 - @locations.length %> other places!
 						</p>
 					</div>
 				</div>
