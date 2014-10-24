@@ -51,7 +51,7 @@
 					<span class="glyphicon glyphicon-content glyphicon-globe"></span>
 						<h1>Locations</h1>
 						<p><%= @user.first_name + " " + @user.last_name %> has been to
-							<% if @locations.length == 0 %>
+							<% if @locations.size == 0 %>
 								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
 							<% else %>
 								<% @locations[0..2].each do |location,value| %>
@@ -59,13 +59,13 @@
 									<%= location %>,
 									</h5>
 								<% end %>
-								<% if @locations.length > 3 %>
+								<% if @locations.size > 3 %>
 									<h5>
-									and <%= @locations.length-3 %> places,
+									and <%= @locations.size-3 %> places,
 									</h5>
 								<% end %>
 							<% end %>
-							and is yet to visit <%= 256 - @locations.length %> other places!
+							and is yet to visit <%= 256 - @locations.size %> other places!
 						</p>
 					</div>
 				</div>
