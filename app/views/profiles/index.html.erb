@@ -95,7 +95,7 @@
 							<% if @locations.size == 0 %>
 								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
 							<% else %>
-								<% @locations[0..2].each do |location,value| %>
+								<% @locations.keys[0..2].each do |location| %>
 									<h5 class="country-name">
 									<%= location %>,
 									</h5>

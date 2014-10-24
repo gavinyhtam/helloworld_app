@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
 		else
 			@last_location = "nowhere"
 			@last_location_photos = []
-			@locations = []
+			@locations = Hash.new
 		end
   end
 
@@ -34,7 +34,7 @@ class ProfilesController < ApplicationController
 		else 
 			@last_location = "nowhere"
 			@last_location_photos = []
-			@locations = []
+			@locations = Hash.new
 		end
 	end
 end
