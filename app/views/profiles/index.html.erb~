@@ -74,7 +74,7 @@
 						<% if @last_location %>
 						You last went to
 						<strong>
-							<%= @last_location.location_name %>
+							<%= @last_location %>
 						</strong>
 						!
 						<% else %>
@@ -95,7 +95,7 @@
 							<% if @locations.length == 0 %>
 								nowhere		<!--display 'nowhere' if user has not uploaded photos-->
 							<% else %>
-								<% @locations.each do |location| %>
+								<% @locations.each do |location,value| %>
 									<h5 class="country-name">
 									<%= location %>,
 									</h5>
