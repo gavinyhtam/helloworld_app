@@ -109,13 +109,15 @@
 	<script>
 	//Source for FB SDK Loaded from http://stackoverflow.com/questions/7747668/fb-is-undefined-even-though-i-just-used-it
 		var refreshed = true;
+		var accessToken;
 		(function($) {
 			$(document).bind("FBSDKLoaded", function() {
 				FB.getLoginStatus(function(response) {
+			  accessToken = response.authResponse.accessToken;
 					if (response.status === "connected") {
 						if (refreshed) {
 							getFBPhotos();
-							getPhotos();
+							//getPhotos();
 							$('#timeline-modal').on('shown.bs.modal', function () {
 								$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
 	  							getPhotos();		//get photos once modal is on
@@ -463,7 +465,7 @@
 			 };
 
 			//colour map according to locations visited by user and friends
-			<% @locations.keys.each do |location| %>
+			<% @locations.each do |location| %>
 				worldDataProvider.areas.push({ id: "<%= location %>", color: "#4444ff" });
 			<% end %>
 
@@ -750,17 +752,7 @@
 </script>
 
 <!--Sourced from https://gist.github.com/nseo/2910244-->
-<script type="application/javascript">
-	var accessToken;
-	(function($) {
-		$(document).bind("FBSDKLoaded", function() {
-			FB.getLoginStatus(function(response){
-			if (response.status == 'connected') {
-			  accessToken = response.authResponse.accessToken;
-			}
-		  });
-		});
-	})(jQuery);
+<script type="application/javascript">bin
 	  
 	//Upload a local file image
 	function fileUpload() {
