@@ -118,7 +118,7 @@
 					if (response.status === "connected") {
 						if (refreshed) {
 							getFBPhotos();
-							//getPhotos();
+							getPhotos();
 							$('#timeline-modal').on('shown.bs.modal', function () {
 								$("#my-timeline").remove();	//destroy old timeline and prepare to get new photos
 	  							getPhotos();		//get photos once modal is on

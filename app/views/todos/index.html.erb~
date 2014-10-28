@@ -753,7 +753,7 @@
 </script>
 
 <!--Sourced from https://gist.github.com/nseo/2910244-->
-<script type="application/javascript">bin
+<script type="application/javascript">
 	  
 	//Upload a local file image
 	function fileUpload() {
