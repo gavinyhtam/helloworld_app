@@ -112,8 +112,9 @@
 		var accessToken;
 		(function($) {
 			$(document).bind("FBSDKLoaded", function() {
+				console.log("FB SDK loaded");
 				FB.getLoginStatus(function(response) {
-			  accessToken = response.authResponse.accessToken;
+			  		accessToken = response.authResponse.accessToken;
 					if (response.status === "connected") {
 						if (refreshed) {
 							getFBPhotos();
